@@ -1,0 +1,26 @@
+{
+  "name": "x-wars",
+  "version": "0.0.1",
+  "description": "generic * wars engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adrianlafond/x-wars.git"
+  },
+  "keywords": [
+    "drugwars",
+    "dope",
+    "wars",
+    "game",
+    "turn-based"
+  ],
+  "author": "Adrian Lafond <mail@adrianlafond.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adrianlafond/x-wars/issues"
+  },
+  "homepage": "https://github.com/adrianlafond/x-wars#readme"
+}

@@ -9,7 +9,7 @@
     "lint": "eslint src",
     "start:test": "jest --watch",
     "start:js": "npm run build && babel src -o dist/x-wars.js -w",
-    "start:lint": "esw src test -w",
+    "start:lint": "esw src test --watch --cache",
     "start": "npm-run-all -p start:lint start:test start:js"
   },
   "repository": {

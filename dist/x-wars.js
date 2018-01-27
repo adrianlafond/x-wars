@@ -30,7 +30,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // Internal private data.
 // @see http://2ality.com/2016/01/private-data-classes.html
 var _config = new WeakMap();
-var _data = new WeakMap();
 
 /**
  * TODO: Add docs for @param config.

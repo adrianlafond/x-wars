@@ -1,3 +1,3 @@
-import XWars from './x-wars';
+import XWars from './x-wars'
 
-export default XWars;
+export default XWars

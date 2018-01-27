@@ -6,7 +6,11 @@
   "scripts": {
     "test": "jest",
     "build": "babel src -o dist/x-wars.js",
-    "start": "npm run build && babel src -o dist/x-wars.js -w"
+    "lint": "eslint src",
+    "start:test": "jest --watch",
+    "start:js": "npm run build && babel src -o dist/x-wars.js -w",
+    "start:lint": "esw src test -w",
+    "start": "npm-run-all -p start:lint start:test start:js"
   },
   "repository": {
     "type": "git",
@@ -27,15 +31,20 @@
   "homepage": "https://adrianlafond.github.io/x-wars/",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.1",
     "babel-jest": "^22.1.0",
     "babel-preset-env": "^1.6.1",
-    "jest": "^22.1.4"
+    "eslint": "^4.16.0",
+    "eslint-watch": "^3.1.3",
+    "jest": "^22.1.4",
+    "standard": "^10.0.3"
   },
   "jest": {
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     },
-    "collectCoverage": true
+    "collectCoverage": true,
+    "testRegex": "\\.(spec|test)\\.js"
   },
   "dependencies": {
     "lodash.clonedeep": "^4.5.0"

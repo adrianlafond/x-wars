@@ -13,3 +13,18 @@ A generic JavaScript * wars engine. Inspired by [Drugwars](https://en.wikipedia.
 - $ award for killing cop
 - random: muggin, increased drug prices, finding of drugs
 - final score: current amount cash * 2, then number of millions out of 100. So $25,000,000 = 50/100.
+
+## methods
+- initialize(config)
+- start
+- reset
+- quit
+- do([n]|q|r|s)
+- back
+- forward
+- go(n)
+- set(prop, val)
+- get(prop)
+
+## properties
+- data (private) / or just use [WeakMap](http://2ality.com/2016/01/private-data-classes.html)

@@ -8,12 +8,12 @@
     "Park Slope"
   ],
   "items": [
-    { "name": "Cocaine", "min": 15000, "max": 30000 },
-    { "name": "Crack", "min": 1500, "max": 7500 },
-    { "name": "Marijuana", "min": 15, "max": 150 },
-    { "name": "Heroin", "min": 1200, "max": 5000 },
-    { "name": "Opium", "min": 3000, "max": 10000 },
-    { "name": "LSD", "min": 1800, "max": 4000 }
+    { "name": "Kabooms", "min": 15000, "max": 30000 },
+    { "name": "Bangs", "min": 1500, "max": 7500 },
+    { "name": "Booms", "min": 15, "max": 150 },
+    { "name": "Whams", "min": 1200, "max": 5000 },
+    { "name": "Pows", "min": 3000, "max": 10000 },
+    { "name": "Splats", "min": 1800, "max": 4000 }
   ],
   "time": 30,
   "pockets": 100,

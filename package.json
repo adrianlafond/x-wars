@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "babel src -o dist/x-wars.js",
-    "lint": "eslint src",
+    "lint": "eslint src test",
     "watch:test": "jest --watch",
     "watch:js": "npm run build && babel src -o dist/x-wars.js -w",
     "watch:lint": "esw src test --watch --cache",

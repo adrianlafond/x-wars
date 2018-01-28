@@ -1,6 +1,36 @@
 # x-wars
 A generic JavaScript * wars engine. Inspired by [Drugwars](https://en.wikipedia.org/wiki/Drugwars).
 
+## Installation
+Assuming [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com) are installed, clone this repo and run from the command line:
+```
+cd x-wars
+npm install
+```
+
+## Scripts
+
+### `npm test`
+Runs all tests.
+
+### `npm run watch:test`
+Runs tests in watch mode in response to changes to any JavaScript file the `src` or `test` directories.
+
+### `npm run lint`
+Lints the JavaScript code in `src` and `test` directories.
+
+### `npm run watch:lint`
+Lints the JavaScript code in watch mode in response to changes to any JavaScript file the `src` or `test` directories.
+
+### `npm run build`
+Builds the module into a single file in `dist`.
+
+### `npm run watch:js`
+Runs `build` in watch mode in response to changes to JavaScript files in the `src` directory.
+
+### `npm start`
+Both lints and builds the JavaScript code in parallel, building the module into a single file in `dist`. Does not also run tests because it is easier to read test output in a separate terminal window.
+
 ## game elements
 - six locations
 - six items to buy/sell

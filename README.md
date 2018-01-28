@@ -28,3 +28,7 @@ A generic JavaScript * wars engine. Inspired by [Drugwars](https://en.wikipedia.
 
 ## properties
 - data (private) / or just use [WeakMap](http://2ality.com/2016/01/private-data-classes.html)
+
+## loans
+```I = P * r * t```
+Interest earned = Princial * rate * time

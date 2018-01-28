@@ -7,10 +7,10 @@
     "test": "jest",
     "build": "babel src -o dist/x-wars.js",
     "lint": "eslint src",
-    "start:test": "jest --watch",
-    "start:js": "npm run build && babel src -o dist/x-wars.js -w",
-    "start:lint": "esw src test --watch --cache",
-    "start": "npm-run-all -p start:lint start:test start:js"
+    "watch:test": "jest --watch",
+    "watch:js": "npm run build && babel src -o dist/x-wars.js -w",
+    "watch:lint": "esw src test --watch --cache",
+    "start": "npm-run-all -p watch:lint watch:js"
   },
   "repository": {
     "type": "git",
@@ -47,6 +47,6 @@
     "testRegex": "\\.(spec|test)\\.js"
   },
   "dependencies": {
-    "lodash.clonedeep": "^4.5.0"
+    "lodash": "^4.17.4"
   }
 }

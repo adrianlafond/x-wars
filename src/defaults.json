@@ -1,0 +1,23 @@
+{
+  "locations": [
+    "Coney Island",
+    "Red Hook",
+    "Crown Heights",
+    "Bedford-Stuyvesant",
+    "Bay Ridge",
+    "Park Slope"
+  ],
+  "items": [
+    { "name": "Cocaine", "min": 15000, "max": 30000 },
+    { "name": "Crack", "min": 1500, "max": 7500 },
+    { "name": "Marijuana", "min": 15, "max": 150 },
+    { "name": "Heroin", "min": 1200, "max": 5000 },
+    { "name": "Opium", "min": 3000, "max": 10000 },
+    { "name": "LSD", "min": 1800, "max": 4000 }
+  ],
+  "time": 30,
+  "pockets": 100,
+  "loans": [
+    { "principal": 2000, "interest": 0.20 }
+  ]
+}

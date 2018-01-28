@@ -49,9 +49,9 @@
     {
       "name": "Blimpie",
       "odds": 0.2,
-      "health": 60,
+      "health": 45,
       "damage": 5,
-      "success": 0.5,
+      "success": 0.4,
       "copy": [
         "Blimpie is on your tail!",
         "Blimpie is after you!"

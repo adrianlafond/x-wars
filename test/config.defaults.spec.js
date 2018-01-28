@@ -13,8 +13,26 @@ describe('config defaults', () => {
     expect(defaults.locations.length).toBeGreaterThan(1)
   })
 
+  test('each location has a name', () => {
+    defaults.locations.forEach(item => {
+      expect(typeof item.name).toBe('string')
+      expect(item.name).toBeTruthy()
+    })
+  })
+
   test('defaults have multiple items', () => {
     expect(defaults.items.length).toBeGreaterThan(1)
+  })
+
+  test('each item has a name, min, and max', () => {
+    defaults.items.forEach(item => {
+      expect(typeof item.name).toBe('string')
+      expect(item.name).toBeTruthy()
+      expect(isNaN(item.min)).toBe(false)
+      expect(item.min).toBeGreaterThan(0)
+      expect(isNaN(item.max)).toBe(false)
+      expect(item.max).toBeGreaterThan(item.min)
+    })
   })
 
   test('defaults have at least one time unit', () => {

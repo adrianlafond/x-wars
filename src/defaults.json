@@ -1,11 +1,14 @@
 {
+  "player": {
+    "health": 100
+  },
   "locations": [
-    "Coney Island",
-    "Red Hook",
-    "Crown Heights",
-    "Bedford-Stuyvesant",
-    "Bay Ridge",
-    "Park Slope"
+    { "name": "Coney Island" },
+    { "name": "Red Hook" },
+    { "name": "Crown Heights" },
+    { "name": "Bedford-Stuyvesant" },
+    { "name": "Bay Ridge" },
+    { "name": "Park Slope" }
   ],
   "items": [
     { "name": "Kabooms", "min": 15000, "max": 30000 },
@@ -19,5 +22,132 @@
   "pockets": 100,
   "loans": [
     { "principal": 2000, "interest": 0.20 }
-  ]
+  ],
+  "shark": {
+    "increment": 0.5,
+    "damage": 25
+  },
+  "weapons": [
+    {
+      "name": "Knife",
+      "power": { "min": 2, "max": 6 },
+      "cost": { "min": 100, "max": 300 },
+      "copy": [
+        "A hoodlum in an alley offers to sell you a knife. Time to beef up security?"
+      ]
+    },
+    {
+      "name": "Gun",
+      "power": { "min": 8, "max": 20 },
+      "cost": { "min": 2000, "max": 5000 },
+      "copy": [
+        "Show 'em you mean business. Blimpie and the hooligans will think twice before messing with you."
+      ]
+    }
+  ],
+  "adversary": [
+    {
+      "name": "Blimpie",
+      "odds": 0.2,
+      "health": 60,
+      "damage": 5,
+      "success": 0.5,
+      "copy": [
+        "Blimpie is on your tail!",
+        "Blimpie is after you!"
+      ],
+      "options": {
+        "fight": {
+          "label": "Fight",
+          "success": [
+            "Blimpie is dead!"
+          ],
+          "fail": [
+            "You've hurt Blimpie but he's still after you."
+          ]
+        },
+        "run": {
+          "label": "Run",
+          "success": [
+            "You've lost Blimpie!"
+          ],
+          "fail": [
+            "Oh no! Blimpie's got you. He'll take everything and let you go in the morning."
+          ]
+        },
+        "surrender": {
+          "label": "Surrender",
+          "copy": [
+            "You've lost everything, but at least you're still alive."
+          ]
+        }
+      }
+    },
+    {
+      "name": "Hooligans",
+      "odds": 0.15,
+      "health": 12,
+      "damage": 15,
+      "success": 0.75,
+      "copy": [
+        "Armed hooligans want your stash!",
+        "Hooligans have ambushed you!"
+      ],
+      "options": {
+        "fight": {
+          "label": "Fight",
+          "success": [
+            "Wow! You've those hooligans a lesson. They're gone."
+          ],
+          "fail": [
+            "You gave them a scare but they won't give up that easily."
+          ]
+        },
+        "run": {
+          "label": "Run",
+          "success": [
+            "You've lost the hooligans!"
+          ],
+          "fail": [
+            "Oh no! The hooligans have taken everything you have and given you quite a beating."
+          ]
+        },
+        "surrender": {
+          "label": "Surrender",
+          "copy": [
+            "You've lost everything, but at least you're still alive."
+          ]
+        }
+      }
+    }
+  ],
+  "random": {
+    "find": {
+      "enabled": true,
+      "odds": 0.1,
+      "max": 25000,
+      "copy": [
+        "You've found {{number}} {{item}} under a rock!",
+        "{{number}} {{item}} just fell out of a tree!"
+      ]
+    },
+    "drop": {
+      "enabled": true,
+      "odds": 0.2,
+      "min": 0.3,
+      "max": 0.6,
+      "copy": [
+        "A tsunami of {{item}} just crashed ashore. Prices have crashed!"
+      ]
+    },
+    "increase": {
+      "enabled": true,
+      "odds": 0.2,
+      "min": 1.75,
+      "max": 2.75,
+      "copy": [
+        "All vowels needed to spell {{item}} have fled. Prices have skyrocketed!"
+      ]
+    }
+  }
 }

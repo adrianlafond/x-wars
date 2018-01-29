@@ -24,7 +24,9 @@ export default class XWars {
   start() {
     const history = _history.set(this, new History())
     const config = _config.get(this)
-    _game.set(this, new Game(config, history))
+    const game = new Game(config, history)
+    _game.set(this, game)
+    return game.start()
   }
 
   reset() {

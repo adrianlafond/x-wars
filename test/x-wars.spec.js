@@ -29,5 +29,5 @@ test('api:methods', () => {
 })
 
 test('api:start', () => {
-  expect(xwars.start()).toEqual(undefined)
+  expect(typeof xwars.start()).toEqual('object')
 })

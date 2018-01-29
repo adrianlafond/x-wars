@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _lodash = require('lodash');
+
 var _defaults = require('./defaults.json');
 
 var _defaults2 = _interopRequireDefault(_defaults);
@@ -21,7 +23,7 @@ var Config = function () {
   function Config(config) {
     _classCallCheck(this, Config);
 
-    this.config = config;
+    this.config = (0, _lodash.assign)({}, (0, _lodash.cloneDeep)(_defaults2.default), (0, _lodash.cloneDeep)(config));
   }
 
   _createClass(Config, [{
@@ -31,7 +33,7 @@ var Config = function () {
         case 'defaults':
           return _defaults2.default;
         default:
-          return this.config;
+          return this.config[prop] || this.config;
       }
     }
   }, {
@@ -45,23 +47,50 @@ var Config = function () {
 }();
 
 exports.default = Config;
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _place = require('./place');
+
+var _place2 = _interopRequireDefault(_place);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * Game is a decision-making engine that takes input and produces output.
  */
-var Game = function Game(config, history) {
-  _classCallCheck(this, Game);
+var Game = function () {
+  function Game(config, history) {
+    _classCallCheck(this, Game);
 
-  this.config = config;
-  this.history = history;
-};
+    this.config = config;
+    this.history = history;
+  }
+
+  _createClass(Game, [{
+    key: 'randomPlace',
+    value: function randomPlace() {
+      var locations = this.config.get('locations');
+      var index = Math.floor(Math.random() * locations.length);
+      return locations[index];
+    }
+  }, {
+    key: 'start',
+    value: function start() {
+      var place = new _place2.default(this.randomPlace());
+      return place.output();
+    }
+  }]);
+
+  return Game;
+}();
 
 exports.default = Game;
 "use strict";
@@ -77,6 +106,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var History = function History() {
   _classCallCheck(this, History);
+
+  this.data = [];
 };
 
 exports.default = History;
@@ -93,6 +124,41 @@ var _xWars2 = _interopRequireDefault(_xWars);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _xWars2.default;
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _lodash = require('lodash');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ *
+ */
+var Place = function () {
+  function Place(place) {
+    _classCallCheck(this, Place);
+
+    this.place = place;
+  }
+
+  _createClass(Place, [{
+    key: 'output',
+    value: function output() {
+      return {
+        place: (0, _lodash.cloneDeep)(this.place)
+      };
+    }
+  }]);
+
+  return Place;
+}();
+
+exports.default = Place;
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -146,7 +212,9 @@ var XWars = function () {
     value: function start() {
       var history = _history.set(this, new _history3.default());
       var config = _config.get(this);
-      _game.set(this, new _game3.default(config, history));
+      var game = new _game3.default(config, history);
+      _game.set(this, game);
+      return game.start();
     }
   }, {
     key: 'reset',

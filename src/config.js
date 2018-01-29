@@ -1,3 +1,4 @@
+import { assign, cloneDeep } from 'lodash'
 import DEFAULTS from './defaults.json'
 
 /**
@@ -5,7 +6,7 @@ import DEFAULTS from './defaults.json'
  */
 export default class Config {
   constructor(config) {
-    this.config = config
+    this.config = assign({}, cloneDeep(DEFAULTS), cloneDeep(config))
   }
 
   get(prop) {
@@ -13,7 +14,7 @@ export default class Config {
       case 'defaults':
         return DEFAULTS
       default:
-        return this.config
+        return this.config[prop] || this.config
     }
   }
 

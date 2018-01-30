@@ -13,23 +13,17 @@ npm install
 ### `npm test`
 Runs all tests.
 
-### `npm run watch:test`
-Runs tests in watch mode in response to changes to any JavaScript file the `src` or `test` directories.
+### `npm start`
+Lints and builds the JavaScript into a distributable file in `dist`.
+
+### `npm run test:watch`
+Runs tests in watch mode in response to changes to any JavaScript file in the `src` or `test` directories.
 
 ### `npm run lint`
 Lints the JavaScript code in `src` and `test` directories.
 
-### `npm run watch:lint`
-Lints the JavaScript code in watch mode in response to changes to any JavaScript file the `src` or `test` directories.
-
 ### `npm run build`
 Builds the module into a single file in `dist`.
-
-### `npm run watch:js`
-Runs `build` in watch mode in response to changes to JavaScript files in the `src` directory.
-
-### `npm start`
-Both lints and builds the JavaScript code in parallel, building the module into a single file in `dist`. Does not also run tests because it is easier to read test output in a separate terminal window.
 
 ## Command-line demo
 On a UNIX-like system (including Mac), run this once:

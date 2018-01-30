@@ -5,12 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
     "build": "webpack",
     "lint": "eslint src test",
-    "watch:test": "jest --watch",
-    "watch:js": "npm run build && babel src -o dist/x-wars.js -w",
-    "watch:lint": "esw src test demo --watch --cache",
-    "start": "npm-run-all -p watch:lint watch:js"
+    "start": "webpack --watch"
   },
   "repository": {
     "type": "git",

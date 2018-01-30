@@ -1,4 +1,5 @@
-import { assign, cloneDeep } from 'lodash'
+import assign from 'lodash.assign'
+import cloneDeep from 'lodash.clonedeep'
 import DEFAULTS from './defaults.json'
 
 /**

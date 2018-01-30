@@ -1,4 +1,4 @@
-import { isPlainObject } from 'lodash'
+import inPlainObject from 'lodash.isplainobject';
 import Config from '../src/config'
 
 describe('config defaults', () => {

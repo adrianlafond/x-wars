@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash'
+import cloneDeep from 'lodash.clonedeep'
 import Config from './config'
 import Game from './game'
 import History from './history'

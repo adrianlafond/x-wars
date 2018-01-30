@@ -31,6 +31,16 @@ Runs `build` in watch mode in response to changes to JavaScript files in the `sr
 ### `npm start`
 Both lints and builds the JavaScript code in parallel, building the module into a single file in `dist`. Does not also run tests because it is easier to read test output in a separate terminal window.
 
+## Command-line demo
+On a UNIX-like system (including Mac), run this once:
+```
+chmod u+x demo/index.js
+```
+Then to play the demo:
+```
+demo/index.js
+```
+
 ## game elements
 - six locations
 - six items to buy/sell

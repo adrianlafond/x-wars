@@ -7,7 +7,8 @@ import DEFAULTS from './defaults.json'
  */
 export default class Config {
   constructor(config) {
-    this.config = assign({}, cloneDeep(DEFAULTS), cloneDeep(config))
+    this.data = cloneDeep(assign({}, DEFAULTS, config))
+    this.data.items.sort((a, b) => b.min - a.min)
   }
 
   get(prop) {
@@ -15,7 +16,7 @@ export default class Config {
       case 'defaults':
         return DEFAULTS
       default:
-        return this.config[prop] || this.config
+        return this.data[prop] || this.data
     }
   }
 

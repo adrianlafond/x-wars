@@ -2,6 +2,7 @@ import cloneDeep from 'lodash.clonedeep'
 import Config from './config'
 import Game from './game'
 import History from './history'
+import Player from './player'
 
 // Internal private data.
 // @see http://2ality.com/2016/01/private-data-classes.html
@@ -22,9 +23,11 @@ export default class XWars {
   }
 
   start() {
-    const history = _history.set(this, new History())
+    const history = new History()
     const config = _config.get(this)
-    const game = new Game(config, history)
+    const player = new Player(config.get('player'))
+    const game = new Game(config, history, player)
+    _history.set(this, history)
     _game.set(this, game)
     return game.start()
   }

@@ -1876,6 +1876,10 @@ var _history2 = __webpack_require__(10);
 
 var _history3 = _interopRequireDefault(_history2);
 
+var _player = __webpack_require__(11);
+
+var _player2 = _interopRequireDefault(_player);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1905,9 +1909,11 @@ var XWars = function () {
   }, {
     key: 'start',
     value: function start() {
-      var history = _history.set(this, new _history3.default());
+      var history = new _history3.default();
       var config = _config.get(this);
-      var game = new _game3.default(config, history);
+      var player = new _player2.default(config.get('player'));
+      var game = new _game3.default(config, history, player);
+      _history.set(this, history);
       _game.set(this, game);
       return game.start();
     }
@@ -2052,7 +2058,10 @@ var Config = function () {
   function Config(config) {
     _classCallCheck(this, Config);
 
-    this.config = (0, _lodash2.default)({}, (0, _lodash4.default)(_defaults2.default), (0, _lodash4.default)(config));
+    this.data = (0, _lodash4.default)((0, _lodash2.default)({}, _defaults2.default, config));
+    this.data.items.sort(function (a, b) {
+      return b.min - a.min;
+    });
   }
 
   _createClass(Config, [{
@@ -2062,7 +2071,7 @@ var Config = function () {
         case 'defaults':
           return _defaults2.default;
         default:
-          return this.config[prop] || this.config;
+          return this.data[prop] || this.data;
       }
     }
   }, {
@@ -2724,7 +2733,7 @@ module.exports = assign;
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = {"player":{"health":100},"locations":[{"name":"Coney Island"},{"name":"Red Hook"},{"name":"Crown Heights"},{"name":"Bedford-Stuyvesant"},{"name":"Bay Ridge"},{"name":"Park Slope"}],"items":[{"name":"Kabooms","min":15000,"max":30000},{"name":"Bangs","min":1500,"max":7500},{"name":"Booms","min":15,"max":150},{"name":"Whams","min":1200,"max":5000},{"name":"Pows","min":3000,"max":10000},{"name":"Splats","min":1800,"max":4000}],"time":30,"pockets":100,"loans":[{"principal":2000,"interest":0.2}],"shark":{"increment":0.5,"damage":25},"weapons":[{"name":"Knife","power":{"min":2,"max":6},"cost":{"min":100,"max":300},"copy":["A hoodlum in an alley offers to sell you a knife. Time to beef up security?"]},{"name":"Gun","power":{"min":8,"max":20},"cost":{"min":2000,"max":5000},"copy":["Show 'em you mean business. Blimpie and the hooligans will think twice before messing with you."]}],"adversary":[{"name":"Blimpie","odds":0.2,"health":45,"damage":5,"success":0.4,"copy":["Blimpie is on your tail!","Blimpie is after you!"],"options":{"fight":{"label":"Fight","success":["Blimpie is dead!"],"fail":["You've hurt Blimpie but he's still after you."]},"run":{"label":"Run","success":["You've lost Blimpie!"],"fail":["Oh no! Blimpie's got you. He'll take everything and let you go in the morning."]},"surrender":{"label":"Surrender","copy":["You've lost everything, but at least you're still alive."]}}},{"name":"Hooligans","odds":0.15,"health":12,"damage":15,"success":0.75,"copy":["Armed hooligans want your stash!","Hooligans have ambushed you!"],"options":{"fight":{"label":"Fight","success":["Wow! You've those hooligans a lesson. They're gone."],"fail":["You gave them a scare but they won't give up that easily."]},"run":{"label":"Run","success":["You've lost the hooligans!"],"fail":["Oh no! The hooligans have taken everything you have and given you quite a beating."]},"surrender":{"label":"Surrender","copy":["You've lost everything, but at least you're still alive."]}}}],"random":{"find":{"enabled":true,"odds":0.1,"max":25000,"copy":["You've found {{number}} {{item}} under a rock!","{{number}} {{item}} just fell out of a tree!"]},"drop":{"enabled":true,"odds":0.2,"min":0.3,"max":0.6,"copy":["A tsunami of {{item}} just crashed ashore. Prices have crashed!"]},"increase":{"enabled":true,"odds":0.2,"min":1.75,"max":2.75,"copy":["All vowels needed to spell {{item}} have fled. Prices have skyrocketed!"]}}}
+module.exports = {"player":{"health":100,"wealth":2000,"weapons":[],"pockets":100,"loans":[{"principal":2000,"interest":0.2}]},"locations":[{"name":"Coney Island"},{"name":"Red Hook"},{"name":"Crown Heights"},{"name":"Bedford-Stuyvesant"},{"name":"Bay Ridge"},{"name":"Park Slope"}],"items":[{"name":"Kabooms","min":15000,"max":30000},{"name":"Bangs","min":1500,"max":7500},{"name":"Booms","min":15,"max":150},{"name":"Whams","min":1200,"max":5000},{"name":"Pows","min":3000,"max":10000},{"name":"Splats","min":1800,"max":4000}],"time":30,"shark":{"increment":0.5,"damage":25},"weapons":[{"name":"Knife","power":{"min":2,"max":6},"cost":{"min":100,"max":300},"copy":["A hoodlum in an alley offers to sell you a knife. Time to beef up security?"],"odds":0.2},{"name":"Gun","power":{"min":8,"max":20},"cost":{"min":2000,"max":5000},"copy":["Show 'em you mean business. Blimpie and the hooligans will think twice before messing with you."],"odds":0.2}],"adversaries":[{"name":"Blimpie","odds":0.2,"health":45,"damage":5,"success":0.4,"copy":["Blimpie is on your tail!","Blimpie is after you!"],"options":{"fight":{"label":"Fight","success":["Blimpie is dead!"],"fail":["You've hurt Blimpie but he's still after you."]},"run":{"label":"Run","success":["You've lost Blimpie!"],"fail":["Oh no! Blimpie's got you. He'll take everything and let you go in the morning."]},"surrender":{"label":"Surrender","copy":["You've lost everything, but at least you're still alive."]}}},{"name":"Hooligans","odds":0.15,"health":12,"damage":15,"success":0.75,"copy":["Armed hooligans want your stash!","Hooligans have ambushed you!"],"options":{"fight":{"label":"Fight","success":["Wow! You've those hooligans a lesson. They're gone."],"fail":["You gave them a scare but they won't give up that easily."]},"run":{"label":"Run","success":["You've lost the hooligans!"],"fail":["Oh no! The hooligans have taken everything you have and given you quite a beating."]},"surrender":{"label":"Surrender","copy":["You've lost everything, but at least you're still alive."]}}}],"random":{"find":{"enabled":true,"odds":0.1,"max":25000,"copy":["You've found {{number}} {{item}} under a rock!","{{number}} {{item}} just fell out of a tree!"]},"drop":{"enabled":true,"odds":0.2,"min":0.3,"max":0.6,"copy":["A tsunami of {{item}} just crashed ashore. Prices have crashed!"]},"increase":{"enabled":true,"odds":0.2,"min":1.75,"max":2.75,"copy":["All vowels needed to spell {{item}} have fled. Prices have skyrocketed!"]}}}
 
 /***/ }),
 /* 8 */
@@ -2751,25 +2760,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * Game is a decision-making engine that takes input and produces output.
  */
 var Game = function () {
-  function Game(config, history) {
+  function Game(config, history, player) {
     _classCallCheck(this, Game);
 
     this.config = config;
     this.history = history;
+    this.player = player;
   }
 
   _createClass(Game, [{
-    key: 'randomPlace',
-    value: function randomPlace() {
-      var locations = this.config.get('locations');
-      var index = Math.floor(Math.random() * locations.length);
-      return locations[index];
-    }
-  }, {
     key: 'start',
     value: function start() {
-      var place = new _place2.default(this.randomPlace());
-      return place.output();
+      this.history.reset();
+      this.history.push(new _place2.default(this.config, this.player));
+      return this.history.current.output();
     }
   }]);
 
@@ -2803,18 +2807,61 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  */
 var Place = function () {
-  function Place(place) {
+  function Place(config, player) {
+    var place = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+    var firstPlace = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
     _classCallCheck(this, Place);
 
-    this.place = place;
+    this.config = config;
+    this.player = player;
+    this.place = place || this.randomPlace();
+    this.items = this.createItems();
+    this.event = firstPlace ? null : this.randomEvent();
   }
 
   _createClass(Place, [{
     key: 'output',
     value: function output() {
-      return {
-        place: (0, _lodash2.default)(this.place)
-      };
+      return (0, _lodash2.default)({
+        place: this.place,
+        items: this.items,
+        player: this.player.data
+      });
+    }
+  }, {
+    key: 'randomPlace',
+    value: function randomPlace() {
+      var locations = this.config.get('locations');
+      var index = Math.floor(Math.random() * locations.length);
+      return locations[index];
+    }
+  }, {
+    key: 'randomEvent',
+    value: function randomEvent() {
+      return null;
+      // return this.randomAdversary()
+    }
+  }, {
+    key: 'randomAdversary',
+    value: function randomAdversary() {
+      var array = this.config.get('adversaries');
+      for (var i = 0; i < array.length; i++) {
+        if (Math.random() <= array[i].odds) {
+          //
+        }
+      }
+      return null;
+    }
+  }, {
+    key: 'createItems',
+    value: function createItems() {
+      return this.config.get('items').map(function (item) {
+        return {
+          name: item.name,
+          price: Math.floor(Math.random() * item.max - item.min + item.min)
+        };
+      });
     }
   }]);
 
@@ -2834,18 +2881,66 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * History is a model of all states of the game, current and past.
  */
-var History = function History() {
-  _classCallCheck(this, History);
+var History = function () {
+  function History() {
+    _classCallCheck(this, History);
 
-  this.data = [];
-};
+    this.reset();
+  }
+
+  _createClass(History, [{
+    key: "reset",
+    value: function reset() {
+      this.data = [];
+    }
+  }, {
+    key: "push",
+    value: function push(place) {
+      this.data.push(place);
+    }
+  }, {
+    key: "current",
+    get: function get() {
+      var len = this.data.length;
+      return len ? this.data[len - 1] : null;
+    }
+  }]);
+
+  return History;
+}();
 
 exports.default = History;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ *
+ */
+var Player = function Player(data) {
+  _classCallCheck(this, Player);
+
+  this.data = data;
+};
+
+exports.default = Player;
 
 /***/ })
 /******/ ]);

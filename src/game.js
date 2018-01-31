@@ -4,19 +4,15 @@ import Place from './place'
  * Game is a decision-making engine that takes input and produces output.
  */
 export default class Game {
-  constructor(config, history) {
+  constructor(config, history, player) {
     this.config = config
     this.history = history
-  }
-
-  randomPlace() {
-    const locations = this.config.get('locations')
-    const index = Math.floor(Math.random() * locations.length)
-    return locations[index]
+    this.player = player
   }
 
   start() {
-    const place = new Place(this.randomPlace())
-    return place.output()
+    this.history.reset()
+    this.history.push(new Place(this.config, this.player))
+    return this.history.current.output()
   }
 }

@@ -1,6 +1,15 @@
 {
   "player": {
-    "health": 100
+    "health": 100,
+    "wealth": 2000,
+    "weapons": [],
+    "pockets": 100,
+    "loans": [
+      {
+        "principal": 2000,
+        "interest": 0.20
+      }
+    ]
   },
   "locations": [
     { "name": "Coney Island" },
@@ -19,10 +28,6 @@
     { "name": "Splats", "min": 1800, "max": 4000 }
   ],
   "time": 30,
-  "pockets": 100,
-  "loans": [
-    { "principal": 2000, "interest": 0.20 }
-  ],
   "shark": {
     "increment": 0.5,
     "damage": 25
@@ -34,7 +39,8 @@
       "cost": { "min": 100, "max": 300 },
       "copy": [
         "A hoodlum in an alley offers to sell you a knife. Time to beef up security?"
-      ]
+      ],
+      "odds": 0.2
     },
     {
       "name": "Gun",
@@ -42,10 +48,11 @@
       "cost": { "min": 2000, "max": 5000 },
       "copy": [
         "Show 'em you mean business. Blimpie and the hooligans will think twice before messing with you."
-      ]
+      ],
+      "odds": 0.2
     }
   ],
-  "adversary": [
+  "adversaries": [
     {
       "name": "Blimpie",
       "odds": 0.2,

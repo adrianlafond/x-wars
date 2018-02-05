@@ -1,4 +1,4 @@
-import inPlainObject from 'lodash.isplainobject';
+import isPlainObject from 'lodash.isplainobject'
 import Config from '../src/config'
 
 describe('config defaults', () => {
@@ -39,13 +39,14 @@ describe('config defaults', () => {
     expect(defaults.time).toBeGreaterThanOrEqual(1)
   })
 
-  test('defaults have at least 1 pocket', () => {
-    expect(defaults.pockets).toBeGreaterThanOrEqual(1)
-  })
+  // TODO: update now that pockets and lods belong to player!
+  // test('defaults have at least 1 pocket', () => {
+  //   expect(defaults.pockets).toBeGreaterThanOrEqual(1)
+  // })
 
-  test('defaults have at least 1 loan', () => {
-    expect(defaults.loans.length).toBeGreaterThanOrEqual(1)
-    expect(defaults.loans[0].principal).toBeGreaterThan(0)
-    expect(defaults.loans[0].interest).toBeGreaterThan(0)
-  })
+  // test('defaults have at least 1 loan', () => {
+  //   expect(defaults.loans.length).toBeGreaterThanOrEqual(1)
+  //   expect(defaults.loans[0].principal).toBeGreaterThan(0)
+  //   expect(defaults.loans[0].interest).toBeGreaterThan(0)
+  // })
 })

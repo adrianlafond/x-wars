@@ -12,7 +12,7 @@ export default class Game {
 
   start() {
     this.history.reset()
-    this.history.push(new Place(this.config, this.player))
+    this.history.add(new Place(this.config, this.player))
     return this.history.current.output()
   }
 }

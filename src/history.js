@@ -8,15 +8,49 @@ export default class History {
   }
 
   reset() {
+    this.index = -1
     this.data = []
+    return this.length
   }
 
-  push(place) {
+  add(place, index) {
     this.data.push(place)
+    this.index = this.data.length - 1
+    return this.length
+  }
+
+  remove(placeOrIndex) {
+    if (typeof placeOrIndex === 'number' && this.data[placeOrIndex]) {
+      // Remove by index.
+      this.data.splice(placeOrIndex, 1)
+    } else {
+      // Remove by specific item.
+      const index = this.data.indexOf(placeOrIndex)
+      if (index !== -1) {
+        this.data.splice(index, 1)
+      }
+    }
+    return this.length
+  }
+
+  go(relative) {
+    this.index = Math.min(this.length - 1, Math.max(0, this.index + relative))
+    return this.current
+  }
+
+  back() {
+    return (this.index > 0) ? this.go(-1) : null
+  }
+
+  forward() {
+    return (this.index < this.length - 1) ? this.go(1) : null
+  }
+
+  get length() {
+    return this.data.length
   }
 
   get current() {
-    const len = this.data.length
-    return len ? this.data[len - 1] : null
+    return this.index === -1 ? null : this.data[this.index];
   }
 }

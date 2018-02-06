@@ -1,3 +1,4 @@
+import isFinite from 'lodash.isfinite'
 
 /**
  * History is a model of all states of the game, current and past.
@@ -34,7 +35,12 @@ export default class History {
   }
 
   go(relative) {
-    this.index = Math.min(this.length - 1, Math.max(0, this.index + relative))
+    this.index = this.constrainedIndex(this.index + relative)
+    return this.current
+  }
+
+  goto(index) {
+    this.index = this.constrainedIndex(index)
     return this.current
   }
 
@@ -46,11 +52,16 @@ export default class History {
     return (this.index < this.length - 1) ? this.go(1) : null
   }
 
+  constrainedIndex(index) {
+    return Math.min(this.length - 1,
+      Math.max(0, isFinite(index) ? Math.floor(index) : this.index))
+  }
+
   get length() {
     return this.data.length
   }
 
   get current() {
-    return this.index === -1 ? null : this.data[this.index];
+    return this.index === -1 ? null : this.data[this.index]
   }
 }

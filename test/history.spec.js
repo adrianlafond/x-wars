@@ -1,7 +1,6 @@
 import History from '../src/history'
 
 describe('history', () => {
-  //
   const history = new History()
   const item = { location: 5 }
 

@@ -1,7 +1,15 @@
 {
   "player": {
-    "health": 100,
-    "wealth": 2000,
+    "health": {
+      "value": 100,
+      "max": 100,
+      "min": 0
+    },
+    "wealth": {
+      "value": 2000,
+      "max": "*",
+      "min": 0
+    },
     "weapons": [],
     "pockets": 100,
     "loans": [

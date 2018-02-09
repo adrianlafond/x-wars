@@ -72,9 +72,9 @@ describe('Player', () => {
   })
 
   // Weapons
-  // it('weapons length must >= 0', () => {
-  //   expect(player.weapons.length).toBeGreaterThanOrEqual(0)
-  // })
+  it('weapons length must >= 0', () => {
+    expect(player.weapons.length).toBeGreaterThanOrEqual(0)
+  })
   it('allows weapons to be added', () => {
     // expect(player.weapons.)
   })

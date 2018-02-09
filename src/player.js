@@ -1,7 +1,9 @@
 import isPlainObject from 'lodash.isplainobject'
 import cloneDeep from 'lodash.clonedeep'
+import Weapons from './Weapons'
 
 const DATA = new WeakMap()
+const WEAPONS = new WeakMap()
 
 /**
  *
@@ -31,6 +33,10 @@ export default class Player {
         data.storage.max
       data.storage.min = Math.min(data.storage.max, data.storage.min)
       this.storage = data.storage.value
+
+      // weapons
+      const weapons = new Weapons(data.weapons)
+      WEAPONS.set(this, weapons)
     } else {
       throw new Error('Player data must be type "object".')
     }

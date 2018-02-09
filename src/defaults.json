@@ -10,8 +10,12 @@
       "max": "*",
       "min": 0
     },
+    "storage": {
+      "value": 100,
+      "max": "*",
+      "min": 0
+    },
     "weapons": [],
-    "pockets": 100,
     "loans": [
       {
         "principal": 2000,

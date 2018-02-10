@@ -3,6 +3,7 @@ import State from '../src/state'
 
 describe('State', () => {
   //
+  DEFAULTS.foo = 'zap'
   const state = new State(DEFAULTS)
 
   it('should create immutable state', () => {
@@ -13,7 +14,7 @@ describe('State', () => {
   })
 
   it('should update the state', () => {
-    expect(state.current.foo).not.toEqual('bar')
+    expect(state.current.foo).toEqual('zap')
     DEFAULTS.foo = 'bar'
     state.update(DEFAULTS)
     expect(state.current.foo).toEqual('bar')
@@ -50,6 +51,15 @@ describe('State', () => {
   })
 
   it('should return null if cannot redo', () => {
+    expect(state.redo()).toBe(null)
+  })
+
+  it('should reset to initial state', () => {
+    expect(state.current.foo).toBe('bar')
+    expect(state.reset().foo).toBe('zap')
+    expect(state.current.foo).toBe('zap')
+    expect(state.canUndo).toBe(false)
+    expect(state.canRedo).toBe(false)
     expect(state.redo()).toBe(null)
   })
 })

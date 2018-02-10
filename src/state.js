@@ -40,6 +40,13 @@ export default class State {
     return null
   }
 
+  reset() {
+    const data = DATA.get(this)
+    data.states = data.states[0] ? [data.states[0]] : []
+    data.index = 0
+    return this.current
+  }
+
   get current() {
     const data = DATA.get(this)
     return data.states[data.index]

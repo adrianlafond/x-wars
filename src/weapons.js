@@ -1,8 +1,6 @@
-
-
 const ITEMS = new WeakMap()
 
-let n = 0;
+let n = 0
 function uid() {
   return n++
 }
@@ -21,7 +19,7 @@ export default class Weapons {
   }
 
   add(item) {
-    //
+    uid()
   }
 
   remove(item) {

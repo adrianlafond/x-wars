@@ -2,7 +2,7 @@ import Player from '../src/player'
 import defaults from '../src/defaults'
 
 describe('Player', () => {
-
+  //
   let player
   let health = defaults.player.health.value
   let wealth = defaults.player.wealth.value
@@ -86,7 +86,7 @@ describe('Player: invalid data', () => {
     expect(() => new Player([])).toThrow()
     expect(() => new Player(() => {})).toThrow()
     expect(() => new Player(null)).toThrow()
-    expect(() => new Player(0/0)).toThrow()
+    expect(() => new Player(0 / 0)).toThrow()
     expect(() => new Player('data')).toThrow()
     expect(() => new Player(13)).toThrow()
     expect(() => new Player({})).toThrow()

@@ -19,18 +19,18 @@ export default class Player {
       this.health = data.health.value
 
       // wealth
-      data.wealth.min = (data.wealth.min === '*') ? Number.MIN_VALUE :
-        data.wealth.min
-      data.wealth.max = (data.wealth.max === '*') ? Number.MAX_VALUE :
-        data.wealth.max
+      data.wealth.min = (data.wealth.min === '*') ? Number.MIN_VALUE
+        : data.wealth.min
+      data.wealth.max = (data.wealth.max === '*') ? Number.MAX_VALUE
+        : data.wealth.max
       data.wealth.min = Math.min(data.wealth.max, data.wealth.min)
       this.wealth = data.wealth.value
 
       // storage
-      data.storage.min = (data.storage.min === '*') ? Number.MIN_VALUE :
-        data.storage.min
-      data.storage.max = (data.storage.max === '*') ? Number.MAX_VALUE :
-        data.storage.max
+      data.storage.min = (data.storage.min === '*') ? Number.MIN_VALUE
+        : data.storage.min
+      data.storage.max = (data.storage.max === '*') ? Number.MAX_VALUE
+        : data.storage.max
       data.storage.min = Math.min(data.storage.max, data.storage.min)
       this.storage = data.storage.value
 
@@ -70,5 +70,9 @@ export default class Player {
     const data = DATA.get(this)
     data.storage.value = Math.max(data.storage.min,
       Math.min(data.storage.max, value))
+  }
+
+  get weapons() {
+    return WEAPONS.get(this)
   }
 }

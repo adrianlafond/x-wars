@@ -16,7 +16,7 @@ describe('State', () => {
   it('should update the state', () => {
     expect(state.current.foo).toEqual('zap')
     DEFAULTS.foo = 'bar'
-    state.update(DEFAULTS)
+    expect(state.update(DEFAULTS)).toEqual(state)
     expect(state.current.foo).toEqual('bar')
   })
 

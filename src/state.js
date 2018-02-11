@@ -1,64 +1,52 @@
 import Immutable from 'seamless-immutable'
 
-const DATA = new WeakMap()
-
 export default class State {
   constructor(initialState) {
-    DATA.set(this, {
-      states: initialState ? [Immutable(initialState)] : [],
-      index: 0,
-    })
+    this.reset(initialState)
   }
 
   updateIndex(index) {
-    const data = DATA.get(this)
-    return Math.max(0, Math.min(data.states.length - 1, index))
+    return Math.max(0, Math.min(this.states.length - 1, index))
   }
 
   update(state) {
-    const data = DATA.get(this)
-    data.states.push(state)
-    data.index = this.updateIndex(data.index + 1)
-    return state
+    this.states.push(state)
+    this.index = this.updateIndex(this.index + 1)
+    return this
   }
 
   undo() {
-    const data = DATA.get(this)
-    if (data.index > 0) {
-      data.index -= 1
+    if (this.index > 0) {
+      this.index -= 1
       return this.current
     }
     return null
   }
 
   redo() {
-    const data = DATA.get(this)
-    if (data.index < data.states.length - 1) {
-      data.index += 1
+    if (this.index < this.states.length - 1) {
+      this.index += 1
       return this.current
     }
     return null
   }
 
-  reset() {
-    const data = DATA.get(this)
-    data.states = data.states[0] ? [data.states[0]] : []
-    data.index = 0
+  reset(state = null) {
+    const initialState = state || this.states[0] || null
+    this.states = initialState ? [Immutable(initialState)] : []
+    this.index = 0
     return this.current
   }
 
   get current() {
-    const data = DATA.get(this)
-    return data.states[data.index]
+    return this.states[this.index]
   }
 
   get canUndo() {
-    const data = DATA.get(this)
-    return data.index > 0
+    return this.index > 0
   }
 
   get canRedo() {
-    const data = DATA.get(this)
-    return data.index < data.states.length - 1
+    return this.index < this.states.length - 1
   }
 }

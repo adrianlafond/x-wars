@@ -1,4 +1,5 @@
 import Immutable from 'seamless-immutable'
+import configure from './configure'
 
 function mergeState(state, index, statesLength) {
   return Immutable.merge(state, {
@@ -43,14 +44,11 @@ export default class State {
   }
 
   reset(state = null) {
-    const initialState = state || this.states[0] || null
-    const immutableState = initialState ? Immutable(initialState).merge({
-      status: {
-        undos: 0,
-        redos: 0,
-      }
-    }) : null
-    this.states = initialState ? [immutableState] : []
+    if (state || !this.states) {
+      this.states = [configure(state)]
+    } else {
+      this.states = this.states.slice(0, 1)
+    }
     this.index = 0
     return this.current
   }

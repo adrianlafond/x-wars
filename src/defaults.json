@@ -1,5 +1,6 @@
 {
   "player": {
+    "location": null,
     "health": {
       "value": 100,
       "max": 100,
@@ -24,20 +25,20 @@
     ]
   },
   "locations": [
-    { "name": "Coney Island" },
-    { "name": "Red Hook" },
-    { "name": "Crown Heights" },
-    { "name": "Bedford-Stuyvesant" },
-    { "name": "Bay Ridge" },
-    { "name": "Park Slope" }
+    { "name": "Mercury" },
+    { "name": "Venus" },
+    { "name": "Mars" },
+    { "name": "Jupiter" },
+    { "name": "Saturn" },
+    { "name": "Uranus" }
   ],
   "items": [
-    { "name": "Kabooms", "min": 15000, "max": 30000 },
-    { "name": "Bangs", "min": 1500, "max": 7500 },
     { "name": "Booms", "min": 15, "max": 150 },
     { "name": "Whams", "min": 1200, "max": 5000 },
+    { "name": "Bangs", "min": 1500, "max": 7500 },
+    { "name": "Splats", "min": 1800, "max": 4000 },
     { "name": "Pows", "min": 3000, "max": 10000 },
-    { "name": "Splats", "min": 1800, "max": 4000 }
+    { "name": "Kabooms", "min": 15000, "max": 30000 }
   ],
   "time": 30,
   "shark": {

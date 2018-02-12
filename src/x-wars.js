@@ -14,12 +14,18 @@ export default class XWars {
   }
 
   reset(config) {
-    STATE.set(this, new State(DEFAULTS, config, { deep: true }))
+    STATE.set(this, new State(config))
     return this
   }
 
   play(...action) {
-    return this.state
+    switch (action[0]) {
+      case 'go':
+        break
+      default:
+        break
+    }
+    return this.options
   }
 
   undo() {
@@ -30,7 +36,15 @@ export default class XWars {
     //
   }
 
-  get state() {
-    return STATE.get(this).current.asMutable({ deep: true })
+  // Returns current options available to user (same as this.play()).
+  get options() {
+    const state = STATE.get(this).current.asMutable({ deep: true })
+    return {
+      player: state.player,
+      go: state.locations.map((data, index) => ({
+        value: index,
+        data,
+      }))
+    }
   }
 }

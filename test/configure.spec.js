@@ -1,18 +1,28 @@
 import isPlainObject from 'lodash.isplainobject'
 import configure from '../src/configure'
+import DEFAULTS from '../src/defaults'
 
-describe('configuration:locations', () => {
+describe('configuration', () => {
 
   const configDefault = configure()
-  const configWeird1 = configure({})
+  const configWeird1 = configure({
+    time: '15.5',
+  })
   const configWeird2 = configure({
-    locations: [{ name: 'Place' }, { a: 'b' }]
+    locations: [{ name: 'Place' }, { a: 'b' }],
+    time: -10,
   })
 
   test('returns default object', () => {
     expect(isPlainObject(configDefault)).toBe(true)
     expect(isPlainObject(configWeird1)).toBe(true)
     expect(isPlainObject(configWeird2)).toBe(true)
+  })
+
+  test('has valid time', () => {
+    expect(configDefault.time).toBe(DEFAULTS.time)
+    expect(configWeird1.time).toBe(15)
+    expect(configWeird2.time).toBe(DEFAULTS.time)
   })
 
   test('has multiple locations', () => {

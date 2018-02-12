@@ -2,6 +2,13 @@ import Immutable from 'seamless-immutable'
 import isPlainObject from 'lodash.isplainobject'
 import DEFAULTS from './defaults.json'
 
+function configureTime(state) {
+  if (isNaN(+state.time) || +state.time < 1) {
+    state.time = DEFAULTS.time
+  }
+  state.time = Math.floor(+state.time)
+}
+
 function configureLocations(state) {
   if (!Array.isArray(state.locations)) {
     state.locations = DEFAULTS.locations
@@ -42,6 +49,7 @@ function configurePlayer(state) {
 export default function configure(state = null) {
   // Ensure state is a plain object.
   state = (state && state.asMutable) ? state.asMutable() : (state || DEFAULTS)
+  configureTime(state)
   configureLocations(state)
   configurePlayer(state)
   return Immutable(state || DEFAULTS)

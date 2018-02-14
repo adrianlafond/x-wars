@@ -40,14 +40,16 @@ describe('XWars:basics', () => {
     })
   })
 
-  test('play() go works to end of time', () => {
+  test('play() "go" works to end of time', () => {
+    let time = DEFAULTS.player.time
     let opts = xwars.play()
-    expect(xwars.play().player.time).toBe(DEFAULTS.player.time)
+    expect(xwars.options.player.time).toBe(time)
     while (opts.commands.length) {
       const go = opts.commands.filter(cmd => cmd.name === 'go')
       const loc = go[Math.floor(Math.random() * go.length)].value
       opts = xwars.play('go', loc)
       expect(opts.player.location).toBe(go[loc].data.name)
+      expect(opts.player.time).toBe(--time)
     }
     expect(xwars.play().player.time).toBe(0)
   })

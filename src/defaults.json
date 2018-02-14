@@ -1,6 +1,7 @@
 {
   "player": {
     "location": null,
+    "time": 30,
     "health": {
       "value": 100,
       "max": 100,
@@ -40,7 +41,6 @@
     { "name": "Pows", "min": 3000, "max": 10000 },
     { "name": "Kabooms", "min": 15000, "max": 30000 }
   ],
-  "time": 30,
   "shark": {
     "increment": 0.5,
     "damage": 25

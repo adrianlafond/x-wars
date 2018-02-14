@@ -1,5 +1,6 @@
 import isPlainObject from 'lodash.isplainobject'
 import XWars from '../src'
+import DEFAULTS from '../src/defaults'
 
 describe('XWars:basics', () => {
   test('sanity', () => {
@@ -26,21 +27,28 @@ describe('XWars:basics', () => {
   test('play() returns valid current location', () => {
     const opts = xwars.play()
     const playerLoc = opts.player.location
-    expect(opts.go[playerLoc.value].data.name).toBe(playerLoc.name)
+    expect(opts.commands[playerLoc.value].data.name).toBe(playerLoc.name)
   })
 
-  test('play() returns valid go options', () => {
-    const opts = xwars.play()
-    expect(Array.isArray(opts.go)).toBe(true)
-    expect(opts.go.length).toBeGreaterThan(1)
-    opts.go.forEach((item, index) => {
-      expect(typeof item.data.name).toBe('string')
-      expect(item.data.name).toBeTruthy()
-      expect(item.value).toBe(index)
+  test('play() returns valid commands', () => {
+    const { commands } = xwars.play()
+    expect(Array.isArray(commands)).toBe(true)
+    expect(commands.length).toBeGreaterThanOrEqual(1)
+    commands.forEach((item, index) => {
+      expect(typeof item.name).toBe('string')
+      expect(item.name).toBeTruthy()
     })
   })
 
-  // test('play', () => {
-  //   expect(xwars.play('a', 'b', 'c')).toEqual('?')
-  // })
+  test('play() go works to end of time', () => {
+    let opts = xwars.play()
+    expect(xwars.play().player.time).toBe(DEFAULTS.player.time)
+    while (opts.commands.length) {
+      const go = opts.commands.filter(cmd => cmd.name === 'go')
+      const loc = go[Math.floor(Math.random() * go.length)].value
+      opts = xwars.play('go', loc)
+      expect(opts.player.location).toBe(go[loc].data.name)
+    }
+    expect(xwars.play().player.time).toBe(0)
+  })
 })

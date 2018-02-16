@@ -20,7 +20,7 @@ export default class XWars {
     return this
   }
 
-  play(...action) {
+  action(...action) {
     const state = STATE.get(this)
     let current = state.current
     switch (action[0]) {

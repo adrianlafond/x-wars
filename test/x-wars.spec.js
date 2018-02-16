@@ -16,22 +16,22 @@ describe('XWars:basics', () => {
     expect(xwars.reset()).toBe(xwars)
   })
 
-  test('`play()` and `options` return identical object', () => {
-    const playObj = xwars.play()
+  test('`action()` and `options` return identical object', () => {
+    const playObj = xwars.action()
     const optsObj = xwars.options
     expect(isPlainObject(playObj)).toBe(true)
     expect(isPlainObject(optsObj)).toBe(true)
     expect(playObj).toEqual(optsObj)
   })
 
-  test('play() returns valid current location', () => {
-    const opts = xwars.play()
+  test('action() returns valid current location', () => {
+    const opts = xwars.action()
     const playerLoc = opts.player.location
     expect(opts.commands[playerLoc.value].data.name).toBe(playerLoc.name)
   })
 
-  test('play() returns valid commands', () => {
-    const { commands } = xwars.play()
+  test('action() returns valid commands', () => {
+    const { commands } = xwars.action()
     expect(Array.isArray(commands)).toBe(true)
     expect(commands.length).toBeGreaterThanOrEqual(1)
     commands.forEach((item, index) => {
@@ -40,17 +40,17 @@ describe('XWars:basics', () => {
     })
   })
 
-  test('play() "go" works to end of time', () => {
+  test('action() "go" works to end of time', () => {
     let time = DEFAULTS.player.time
-    let opts = xwars.play()
+    let opts = xwars.action()
     expect(xwars.options.player.time).toBe(time)
     while (opts.commands.length) {
       const go = opts.commands.filter(cmd => cmd.name === 'go')
       const loc = go[Math.floor(Math.random() * go.length)].value
-      opts = xwars.play('go', loc)
+      opts = xwars.action('go', loc)
       expect(opts.player.location).toBe(go[loc].data.name)
       expect(opts.player.time).toBe(--time)
     }
-    expect(xwars.play().player.time).toBe(0)
+    expect(xwars.action().player.time).toBe(0)
   })
 })

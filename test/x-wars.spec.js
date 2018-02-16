@@ -9,11 +9,27 @@ describe('XWars:basics', () => {
 
   let xwars
   beforeEach(() => {
-    xwars = new XWars()
+    const config = Object.assign({}, DEFAULTS, {
+      adversaries: [],
+      random: [],
+    })
+    xwars = new XWars(config)
   })
 
-  test('reset returns instance (for chaining)', () => {
-    expect(xwars.reset()).toBe(xwars)
+  test('initial action() to return "live"', () => {
+    expect(xwars.action().live).toEqual(true)
+  })
+
+  test('initial action() equals xwars.options', () => {
+    expect(xwars.action()).toEqual(xwars.options)
+  })
+
+  test('action("reset") equals xwars.options', () => {
+    const resetObj = xwars.action('reset')
+    const optsObj = xwars.options
+    expect(isPlainObject(resetObj)).toBe(true)
+    expect(isPlainObject(optsObj)).toBe(true)
+    expect(resetObj).toEqual(optsObj)
   })
 
   test('`action()` and `options` return identical object', () => {
@@ -43,14 +59,79 @@ describe('XWars:basics', () => {
   test('action() "go" works to end of time', () => {
     let time = DEFAULTS.player.time
     let opts = xwars.action()
-    expect(xwars.options.player.time).toBe(time)
-    while (opts.commands.length) {
+    expect(opts.player.time).toBe(time)
+    while (opts.live) {
       const go = opts.commands.filter(cmd => cmd.name === 'go')
       const loc = go[Math.floor(Math.random() * go.length)].value
       opts = xwars.action('go', loc)
+      expect(opts.commands.findIndex(cmd => cmd.name === 'reset')).not.toBe(-1)
       expect(opts.player.location).toBe(go[loc].data.name)
       expect(opts.player.time).toBe(--time)
     }
+    expect(opts.live).toBe(false)
     expect(xwars.action().player.time).toBe(0)
+  })
+
+  test('undo() goes back in time; redo() goes forward', () => {
+    let opts = xwars.options
+    expect(opts.commands.findIndex(c => c.name === 'undo')).toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
+
+    opts = xwars.action('go', 1)
+    expect(opts.player.time).toBe(29)
+    expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
+
+    opts = xwars.action('go', 2)
+    expect(opts.player.time).toBe(28)
+    expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
+
+    opts = xwars.action('go', 3)
+    expect(opts.player.time).toBe(27)
+    expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
+
+    opts = xwars.action('undo')
+    expect(opts.player.time).toBe(28)
+    expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
+
+    opts = xwars.action('undo')
+    expect(opts.player.time).toBe(29)
+    expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
+
+    opts = xwars.action('undo')
+    expect(opts.player.time).toBe(30)
+    expect(opts.commands.findIndex(c => c.name === 'undo')).toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
+
+    // Further undos have no effect.
+    opts = xwars.action('undo')
+    expect(opts.player.time).toBe(30)
+    expect(opts.commands.findIndex(c => c.name === 'undo')).toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
+
+    opts = xwars.action('redo')
+    expect(opts.player.time).toBe(29)
+    expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
+
+    opts = xwars.action('redo')
+    expect(opts.player.time).toBe(28)
+    expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
+
+    opts = xwars.action('redo')
+    expect(opts.player.time).toBe(27)
+    expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
+
+    // Further redos have no effect.
+    opts = xwars.action('redo')
+    expect(opts.player.time).toBe(27)
+    expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
+    expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
   })
 })

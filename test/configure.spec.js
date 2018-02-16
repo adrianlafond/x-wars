@@ -3,7 +3,6 @@ import configure from '../src/configure'
 import DEFAULTS from '../src/defaults'
 
 describe('configuration', () => {
-
   const configDefault = configure()
   const configWeird1 = configure({
     time: '15.5',
@@ -47,8 +46,6 @@ describe('configuration', () => {
     expect(configWeird2.locations[1]).toEqual(configDefault.locations[1])
     expect(configWeird2.locations[2]).toBe(undefined)
   })
-
-
 
   // test('defaults have multiple items', () => {
   //   expect(defaults.items.length).toBeGreaterThan(1)

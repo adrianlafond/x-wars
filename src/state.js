@@ -8,7 +8,7 @@ function mergeState(state, index, statesLength) {
       // not on a null or empty state.
       undos: Math.max(0, index),
       redos: Math.max(0, statesLength - 1 - index),
-    }
+    },
   })
 }
 

@@ -1,5 +1,5 @@
-import Immutable from 'seamless-immutable'
 import State from './state'
+import go from './go'
 
 // Internal private data.
 // @see http://2ality.com/2016/01/private-data-classes.html
@@ -22,13 +22,7 @@ export default class XWars {
       let current = state.current
       switch (action[0]) {
         case 'go':
-          state.update(Immutable.merge(current, {
-            player: {
-              time: current.player.time - 1,
-              location: current.locations[action[1]].name,
-            } }, {
-            deep: true,
-          }))
+          state.update(go(current, action[1]))
           break
         case 'undo':
           state.undo()

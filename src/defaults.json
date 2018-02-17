@@ -21,7 +21,7 @@
     "loans": [
       {
         "principal": 2000,
-        "interest": 0.20
+        "interest": 0.10
       }
     ]
   },

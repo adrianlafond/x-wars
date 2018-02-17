@@ -56,23 +56,34 @@ describe('XWars:basics', () => {
     })
   })
 
-  test('action() "go" works to end of time', () => {
+  test('action() "go" works to end of time; loan accumulates each day', () => {
     let time = DEFAULTS.player.time
     let opts = xwars.action()
+
     expect(opts.player.time).toBe(time)
+    expect(opts.player.loans.length).toBe(1)
+
+    let loan = opts.player.loans[0].principal
+    const interest = opts.player.loans[0].interest
+
     while (opts.live) {
       const go = opts.commands.filter(cmd => cmd.name === 'go')
       const loc = go[Math.floor(Math.random() * go.length)].value
       opts = xwars.action('go', loc)
       expect(opts.commands.findIndex(cmd => cmd.name === 'reset')).not.toBe(-1)
-      expect(opts.player.location).toBe(go[loc].data.name)
+      expect(opts.player.location.name).toBe(go[loc].data.name)
+      expect(opts.player.location.value).toBe(loc)
       expect(opts.player.time).toBe(--time)
+
+      loan += loan * interest
+      expect(opts.player.loans[0].amount).toEqual(loan)
     }
     expect(opts.live).toBe(false)
+    expect(xwars.action().player.time).toBe(time)
     expect(xwars.action().player.time).toBe(0)
   })
 
-  test('undo() goes back in time; redo() goes forward', () => {
+  test('undo() and redo()', () => {
     let opts = xwars.options
     expect(opts.commands.findIndex(c => c.name === 'undo')).toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)

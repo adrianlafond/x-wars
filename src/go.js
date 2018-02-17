@@ -1,20 +1,23 @@
 import Immutable from 'seamless-immutable'
 
-function getTime(time) {
+export function getTime(time) {
   if (isNaN(time) || time <= 0) {
-    return time
+    return 0
   }
   return Math.max(0, Math.floor(time) - 1)
 }
 
-function getLocation(locations, index) {
-  return {
-    name: locations[index].name,
-    value: index,
+export function getLocation(locations, index, currentLocation) {
+  if (locations[index]) {
+    return {
+      name: locations[index].name,
+      value: index,
+    }
   }
+  return currentLocation
 }
 
-function getLoans(loans) {
+export function getLoans(loans) {
   return loans.map(loan => {
     const amount = loan.hasOwnProperty('amount') ? loan.amount :  loan.principal
     return {
@@ -25,10 +28,10 @@ function getLoans(loans) {
   })
 }
 
-function getPlayer(state, locationIndex) {
+export function getPlayer(state, locationIndex) {
   return {
     time: getTime(state.player.time),
-    location: getLocation(state.locations, locationIndex),
+    location: getLocation(state.locations, locationIndex, state.player.location),
     loans: getLoans(state.player.loans),
   }
 }

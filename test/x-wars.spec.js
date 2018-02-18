@@ -17,19 +17,7 @@ describe('XWars:basics', () => {
   })
 
   test('initial action() to return "live"', () => {
-    expect(xwars.action().live).toEqual(true)
-  })
-
-  test('initial action() equals xwars.options', () => {
-    expect(xwars.action()).toEqual(xwars.options)
-  })
-
-  test('action("reset") equals xwars.options', () => {
-    const resetObj = xwars.action('reset')
-    const optsObj = xwars.options
-    expect(isPlainObject(resetObj)).toBe(true)
-    expect(isPlainObject(optsObj)).toBe(true)
-    expect(resetObj).toEqual(optsObj)
+    expect(xwars.action().info.live).toEqual(true)
   })
 
   test('`action()` and `options` return identical object', () => {
@@ -40,10 +28,19 @@ describe('XWars:basics', () => {
     expect(playObj).toEqual(optsObj)
   })
 
+  test('action("reset") equals xwars.options', () => {
+    const resetObj = xwars.action('reset')
+    const optsObj = xwars.options
+    expect(isPlainObject(resetObj)).toBe(true)
+    expect(isPlainObject(optsObj)).toBe(true)
+    expect(resetObj).toEqual(optsObj)
+  })
+
   test('action() returns valid current location', () => {
     const opts = xwars.action()
-    const playerLoc = opts.player.location
-    expect(opts.commands[playerLoc.value].data.name).toBe(playerLoc.name)
+    const location = opts.info.location
+    const command = opts.commands.find(c => c.value === location)
+    expect(command.value).toBe(location)
   })
 
   test('action() returns valid commands', () => {
@@ -56,92 +53,141 @@ describe('XWars:basics', () => {
     })
   })
 
+  test('action() "buy" max', () => {
+    let opts = xwars.options
+    const buy = opts.commands
+      .filter(c => c.name === 'buy')
+      .filter(c => c.max > 0)[0]
+    opts = xwars.action('buy', buy.value, buy.max)
+    expect(opts.info.storage.filled[buy.value]).toEqual(buy.max)
+  })
+
+  test('action() "buy" -100 = buying 0', () => {
+    let opts = xwars.options
+    const buy = opts.commands
+      .filter(c => c.name === 'buy')
+      .filter(c => c.max > 0)[0]
+    opts = xwars.action('buy', buy.value, -100)
+    expect(opts.info.storage.filled[buy.value]).toEqual(0)
+  })
+
+  test('action() "buy" +100 = buying max', () => {
+    let opts = xwars.options
+    const buy = opts.commands
+      .filter(c => c.name === 'buy')
+      .filter(c => c.max > 0)[0]
+    opts = xwars.action('buy', buy.value, buy.max + 100)
+    expect(opts.info.storage.filled[buy.value]).toEqual(buy.max)
+  })
+
+  test('action() "buy" item with max 0 = not possible', () => {
+    let opts = xwars.options
+    const buy = opts.commands
+      .filter(c => c.name === 'buy')
+      .filter(c => c.max === 0)[0]
+    opts = xwars.action('buy', buy.value, 100)
+    expect(opts.info.storage.filled[buy.value]).toEqual(0)
+  })
+
+  test('action() "buy" non-existent item = not possible', () => {
+    let opts = xwars.options
+    opts = xwars.action('buy', 'Non Existent Item', 1)
+    expect(opts.info.storage.filled['Non Existent Item']).toBeUndefined()
+  })
+
   test('action() "go" works to end of time; loan accumulates each day', () => {
     let time = DEFAULTS.player.time
     let opts = xwars.action()
 
-    expect(opts.player.time).toBe(time)
-    expect(opts.player.loans.length).toBe(1)
+    expect(opts.info.time).toBe(time)
+    expect(opts.info.loans.length).toBe(DEFAULTS.player.loans.length)
 
-    let loan = opts.player.loans[0].principal
-    const interest = opts.player.loans[0].interest
+    let loan = opts.info.loans[0].principal
+    const interest = opts.info.loans[0].interest
+    const goLen = DEFAULTS.locations.length
+    const buyLen = DEFAULTS.items.length
 
-    while (opts.live) {
+    while (opts.info.live) {
       const go = opts.commands.filter(cmd => cmd.name === 'go')
       const loc = go[Math.floor(Math.random() * go.length)].value
+      expect(opts.commands.filter(cmd => cmd.name === 'go').length).toBe(goLen)
+      expect(opts.commands.filter(cmd => cmd.name === 'buy').length).toBe(buyLen)
       opts = xwars.action('go', loc)
       expect(opts.commands.findIndex(cmd => cmd.name === 'reset')).not.toBe(-1)
-      expect(opts.player.location.name).toBe(go[loc].data.name)
-      expect(opts.player.location.value).toBe(loc)
-      expect(opts.player.time).toBe(--time)
+      expect(opts.info.location).toBe(loc)
+      expect(opts.info.time).toBe(--time)
 
       loan += loan * interest
-      expect(opts.player.loans[0].amount).toEqual(loan)
+      expect(opts.info.loans[0].amount).toEqual(loan)
     }
-    expect(opts.live).toBe(false)
-    expect(xwars.action().player.time).toBe(time)
-    expect(xwars.action().player.time).toBe(0)
+    expect(opts.info.live).toBe(false)
+    expect(xwars.action().info.time).toBe(time)
+    expect(xwars.action().info.time).toBe(0)
+    expect(opts.commands.filter(cmd => cmd.name === 'go').length).toBe(0)
+    expect(opts.commands.filter(cmd => cmd.name === 'buy').length).toBe(0)
   })
 
   test('undo() and redo()', () => {
+    const go = (opts) => opts.commands.filter(c => c.name === 'go')
+
     let opts = xwars.options
     expect(opts.commands.findIndex(c => c.name === 'undo')).toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
 
-    opts = xwars.action('go', 1)
-    expect(opts.player.time).toBe(29)
+    opts = xwars.action('go', go(opts)[0].value)
+    expect(opts.info.time).toBe(29)
     expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
 
-    opts = xwars.action('go', 2)
-    expect(opts.player.time).toBe(28)
+    opts = xwars.action('go', go(opts)[1].value)
+    expect(opts.info.time).toBe(28)
     expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
 
-    opts = xwars.action('go', 3)
-    expect(opts.player.time).toBe(27)
+    opts = xwars.action('go', go(opts)[2].value)
+    expect(opts.info.time).toBe(27)
     expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
 
     opts = xwars.action('undo')
-    expect(opts.player.time).toBe(28)
+    expect(opts.info.time).toBe(28)
     expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
 
     opts = xwars.action('undo')
-    expect(opts.player.time).toBe(29)
+    expect(opts.info.time).toBe(29)
     expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
 
     opts = xwars.action('undo')
-    expect(opts.player.time).toBe(30)
+    expect(opts.info.time).toBe(30)
     expect(opts.commands.findIndex(c => c.name === 'undo')).toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
 
     // Further undos have no effect.
     opts = xwars.action('undo')
-    expect(opts.player.time).toBe(30)
+    expect(opts.info.time).toBe(30)
     expect(opts.commands.findIndex(c => c.name === 'undo')).toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
 
     opts = xwars.action('redo')
-    expect(opts.player.time).toBe(29)
+    expect(opts.info.time).toBe(29)
     expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
 
     opts = xwars.action('redo')
-    expect(opts.player.time).toBe(28)
+    expect(opts.info.time).toBe(28)
     expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).not.toBe(-1)
 
     opts = xwars.action('redo')
-    expect(opts.player.time).toBe(27)
+    expect(opts.info.time).toBe(27)
     expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
 
     // Further redos have no effect.
     opts = xwars.action('redo')
-    expect(opts.player.time).toBe(27)
+    expect(opts.info.time).toBe(27)
     expect(opts.commands.findIndex(c => c.name === 'undo')).not.toBe(-1)
     expect(opts.commands.findIndex(c => c.name === 'redo')).toBe(-1)
   })

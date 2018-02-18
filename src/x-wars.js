@@ -1,11 +1,17 @@
+import cloneDeep from 'lodash.clonedeep'
 import State from './state'
 import go from './go'
-import options from './options'
+import buy from './buy'
+import getOptions from './options'
 
 // Internal private data.
 // @see http://2ality.com/2016/01/private-data-classes.html
 const STATE = new WeakMap()
-const ACTIONS = new WeakMap()
+const OPTIONS = new WeakMap()
+
+function actionExists(possible, action) {
+  return possible.some((cmd) => cmd.name === action)
+}
 
 /**
  * TODO: Add docs for @param config.
@@ -13,17 +19,24 @@ const ACTIONS = new WeakMap()
 export default class XWars {
   constructor(config) {
     STATE.set(this, new State(config))
-    ACTIONS.set(this, ['reset'])
+    this.updateOptions()
   }
 
   action(...action) {
     const state = STATE.get(this)
-    const actions = ACTIONS.get(this)
-    if (actions.indexOf(actions[0]) !== -1) {
-      let current = state.current
+    const { commands } = OPTIONS.get(this)
+    if (actionExists(commands, action[0])) {
+      const { current } = state
+      const params = { current, commands }
       switch (action[0]) {
         case 'go':
-          state.update(go(current, action[1]))
+          params.location = action[1]
+          state.update(go(params))
+          break
+        case 'buy':
+          params.item = action[1]
+          params.quantity = action[2]
+          state.update(buy(params))
           break
         case 'undo':
           state.undo()
@@ -38,13 +51,18 @@ export default class XWars {
           break
       }
     }
+    this.updateOptions()
     return this.options
   }
 
   // Returns current options available to user (same as this.action()).
   get options() {
-    const result = options(STATE.get(this))
-    ACTIONS.set(this, result.commands.map(command => command.name))
-    return result
+    return cloneDeep(OPTIONS.get(this))
+  }
+
+  updateOptions() {
+    const options = getOptions(STATE.get(this))
+    OPTIONS.set(this, options)
+    return options
   }
 }

@@ -1,42 +1,33 @@
 import Immutable from 'seamless-immutable'
+import assign from 'lodash.assign'
+import { calculateItemPrices } from './configure'
 
-export function getTime(time) {
-  if (isNaN(time) || time <= 0) {
-    return 0
-  }
-  return Math.max(0, Math.floor(time) - 1)
-}
-
-export function getLocation(locations, index, currentLocation) {
-  if (locations[index]) {
-    return {
-      name: locations[index].name,
-      value: index,
-    }
-  }
-  return currentLocation
-}
-
-export function getLoans(loans) {
+export function updateLoans(loans) {
   return loans.map(loan => {
-    const amount = loan.hasOwnProperty('amount') ? loan.amount :  loan.principal
     return {
       principal: loan.principal,
       interest: loan.interest,
-      amount: amount + amount * loan.interest
+      amount: loan.amount + loan.amount * loan.interest
     }
   })
 }
 
-export function getPlayer(state, locationIndex) {
-  return {
-    time: getTime(state.player.time),
-    location: getLocation(state.locations, locationIndex, state.player.location),
-    loans: getLoans(state.player.loans),
+export function locationOk(commands, location) {
+  return commands
+    .filter(c => c.name === 'go')
+    .some(c => c.value === location)
+}
+
+export function updatePlayer(state, commands, location) {
+  return locationOk(commands, location) && {
+    time: state.player.time - 1,
+    location,
+    loans: updateLoans(state.player.loans),
   }
 }
 
-export default function go(state, locationIndex) {
-  const player = getPlayer(state, locationIndex)
-  return Immutable.merge(state, { player }, { deep: true })
+export default function go({ current, commands, location }) {
+  const player = updatePlayer(current, commands, location) || {}
+  const items = calculateItemPrices(current.items)
+  return Immutable.merge(current, { player, items }, { deep: true })
 }

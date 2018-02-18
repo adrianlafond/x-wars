@@ -36,17 +36,31 @@ demo/index.js
 ```
 
 ## game elements
+- time (30 days, 1 day per move)
 - six locations
 - six items to buy/sell
-- time (30 days, 1 day per move)
 - space for items (100) (randomly offered)
+- starter money/loan ($2000)
 - weapons (0 at start) (randomly offered)
-- starter money ($2000)
 - loan sharks
 - vs cops: get arrested, run, fight
 - $ award for killing cop
 - random: muggin, increased drug prices, finding of drugs
 - final score: current amount cash * 2, then number of millions out of 100. So $25,000,000 = 50/100.
+
+## typical game commands
+- reset X
+- go (location; time decrements) X
+- buy (item)
+- sell (item)
+- pay (back loan shark)
+- borrow (from loan shark)
+- deposit (to bank)
+- withdrawal (from bank)
+
+## game commands for special events
+- buy (weapon, storage)
+- surrender/flee/fight (cops, muggers)
 
 ## methods
 - initialize(config)

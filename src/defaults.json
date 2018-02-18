@@ -7,8 +7,13 @@
       "max": 100,
       "min": 0
     },
-    "wealth": {
+    "cash": {
       "value": 2000,
+      "max": "*",
+      "min": 0
+    },
+    "bank": {
+      "value": 0,
       "max": "*",
       "min": 0
     },
@@ -26,20 +31,20 @@
     ]
   },
   "locations": [
-    { "name": "Mercury" },
-    { "name": "Venus" },
-    { "name": "Mars" },
-    { "name": "Jupiter" },
-    { "name": "Saturn" },
-    { "name": "Uranus" }
+    "Mercury",
+    "Venus",
+    "Mars",
+    "Jupiter",
+    "Saturn",
+    "Uranus"
   ],
   "items": [
     { "name": "Booms", "min": 15, "max": 150 },
-    { "name": "Whams", "min": 1200, "max": 5000 },
-    { "name": "Bangs", "min": 1500, "max": 7500 },
-    { "name": "Splats", "min": 1800, "max": 4000 },
-    { "name": "Pows", "min": 3000, "max": 10000 },
-    { "name": "Kabooms", "min": 15000, "max": 30000 }
+    { "name": "Whams", "min": 100, "max": 750 },
+    { "name": "Bangs", "min": 300, "max": 1500 },
+    { "name": "Splats", "min": 800, "max": 3000 },
+    { "name": "Pows", "min": 2000, "max": 10000 },
+    { "name": "Kabooms", "min": 7500, "max": 30000 }
   ],
   "shark": {
     "increment": 0.5,

@@ -1,5 +1,6 @@
 import State from './state'
 import go from './go'
+import options from './options'
 
 // Internal private data.
 // @see http://2ality.com/2016/01/private-data-classes.html
@@ -42,24 +43,8 @@ export default class XWars {
 
   // Returns current options available to user (same as this.action()).
   get options() {
-    const state = STATE.get(this).current.asMutable({ deep: true })
-    const options = {
-      player: state.player,
-      live: state.player.time > 0,
-      commands: state.player.time > 0 ? state.locations.map((data, index) => ({
-        name: 'go',
-        value: index,
-        data,
-      })) : [],
-    }
-    options.commands.push({ name: 'reset' })
-    if (STATE.get(this).index > 0) {
-      options.commands.push({ name: 'undo' })
-    }
-    if (STATE.get(this).index < STATE.get(this).states.length - 1) {
-      options.commands.push({ name: 'redo' })
-    }
-    ACTIONS.set(this, options.commands.map(c => c.name))
-    return options
+    const result = options(STATE.get(this))
+    ACTIONS.set(this, result.commands.map(command => command.name))
+    return result
   }
 }

@@ -15,6 +15,26 @@ function getInfo(current) {
   }
 }
 
+export function getRandomStorageCommand(player, event) {
+  const units = Math.min(player.storage.max,
+    player.storage.value * event.multiply)
+  return {
+    name: 'buy',
+    value: 'storage',
+    price: units * event.cost,
+    units,
+  }
+}
+
+export function getRandomEventCommand(time, events, random, player) {
+  const value = events[time]
+  const event = value && random[value]
+  if (event) {
+    return getRandomStorageCommand(player, event.data)
+  }
+  return null
+}
+
 export default function options(state) {
   const current = state.current
   const options = {

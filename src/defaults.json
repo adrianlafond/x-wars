@@ -147,6 +147,14 @@
     }
   ],
   "random": {
+    "storage": {
+      "enabled": true,
+      "odds": 0.1,
+      "data": {
+        "multiply": 2,
+        "cost": 5
+      }
+    },
     "find": {
       "enabled": true,
       "odds": 0.1,
@@ -156,7 +164,7 @@
         "{{number}} {{item}} just fell out of a tree!"
       ]
     },
-    "drop": {
+    "crash": {
       "enabled": true,
       "odds": 0.2,
       "min": 0.3,
@@ -165,7 +173,7 @@
         "A tsunami of {{item}} just crashed ashore. Prices have crashed!"
       ]
     },
-    "increase": {
+    "scarcity": {
       "enabled": true,
       "odds": 0.2,
       "min": 1.75,

@@ -1,5 +1,4 @@
 import Immutable from 'seamless-immutable'
-import assign from 'lodash.assign'
 import { calculateItemPrices } from './configure'
 
 export function updateLoans(loans) {
@@ -7,7 +6,7 @@ export function updateLoans(loans) {
     return {
       principal: loan.principal,
       interest: loan.interest,
-      amount: loan.amount + loan.amount * loan.interest
+      amount: loan.amount + loan.amount * loan.interest,
     }
   })
 }

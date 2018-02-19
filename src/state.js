@@ -1,17 +1,6 @@
 import Immutable from 'seamless-immutable'
 import configure from './configure'
 
-// function mergeState(state, index, statesLength) {
-//   return Immutable.merge(state, {
-//     status: {
-//       // Not `index - 1` because final undo ends on the initial state,
-//       // not on a null or empty state.
-//       undos: Math.max(0, index),
-//       redos: Math.max(0, statesLength - 1 - index),
-//     },
-//   })
-// }
-
 export default class State {
   constructor(initialState) {
     this.reset(initialState)

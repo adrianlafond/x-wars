@@ -1,10 +1,11 @@
 import isPlainObject from 'lodash.isplainobject'
 import isFinite from 'lodash.isfinite'
 import assign from 'lodash.assign'
+import range from 'lodash.range'
 import DEFAULTS from './defaults.json'
 
 export function configureItems(state) {
-  state.items = calculateItemPrices(state.items || DEFAULTS.items)
+  return calculateItemPrices(state.items || DEFAULTS.items)
 }
 
 export function calculateItemPrices(items) {
@@ -18,7 +19,7 @@ export function calculateItemPrices(items) {
 export function configureTime(time) {
   time = +time
   if (isNaN(time) || time < 1) {
-    time = DEFAULTS.time
+    time = DEFAULTS.player.time
   }
   return Math.floor(time)
 }
@@ -63,8 +64,8 @@ export function configurePlayerLoans(loans) {
 }
 
 export function configurePlayerLocation(playerLoc, locations) {
-  if (playerLoc && typeof playerLoc === 'string'
-      && locations.indexOf(playerLoc) !== -1) {
+  if (playerLoc && typeof playerLoc === 'string' &&
+      locations.indexOf(playerLoc) !== -1) {
     return playerLoc
   }
   const random = Math.floor(Math.random() * locations.length)
@@ -123,6 +124,50 @@ export function configurePlayer(state) {
   p.bank = configurePlayerValueObject(p.bank, DEFAULTS.player.bank)
   p.health = configurePlayerValueObject(p.health, DEFAULTS.player.health)
   p.storage = configurePlayerStorage(p.storage, DEFAULTS)
+  return p
+}
+
+export function configureRandomEvent(event, defaults, time = 30, times = []) {
+  if (!isPlainObject(event)) {
+    event = defaults
+  }
+  if (event.enabled === false) {
+    return { enabled: false }
+  }
+  event.odds = isFinite(+event.odds) ? event.odds : defaults.odds
+  event.odds = Math.max(0, Math.min(1, event.odds))
+  event.times = []
+  const empty = []
+  for (let i = 0; i < time; i++) {
+    if (!times[i]) {
+      empty.push(i)
+    }
+  }
+  let n = Math.min(empty.length, Math.floor(time * event.odds))
+  while (empty.length && n > 0) {
+    const r = Math.floor(Math.random() * empty.length)
+    empty.splice(r, 1)
+    event.times.push(r)
+    --n
+  }
+  return event
+}
+
+export function configureRandomStorage(storage, defaults, time, events) {
+  storage = configureRandomEvent(storage, defaults, time, events)
+  storage.data = assign({}, defaults.data, storage.data)
+  return storage
+}
+
+export function configureRandomEvents(state) {
+  state.random = isPlainObject(state.random) || DEFAULTS.random
+  const events = range(DEFAULTS.player.time).map(x => null)
+  if (isPlainObject(state.random.storage)) {
+    state.random.storage = configureRandomStorage(state.random.storage,
+      DEFAULTS.random.storage, DEFAULTS.player.time, events)
+    state.random.storage.times.forEach(n => (events[n] = 'storage'))
+  }
+  return events
 }
 
 /**
@@ -133,7 +178,8 @@ export default function configure(state = null) {
   state = (state && state.asMutable) ? state.asMutable() : (state || DEFAULTS)
   state.time = configureTime(state.time)
   state.locations = configureLocations(state.locations)
-  configureItems(state)
-  configurePlayer(state)
+  state.items = configureItems(state)
+  state.player = configurePlayer(state)
+  state.events = configureRandomEvents(state)
   return state || DEFAULTS
 }

@@ -51,7 +51,8 @@ demo/index.js
 ## typical game commands
 - reset X
 - go (location; time decrements) X
-- buy (item)
+- buy (item) X
+- buy (storage)
 - sell (item)
 - pay (back loan shark)
 - borrow (from loan shark)

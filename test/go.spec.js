@@ -22,7 +22,7 @@ describe('go', () => {
       { principal: 1000, interest: 0.1 },
       { principal: 2000, interest: 0.2 },
     ]
-    loans.forEach((loan) => loan.amount = loan.principal)
+    loans.forEach((loan) => (loan.amount = loan.principal))
 
     const loans2 = updateLoans(loans)
     // Only update amount; principal and interest stay untouched.

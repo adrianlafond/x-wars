@@ -15,8 +15,8 @@ export default function buy({ current, commands, item, quantity }) {
         value: current.player.storage.value,
         filled: {
           [item]: current.player.storage.filled[item] + quantity,
-        }
-      }
+        },
+      },
     }
     return Immutable.merge(current, { player }, { deep: true })
   }

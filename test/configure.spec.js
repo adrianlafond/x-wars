@@ -1,5 +1,4 @@
 import isPlainObject from 'lodash.isplainobject'
-import isFinite from 'lodash.isfinite'
 import merge from 'lodash.merge'
 import configure, {
   configureTime,
@@ -8,6 +7,8 @@ import configure, {
   configurePlayerLocation,
   configurePlayerValueObject,
   configurePlayerStorage,
+  configureRandomEvent,
+  configureRandomStorage,
 } from '../src/configure'
 import DEFAULTS from '../src/defaults'
 
@@ -147,5 +148,34 @@ describe('configuration', () => {
     expect(fn(-1000, defaults).value).toEqual(0)
     expect(fn(null, defaults).max).toEqual(Number.MAX_VALUE)
     expect(fn(null, defaults).min).toEqual(0)
+  })
+
+  test('random event config', () => {
+    const fn = configureRandomEvent
+    const def = { enabled: true, odds: 0.1 }
+    expect(fn(undefined, def).enabled).toEqual(true)
+    expect(fn(undefined, def).odds).toEqual(0.1)
+    expect(fn({ enabled: false }, def)).toEqual({ enabled: false })
+    expect(fn({ odds: -0.5 }).odds).toBe(0)
+    expect(fn({ odds: 1.5 }).odds).toBe(1)
+    expect(fn({ odds: 0.5 }).odds).toBe(0.5)
+    expect(fn(null, def, 10).times.length).toBe(1)
+    expect(fn(null, def, 10).times[0]).toBeGreaterThanOrEqual(0)
+    expect(fn(null, def, 10).times[0]).toBeLessThan(10)
+    expect(fn({ odds: 0.5 }, def, 10).times.length).toBe(5)
+    expect(fn({ odds: 0.5, enabled: false }, def, 10).times).toBeUndefined()
+    // 4 total times, odds should fill 2, but room for only 1:
+    expect(fn({ odds: 0.5 }, def, 4, [null, 'a', 'b', 'c']).times.length).toBe(1)
+    // 4 total times, odds should fill 4, but no room left:
+    expect(fn({ odds: 1 }, def, 4, ['x', 'a', 'b', 'c']).times.length).toBe(0)
+  })
+
+  test('random "storage" offered at preset times', () => {
+    const fn = configureRandomStorage
+    const def = { data: { multiple: 2, cost: 10 } }
+    expect(fn(undefined, def).data).toEqual(def.data)
+    expect(fn({ data: null }, def).data).toEqual(def.data)
+    expect(fn({ data: { multiple: 1.5, cost: 5 } }, def).data).toEqual(
+      { multiple: 1.5, cost: 5 })
   })
 })

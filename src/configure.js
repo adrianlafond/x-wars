@@ -64,8 +64,8 @@ export function configurePlayerLoans(loans) {
 }
 
 export function configurePlayerLocation(playerLoc, locations) {
-  if (playerLoc && typeof playerLoc === 'string' &&
-      locations.indexOf(playerLoc) !== -1) {
+  if (playerLoc && typeof playerLoc === 'string'
+      && locations.indexOf(playerLoc) !== -1) {
     return playerLoc
   }
   const random = Math.floor(Math.random() * locations.length)

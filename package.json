@@ -7,8 +7,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "build": "webpack",
-    "lint": "eslint src test",
-    "start": "webpack --watch"
+    "lint": "eslint src test demo",
+    "start": "webpack --watch",
+    "demo": "demo/index.js"
   },
   "repository": {
     "type": "git",

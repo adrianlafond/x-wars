@@ -2,11 +2,8 @@
   "extends": "standard",
   "rules": {
     "space-before-function-paren": ["error",
-      {
-      "anonymous": "always",
-      "named": "never"
-      }
-    ],
+       { "anonymous": "always", "named": "never"}],
+    "operator-linebreak": ["error", "before"],
     "comma-dangle": ["error", "always-multiline"],
     "strict": 0,
     "key-spacing": ["off"]

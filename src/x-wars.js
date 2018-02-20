@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash.clonedeep'
 import State from './state'
 import go from './go'
-import buy from './buy'
+import deal from './deal'
 import getOptions from './options'
 
 // Internal private data.
@@ -34,9 +34,10 @@ export default class XWars {
           state.update(go(params))
           break
         case 'buy':
+        case 'sell':
           params.item = action[1]
           params.quantity = action[2]
-          state.update(buy(params))
+          state.update(deal[action[0]](params))
           break
         case 'undo':
           state.undo()

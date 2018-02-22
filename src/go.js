@@ -1,6 +1,10 @@
 import Immutable from 'seamless-immutable'
 import { calculateItemPrices } from './configure'
 
+/*******************************************************************************
+ * `go`: moves to new place, advances time, updates loans, calls random events.
+ ******************************************************************************/
+
 export function updateLoans(loans) {
   return loans.map(loan => {
     return {

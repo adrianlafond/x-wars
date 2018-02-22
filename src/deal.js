@@ -1,6 +1,10 @@
 import Immutable from 'seamless-immutable'
 import assign from 'lodash.assign'
 
+/*******************************************************************************
+ * `buy` and `sell` actions.
+ ******************************************************************************/
+
 export function getItem(name, items) {
   const c = items.filter(item => item.name === name)
   return c.length ? c[0] : null

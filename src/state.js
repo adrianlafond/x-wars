@@ -1,6 +1,10 @@
 import Immutable from 'seamless-immutable'
 import configure from './configure'
 
+/*******************************************************************************
+ * Holds an array of states of the game, enabling access to current states,
+ * undo, and redo.
+ ******************************************************************************/
 export default class State {
   constructor(initialState) {
     this.reset(initialState)

@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Creates `options` available to the user to play.
+ ******************************************************************************/
+
 function getInfo(current) {
   const player = current.player
   return {

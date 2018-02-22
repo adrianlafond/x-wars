@@ -4,6 +4,20 @@ import assign from 'lodash.assign'
 import range from 'lodash.range'
 import DEFAULTS from './defaults.json'
 
+/*******************************************************************************
+ * Ensure initial configuration is valid.
+ ******************************************************************************/
+export default function configure(state = null) {
+  // Ensure state is a plain object.
+  state = (state && state.asMutable) ? state.asMutable() : (state || DEFAULTS)
+  state.time = configureTime(state.time)
+  state.locations = configureLocations(state.locations)
+  state.items = configureItems(state)
+  state.player = configurePlayer(state)
+  state.events = configureRandomEvents(state)
+  return state || DEFAULTS
+}
+
 export function configureItems(state) {
   return calculateItemPrices(state.items || DEFAULTS.items)
 }
@@ -170,16 +184,3 @@ export function configureRandomEvents(state) {
   return events
 }
 
-/**
- * Ensures initial game state is valid.
- */
-export default function configure(state = null) {
-  // Ensure state is a plain object.
-  state = (state && state.asMutable) ? state.asMutable() : (state || DEFAULTS)
-  state.time = configureTime(state.time)
-  state.locations = configureLocations(state.locations)
-  state.items = configureItems(state)
-  state.player = configurePlayer(state)
-  state.events = configureRandomEvents(state)
-  return state || DEFAULTS
-}

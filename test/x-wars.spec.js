@@ -103,23 +103,30 @@ describe('XWars:basics', () => {
     expect(opts.info.loans.length).toBe(DEFAULTS.player.loans.length)
 
     let loan = opts.info.loans[0].principal
+    let loc
     const interest = opts.info.loans[0].interest
     const goLen = DEFAULTS.locations.length
     const buyLen = DEFAULTS.items.length
 
     while (opts.info.live) {
       const go = opts.commands.filter(cmd => cmd.name === 'go')
-      const loc = go[Math.floor(Math.random() * go.length)].value
-      expect(opts.commands.filter(cmd => cmd.name === 'go').length).toBe(goLen)
+      if (go.length) {
+        loc = go[Math.floor(Math.random() * go.length)].value
+        expect(go.length).toBe(goLen)
+        opts = xwars.action('go', loc)
+        expect(opts.info.time).toBe(--time)
+      }
       expect(opts.commands.filter(cmd => cmd.name === 'buy').length).toBe(buyLen)
-      opts = xwars.action('go', loc)
       expect(opts.commands.findIndex(cmd => cmd.name === 'reset')).not.toBe(-1)
       expect(opts.info.location).toBe(loc)
-      expect(opts.info.time).toBe(--time)
-
       loan += loan * interest
       expect(opts.info.loans[0].amount).toEqual(loan)
+      if (opts.commands.some(cmd => cmd.name === 'finish')) {
+        opts = xwars.action('finish')
+        --time
+      }
     }
+
     expect(opts.info.live).toBe(false)
     expect(xwars.action().info.time).toBe(time)
     expect(xwars.action().info.time).toBe(0)

@@ -28,7 +28,7 @@ export function deal({ current, commands, item, quantity, command }) {
       storage: {
         filled: {
           [item]: current.player.storage.filled[item]
-            + (command === 'buy' ? quantity : -quantity)
+            + (command === 'buy' ? quantity : -quantity),
         },
       },
     }
@@ -41,7 +41,7 @@ export function buy(params) {
   return deal(assign(params, { command: 'buy' }))
 }
 
-export function sell({ current, commands, item, quantity }) {
+export function sell(params) {
   return deal(assign(params, { command: 'sell' }))
 }
 

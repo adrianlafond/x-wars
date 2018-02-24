@@ -22,6 +22,20 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        enforce: 'pre',
+        exclude: /(node_modules|\.spec\.js)/,
+        use: [
+          {
+            loader: 'webpack-strip-block',
+            options: {
+              start: 'TEST:START',
+              end: 'TEST:END',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
       },

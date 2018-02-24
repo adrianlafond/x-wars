@@ -1,13 +1,14 @@
 import cloneDeep from 'lodash.clonedeep'
 import State from './state'
-import go from './go'
 import deal from './deal'
-import getOptions from './options'
+import Advance from './advance'
+import Options from './options'
 
 // Internal private data.
 // @see http://2ality.com/2016/01/private-data-classes.html
 const STATE = new WeakMap()
 const OPTIONS = new WeakMap()
+const ADVANCE = new WeakMap()
 
 function actionExists(possible, action) {
   return possible.some((cmd) => cmd.name === action)
@@ -19,6 +20,7 @@ function actionExists(possible, action) {
 export default class XWars {
   constructor(config) {
     STATE.set(this, new State(config))
+    ADVANCE.set(this, new Advance(STATE.get(this)))
     this.updateOptions()
   }
 
@@ -30,8 +32,10 @@ export default class XWars {
       const params = { current, commands }
       switch (action[0]) {
         case 'go':
-          params.location = action[1]
-          state.update(go(params))
+          state.update(ADVANCE.get(this).go(action[1]))
+          break
+        case 'finish':
+          state.update(ADVANCE.get(this).finish())
           break
         case 'buy':
         case 'sell':
@@ -46,7 +50,7 @@ export default class XWars {
           state.redo()
           break
         case 'reset':
-          STATE.set(this, new State(action[1]))
+          STATE.get(this).reset(action[1])
           break
         default:
           break
@@ -62,8 +66,9 @@ export default class XWars {
   }
 
   updateOptions() {
-    const options = getOptions(STATE.get(this))
+    const options = new Options(STATE.get(this)).options
     OPTIONS.set(this, options)
+    ADVANCE.get(this).commands = options.commands
     return options
   }
 }

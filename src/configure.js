@@ -183,4 +183,3 @@ export function configureRandomEvents(state) {
   }
   return events
 }
-

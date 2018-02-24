@@ -9,6 +9,7 @@ import configure, {
   configurePlayerStorage,
   configureRandomEvent,
   configureRandomStorage,
+  configureScore,
 } from '../src/configure'
 import DEFAULTS from '../src/defaults'
 

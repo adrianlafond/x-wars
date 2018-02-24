@@ -4,12 +4,11 @@ const XWars = require('../dist/x-wars').default
 
 // const args = process.argv.slice(2)
 let game
-let rl
 
-function error(msg) {
-  process.stdout.write(msg || 'An error occurred.')
-  process.exit(1)
-}
+// function error(msg) {
+//   process.stdout.write(msg || 'An error occurred.')
+//   process.exit(1)
+// }
 
 function quit(msg) {
   if (msg) {
@@ -35,7 +34,7 @@ function submitInput(input = '') {
 }
 
 function init() {
-  game = new XWars()
+  game = new XWars({ player: { time: 2 } })
   process.stdin.setEncoding('utf-8')
   process.stdin.on('data', submitInput)
 }

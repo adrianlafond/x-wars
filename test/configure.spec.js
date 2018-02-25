@@ -3,13 +3,12 @@ import merge from 'lodash.merge'
 import configure, {
   configureTime,
   configureLocations,
-  configurePlayerLoans,
+  configurePlayerLoan,
   configurePlayerLocation,
   configurePlayerValueObject,
   configurePlayerStorage,
   configureRandomEvent,
   configureRandomStorage,
-  configureScore,
 } from '../src/configure'
 import DEFAULTS from '../src/defaults'
 
@@ -46,21 +45,26 @@ describe('configuration', () => {
     ])
   })
 
-  test('loans have valid principal, interest, amount', () => {
-    expect(configurePlayerLoans()).toEqual(DEFAULTS.player.loans)
-    expect(configurePlayerLoans([])).toEqual([])
-    expect(configurePlayerLoans([{ principal: -1000 }])).toEqual([])
-    expect(configurePlayerLoans([{ principal: 0 }])).toEqual([])
-    expect(configurePlayerLoans([{ amount: 1000 }])).toEqual([])
-    expect(configurePlayerLoans([{ principal: 1000, interest: -1 }])).toEqual([
-      { principal: 1000, interest: 0, amount: 1000 },
-    ])
+  test('loan has valid principal, interest, amount', () => {
+    const defLoan = DEFAULTS.player.loan
+    const nullLoan = { principal: 0, interest: 0, amount: 0 }
+    expect(configurePlayerLoan()).toEqual(defLoan)
+    expect(configurePlayerLoan({ principal: -1000 })).toEqual({
+      principal: 0, interest: defLoan.interest, amount: 0,
+    })
+    expect(configurePlayerLoan({ principal: 0 })).toEqual({
+      principal: 0, interest: defLoan.interest, amount: 0,
+    })
+    expect(configurePlayerLoan({ amount: 1000 })).toEqual(defLoan)
+    expect(configurePlayerLoan({ principal: 1000, interest: -1 })).toEqual({
+      principal: 1000, interest: 0, amount: 1000,
+    })
     // `amount` always starts equal to `principal`:
-    expect(configurePlayerLoans([
-      { principal: 1000, interest: 0.1, amount: 2000 },
-    ])).toEqual([
-      { principal: 1000, interest: 0.1, amount: 1000 },
-    ])
+    expect(configurePlayerLoan({
+      principal: 1000, interest: 0.1, amount: 2000,
+    })).toEqual({
+      principal: 1000, interest: 0.1, amount: 1000,
+    })
   })
 
   test('player has a valid location', () => {
@@ -78,7 +82,7 @@ describe('configuration', () => {
     expect(test4).not.toBe(-1)
   })
 
-  // player $ (cash, bank, storage, health, etc)'
+  // player $ (money, storage, health, etc)'
   function testValueObject(defaults) {
     const fn = configurePlayerValueObject
     const outputDefaults = {
@@ -102,12 +106,8 @@ describe('configuration', () => {
       .toEqual(0)
   }
 
-  test('player cash', () => {
-    testValueObject(DEFAULTS.player.cash)
-  })
-
-  test('player bank', () => {
-    testValueObject(DEFAULTS.player.bank)
+  test('player money', () => {
+    testValueObject(DEFAULTS.player.money)
   })
 
   test('player health', () => {

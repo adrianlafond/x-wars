@@ -22,8 +22,8 @@ export function deal({ current, commands, item, quantity, command }) {
     quantity = Math.floor(Math.max(0, Math.min(cmdObj.max, quantity)))
     const price = itemObj.price * quantity
     const player = {
-      cash: {
-        value: current.player.cash.value + (command === 'buy' ? -price : price),
+      money: {
+        value: current.player.money.value + (command === 'buy' ? -price : price),
       },
       storage: {
         filled: {

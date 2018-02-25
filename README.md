@@ -49,20 +49,21 @@ demo/index.js
 - final score: current amount cash * 2, then number of millions out of 100. So $25,000,000 = 50/100.
 
 ## typical game commands
-- reset X
-- go (location; time decrements) X
-- buy (item) X
-- buy (storage)
-- sell (item)
+- X reset
+- X go (location; time decrements)
+- X buy (item)
+- X sell (item)
 - pay (back loan shark)
 - borrow (from loan shark)
-- deposit (to bank)
-- withdrawal (from bank)
-- finish (time out)
+- X finish (time out)
 
 ## game commands for special events
 - buy (weapon, storage)
 - surrender/flee/fight (cops, muggers)
+
+## possible future game commands
+- deposit (to bank)
+- withdrawal (from bank)
 
 ## properties
 - data (private) / or just use [WeakMap](http://2ality.com/2016/01/private-data-classes.html)

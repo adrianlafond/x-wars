@@ -1,6 +1,7 @@
 import cloneDeep from 'lodash.clonedeep'
 import State from './state'
 import deal from './deal'
+import { pay, borrow } from './loan'
 import Advance from './advance'
 import Options from './options'
 
@@ -42,6 +43,15 @@ export default class XWars {
           params.item = action[1]
           params.quantity = action[2]
           state.update(deal[action[0]](params))
+          break
+        case 'pay':
+          params.value = action[1]
+          state.update(pay(params))
+          break
+        case 'borrow':
+          params.value = +action[1]
+          params.interest = +action[2]
+          state.update(borrow(params))
           break
         case 'undo':
           state.undo()

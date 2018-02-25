@@ -55,6 +55,7 @@
   "dependencies": {
     "lodash.assign": "^4.2.0",
     "lodash.clonedeep": "^4.5.0",
+    "lodash.find": "^4.6.0",
     "lodash.isfinite": "^3.3.2",
     "lodash.isplainobject": "^4.0.6",
     "lodash.merge": "^4.6.1",

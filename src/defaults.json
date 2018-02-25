@@ -7,13 +7,8 @@
       "max": 100,
       "min": 0
     },
-    "cash": {
+    "money": {
       "value": 2000,
-      "max": "*",
-      "min": 0
-    },
-    "bank": {
-      "value": 0,
       "max": "*",
       "min": 0
     },
@@ -23,12 +18,10 @@
       "min": 0
     },
     "weapons": [],
-    "loans": [
-      {
-        "principal": 2000,
-        "interest": 0.10
-      }
-    ]
+    "loan": {
+      "principal": 2000,
+      "interest": 0.1
+    }
   },
   "locations": [
     "Mercury",
@@ -46,10 +39,6 @@
     { "name": "Pows", "min": 2000, "max": 10000 },
     { "name": "Kabooms", "min": 7500, "max": 30000 }
   ],
-  "shark": {
-    "increment": 0.5,
-    "damage": 25
-  },
   "weapons": [
     {
       "name": "Knife",

@@ -63,18 +63,13 @@ export function configureLocations(locations) {
   return locations
 }
 
-export function configurePlayerLoans(loans) {
-  loans = Array.isArray(loans) ? loans : DEFAULTS.player.loans
-  loans.forEach(loan => {
-    if (!isFinite(loan.principal) || loan.principal < 0) {
-      loan.principal = 0
-    }
-    if (!isFinite(loan.interest) || loan.interest < 0) {
-      loan.interest = 0
-    }
-    loan.amount = loan.principal
-  })
-  return loans.filter(loan => loan.amount > 0)
+export function configurePlayerLoan(loan = {}, defaultLoan = DEFAULTS.player.loan) {
+  loan.principal = isFinite(loan.principal)
+    ? Math.max(0, loan.principal) : defaultLoan.principal
+  loan.interest = isFinite(loan.interest)
+    ? Math.max(0, loan.interest) : defaultLoan.interest
+  loan.amount = loan.principal
+  return loan
 }
 
 export function configurePlayerLocation(playerLoc, locations) {
@@ -132,10 +127,9 @@ export function configurePlayerStorage(storage, defaults) {
 
 export function configurePlayer(state) {
   const p = state.player = isPlainObject(state.player) ? state.player : {}
-  p.loans = configurePlayerLoans(p.loans)
+  p.loan = configurePlayerLoan(p.loan)
   p.location = configurePlayerLocation(p.location, state.locations)
-  p.cash = configurePlayerValueObject(p.cash, DEFAULTS.player.cash)
-  p.bank = configurePlayerValueObject(p.bank, DEFAULTS.player.bank)
+  p.money = configurePlayerValueObject(p.money, DEFAULTS.player.money)
   p.health = configurePlayerValueObject(p.health, DEFAULTS.player.health)
   p.storage = configurePlayerStorage(p.storage, DEFAULTS)
   return p

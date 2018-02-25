@@ -1,4 +1,5 @@
 import Immutable from 'seamless-immutable'
+import find from 'lodash.find'
 import { calculateItemPrices } from './configure'
 
 /*******************************************************************************
@@ -23,27 +24,20 @@ export default class Advance {
   }
 
   isLocationOk(location) {
-    return this.commands
-      .filter(c => c.name === 'go')
-      .some(c => c.value === location)
+    return !!find(this.commands, { name: 'go', value: location })
   }
 
   updatePlayer(location) {
     return {
       location,
       time: this.state.current.player.time - 1,
-      loans: this.updateLoans(),
+      loan: this.updateLoan(),
     }
   }
 
-  updateLoans() {
-    const { loans } = this.state.current.player
-    return loans.map(loan => {
-      return {
-        principal: loan.principal,
-        interest: loan.interest,
-        amount: loan.amount + loan.amount * loan.interest,
-      }
-    })
+  updateLoan() {
+    const loan = this.state.current.player.loan.asMutable()
+    loan.amount += loan.amount * loan.interest
+    return loan
   }
 }

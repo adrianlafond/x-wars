@@ -2,26 +2,24 @@
   "player": {
     "location": null,
     "time": 30,
-    "health": {
-      "value": 100,
-      "max": 100,
-      "min": 0
-    },
-    "money": {
-      "value": 2000,
-      "max": "*",
-      "min": 0
-    },
+    "health": 100,
+    "money": 2000,
     "storage": {
       "value": 100,
-      "max": "*",
-      "min": 0
+      "filled": {
+        "Booms": 0,
+        "Whams": 0,
+        "Bangs": 0,
+        "Splats": 0,
+        "Pows": 0,
+        "Kabooms": 0
+      }
     },
-    "weapons": [],
     "loan": {
       "principal": 2000,
       "interest": 0.1
-    }
+    },
+    "weapons": []
   },
   "locations": [
     "Mercury",
@@ -39,27 +37,7 @@
     { "name": "Pows", "min": 2000, "max": 10000 },
     { "name": "Kabooms", "min": 7500, "max": 30000 }
   ],
-  "weapons": [
-    {
-      "name": "Knife",
-      "power": { "min": 2, "max": 6 },
-      "cost": { "min": 100, "max": 300 },
-      "copy": [
-        "A hoodlum in an alley offers to sell you a knife. Time to beef up security?"
-      ],
-      "odds": 0.2
-    },
-    {
-      "name": "Gun",
-      "power": { "min": 8, "max": 20 },
-      "cost": { "min": 2000, "max": 5000 },
-      "copy": [
-        "Show 'em you mean business. Blimpie and the hooligans will think twice before messing with you."
-      ],
-      "odds": 0.2
-    }
-  ],
-  "adversaries": [
+  "enemies": [
     {
       "name": "Blimpie",
       "odds": 0.2,

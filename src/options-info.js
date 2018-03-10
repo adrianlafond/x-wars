@@ -11,8 +11,8 @@ export default class OptionsInfo {
       time: player.time,
       location: player.location,
       loan: player.loan.asMutable({ deep: true }),
-      money: player.money.value,
-      health: player.health.value,
+      money: player.money,
+      health: player.health,
       storage: this.getInfoStorage(player),
       score: this.getScore(player),
     }
@@ -28,7 +28,7 @@ export default class OptionsInfo {
   // Score = $ * 2 / million, floored out of 100.
   // Example: $25,005,001 = 50,010,002 / 100,000,000 = 50/100.
   getScore(player) {
-    const millions = player.money.value * 2 / 1000000
+    const millions = player.money * 2 / 1000000
     return Math.min(100, Math.floor(millions))
   }
 }

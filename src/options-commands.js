@@ -36,9 +36,10 @@ export default class OptionsCommands {
   }
 
   getItemCommands() {
+    const filled = this.getStorageFilled()
     return this.state.current.items.reduce((commands, item) => {
       const cmd = this.getSingleItemCommand(item)
-      const buy = { name: 'buy', max: this.getItemMaxBuy(item) }
+      const buy = { name: 'buy', max: this.getItemMaxBuy(item, filled) }
       const sell = { name: 'sell', max: this.getItemMaxSell(item) }
       commands.push(assign({}, cmd, buy))
       commands.push(assign({}, cmd, sell))
@@ -50,11 +51,17 @@ export default class OptionsCommands {
     return { value: item.name, price: item.price }
   }
 
-  getItemMaxBuy(item) {
+  getItemMaxBuy(item, filled) {
     const player = this.state.current.player
-    const avail = player.storage.max - player.storage.value
-    return Math.min(avail,
-      Math.floor(this.state.current.player.money.value / item.price))
+    const avail = player.storage.value - filled
+    return Math.min(avail, Math.floor(player.money / item.price))
+  }
+
+  getStorageFilled() {
+    const storage = this.state.current.player.storage
+    return Object.keys(storage.filled).reduce((sum, item) => {
+      return sum + storage.filled[item]
+    }, 0)
   }
 
   getItemMaxSell(item) {
@@ -66,7 +73,7 @@ export default class OptionsCommands {
     const commands = [
       {
         name: 'pay',
-        max: Math.min(loan.amount, money.value),
+        max: Math.min(loan.amount, money),
       },
       { name: 'borrow' },
     ]

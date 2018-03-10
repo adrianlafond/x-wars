@@ -22,6 +22,7 @@ export default class XWars {
   constructor(config) {
     STATE.set(this, new State(config))
     ADVANCE.set(this, new Advance(STATE.get(this)))
+    // STATE.get(this).update(ADVANCE.get(this).go())
     this.updateOptions()
   }
 

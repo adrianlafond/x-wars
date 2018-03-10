@@ -1,5 +1,5 @@
 import Immutable from 'seamless-immutable'
-import configure from './configure'
+import Configuration from './configuration'
 
 /*******************************************************************************
  * Holds an array of states of the game, enabling access to current states,
@@ -36,7 +36,7 @@ export default class State {
 
   reset(state = null) {
     if (state || !this.states) {
-      this.states = [Immutable(configure(state))]
+      this.states = [Immutable(new Configuration(state).data)]
     } else {
       this.states = this.states.slice(0, 1)
     }

@@ -48,6 +48,6 @@ describe('options.info', () => {
     const borrow = getCommandsByName(commands, 'borrow')[0]
     expect(getCommandsByName(commands, 'pay').length).toBe(1)
     expect(getCommandsByName(commands, 'borrow').length).toBe(1)
-    expect(pay.max).toBe(Math.min(money.value, loan.amount))
+    expect(pay.max).toBe(Math.min(money, loan.amount))
   })
 })

@@ -1,6 +1,6 @@
 import Immutable from 'seamless-immutable'
 import find from 'lodash.find'
-import { calculateItemPrices } from './configure'
+import { getItemPrice } from './configuration/items'
 
 /*******************************************************************************
  * Advance place, time, loans, random events. Also finishes the game.
@@ -13,7 +13,9 @@ export default class Advance {
 
   go(location) {
     const player = this.isLocationOk(location) ? this.updatePlayer(location) : {}
-    const items = calculateItemPrices(this.state.current.items)
+    const items = this.state.current.items.map(item => {
+      return Immutable.merge(item, { price: getItemPrice(item) })
+    })
     return Immutable.merge(this.state.current, { player, items },
       { deep: true })
   }

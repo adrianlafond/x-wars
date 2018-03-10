@@ -53,8 +53,8 @@ demo/index.js
 - X go (location; time decrements)
 - X buy (item)
 - X sell (item)
-- pay (back loan shark)
-- borrow (from loan shark)
+- X pay (back loan shark)
+- X borrow (from loan shark)
 - X finish (time out)
 
 ## game commands for special events

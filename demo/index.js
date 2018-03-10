@@ -34,7 +34,7 @@ function submitInput(input = '') {
 }
 
 function init() {
-  game = new XWars({ player: { time: 2 } })
+  game = new XWars()// { player: { time: 2 } })
   process.stdin.setEncoding('utf-8')
   process.stdin.on('data', submitInput)
 }

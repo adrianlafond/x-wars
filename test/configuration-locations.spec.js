@@ -2,7 +2,6 @@ import Locations from '../src/configuration/locations'
 import DEFAULTS from '../src/defaults'
 
 describe('Configuration/Locations', () => {
-
   function loc(locations) {
     return new Locations({ locations }).data
   }

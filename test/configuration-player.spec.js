@@ -2,7 +2,6 @@ import Player from '../src/configuration/player'
 import DEFAULTS from '../src/defaults'
 
 describe('Configuration/Player', () => {
-
   function pd(mergeObj, rootObj = {}) {
     const player = Object.assign({}, DEFAULTS.player, mergeObj)
     return new Player(Object.assign({}, DEFAULTS, { player }, rootObj)).data

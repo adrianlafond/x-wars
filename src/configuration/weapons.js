@@ -1,6 +1,5 @@
 import isPlainObject from 'lodash.isplainobject'
 import isFinite from 'lodash.isfinite'
-import DEFAULTS from '../defaults.json'
 
 export default class Weapons {
   constructor(config = {}) {

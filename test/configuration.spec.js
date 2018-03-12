@@ -1,6 +1,5 @@
 import Immutable from 'seamless-immutable'
 import Configuration from '../src/configuration'
-import DEFAULTS from '../src/defaults'
 
 describe('Configuration.original', () => {
   test('stores original config', () => {
@@ -11,7 +10,6 @@ describe('Configuration.original', () => {
 })
 
 describe('Configuration', () => {
-
   let config
   beforeEach(() => {
     config = new Configuration()

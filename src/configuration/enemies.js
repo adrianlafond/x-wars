@@ -1,4 +1,4 @@
-import DEFAULTS from '../defaults.json'
+// import DEFAULTS from '../defaults.json'
 
 export default class Enemies {
   constructor(config = {}) {

@@ -113,15 +113,19 @@
       }
     }
   ],
-  "random": {
-    "storage": {
+  "random": [
+    {
+      "name": "storage",
       "enabled": true,
-      "odds": 0.1,
-      "data": {
-        "multiply": 2,
-        "cost": 5
-      }
-    },
+      "odds": 0.25,
+      "offers": [
+        { "pockets": 150, "cost": 500 },
+        { "pockets": 250, "cost": 2000 },
+        { "pockets": 400, "cost": 10000 }
+      ]
+    }
+  ],
+  "temp": {
     "find": {
       "enabled": true,
       "odds": 0.1,
@@ -131,13 +135,13 @@
         "{{number}} {{item}} just fell out of a tree!"
       ]
     },
-    "crash": {
+    "abundance": {
       "enabled": true,
       "odds": 0.2,
       "min": 0.3,
       "max": 0.6,
       "copy": [
-        "A tsunami of {{item}} just crashed ashore. Prices have crashed!"
+        "A tsunami of {{item}} just washed ashore. Prices have crashed!"
       ]
     },
     "scarcity": {

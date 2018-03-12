@@ -45,7 +45,7 @@ describe('options.info', () => {
   test('loan commands', () => {
     const { loan, money } = state.current.player
     const pay = getCommandsByName(commands, 'pay')[0]
-    const borrow = getCommandsByName(commands, 'borrow')[0]
+    // const borrow = getCommandsByName(commands, 'borrow')[0]
     expect(getCommandsByName(commands, 'pay').length).toBe(1)
     expect(getCommandsByName(commands, 'borrow').length).toBe(1)
     expect(pay.max).toBe(Math.min(money, loan.amount))

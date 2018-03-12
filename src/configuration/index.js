@@ -6,6 +6,7 @@ import Player from './player'
 import Locations from './locations'
 import Items from './items'
 import Weapons from './weapons'
+import Random from './random'
 
 export default class Configuration {
   constructor(config) {
@@ -14,6 +15,7 @@ export default class Configuration {
     this.data.locations = new Locations(this.data).data
     this.data.items = new Items(this.data).data
     this.data.weapons = new Weapons(this.data).data
+    this.data.random = new Random(this.data).data
     this.data.player = new Player(this.data).data
   }
 }

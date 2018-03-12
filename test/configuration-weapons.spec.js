@@ -1,8 +1,6 @@
 import Weapons from '../src/configuration/weapons'
-import DEFAULTS from '../src/defaults'
 
 describe('Configuration/Weapons', () => {
-
   function w(weapons) {
     return new Weapons({ weapons }).data
   }

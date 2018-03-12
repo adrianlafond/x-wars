@@ -1,8 +1,7 @@
 import Items from '../src/configuration/items'
 import DEFAULTS from '../src/defaults'
 
-describe('Configuration/Locations', () => {
-
+describe('Configuration/Items', () => {
   function getItems(items) {
     return new Items({ items }).data
   }

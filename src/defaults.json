@@ -123,6 +123,15 @@
         { "pockets": 250, "cost": 2000 },
         { "pockets": 400, "cost": 10000 }
       ]
+    },
+    {
+      "name": "find",
+      "enabled": true,
+      "odds": 0.1,
+      "minLowPriced": 10,
+      "maxLowPriced": 100,
+      "minHighPriced": 5,
+      "maxHighPriced": 20
     }
   ],
   "temp": {

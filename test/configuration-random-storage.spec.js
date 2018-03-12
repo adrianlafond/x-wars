@@ -21,7 +21,7 @@ describe('Configuration/Random/Storage', () => {
   }
 
   function instance(config) {
-    return new Storage(config).data
+    return new Storage(config).getData()
   }
 
   test('default', () => {

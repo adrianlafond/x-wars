@@ -113,54 +113,44 @@
       }
     }
   ],
-  "random": [
-    {
-      "name": "storage",
+  "random": {
+    "storage": {
       "enabled": true,
       "odds": 0.25,
       "offers": [
-        { "pockets": 150, "cost": 500 },
-        { "pockets": 250, "cost": 2000 },
-        { "pockets": 400, "cost": 10000 }
+        {
+          "pockets": 150,
+          "cost": 500
+        },
+        {
+          "pockets": 250,
+          "cost": 2000
+        },
+        {
+          "pockets": 400,
+          "cost": 10000
+        }
       ]
     },
-    {
-      "name": "find",
+    "find": {
       "enabled": true,
       "odds": 0.1,
       "minLowPriced": 10,
       "maxLowPriced": 100,
       "minHighPriced": 5,
       "maxHighPriced": 20
-    }
-  ],
-  "temp": {
-    "find": {
-      "enabled": true,
-      "odds": 0.1,
-      "max": 25000,
-      "copy": [
-        "You've found {{number}} {{item}} under a rock!",
-        "{{number}} {{item}} just fell out of a tree!"
-      ]
     },
-    "abundance": {
+    "surplus": {
       "enabled": true,
       "odds": 0.2,
-      "min": 0.3,
-      "max": 0.6,
-      "copy": [
-        "A tsunami of {{item}} just washed ashore. Prices have crashed!"
-      ]
+      "min": 0.5,
+      "max": 0.1
     },
-    "scarcity": {
+    "shortage": {
       "enabled": true,
       "odds": 0.2,
-      "min": 1.75,
-      "max": 2.75,
-      "copy": [
-        "All vowels needed to spell {{item}} have fled. Prices have skyrocketed!"
-      ]
+      "min": 2.0,
+      "max": 5.0
     }
   }
 }

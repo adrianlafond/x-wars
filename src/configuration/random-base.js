@@ -9,14 +9,13 @@ export default class RandomBase {
   }
 
   getData() {
-    if (!isPlainObject(this.config) || this.config.name !== this.name) {
+    if (!isPlainObject(this.config)) {
       return this.getDefault()
     }
     if (this.config.enabled === false) {
       return this.getBase(false)
     }
     const base = assign(this.getBase(), { odds: this.getOdds() })
-
     return this.getSpecificData(base)
   }
 
@@ -25,14 +24,11 @@ export default class RandomBase {
   }
 
   getBase(enabled = true) {
-    return { name: this.name, enabled }
+    return { enabled }
   }
 
   getDefault() {
-    if (!this.defaults) {
-      this.defaults = DEFAULTS.random.find(item => item.name === this.name)
-    }
-    return this.defaults
+    return (this.defaults = this.defaults || DEFAULTS.random[this.name])
   }
 
   getOdds() {

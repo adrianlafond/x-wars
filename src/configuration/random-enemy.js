@@ -1,12 +1,11 @@
 import assign from 'lodash.assign'
-import isFinite from 'lodash.isfinite'
 import RandomBase from './random-base'
 
-export default class RandomSupply extends RandomBase {
+export default class RandomEnemy extends RandomBase {
   getSpecificData(base) {
     return assign(base, {
-      min: this.validate('min'),
-      max: this.validate('max'),
+      health: this.validate('health'),
+      damage: this.validate('damage'),
     })
   }
 

@@ -1,6 +1,11 @@
 import cloneDeep from 'lodash.clonedeep'
 import Storage from '../src/configuration/random-storage'
 import Find from '../src/configuration/random-find'
+import Surplus from '../src/configuration/random-surplus'
+import Shortage from '../src/configuration/random-shortage'
+import Police from '../src/configuration/random-police'
+import Mugging from '../src/configuration/random-mugging'
+import Rival from '../src/configuration/random-rival'
 import DEFAULTS from '../src/defaults'
 
 describe('Configuration/Random/Base', () => {
@@ -8,6 +13,11 @@ describe('Configuration/Random/Base', () => {
   const Events = [
     { name: 'storage', class: Storage },
     { name: 'find', class: Find },
+    { name: 'surplus', class: Surplus },
+    { name: 'shortage', class: Shortage },
+    { name: 'police', class: Police },
+    { name: 'mugging', class: Mugging },
+    { name: 'rival', class: Rival },
   ]
 
   function defaults(prop) {

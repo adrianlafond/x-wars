@@ -37,83 +37,25 @@
     { "name": "Pows", "min": 2000, "max": 10000 },
     { "name": "Kabooms", "min": 7500, "max": 30000 }
   ],
-  "enemies": [
-    {
-      "name": "Blimpie",
-      "odds": 0.2,
-      "health": 45,
-      "damage": 5,
-      "success": 0.4,
-      "copy": [
-        "Blimpie is on your tail!",
-        "Blimpie is after you!"
-      ],
-      "options": {
-        "fight": {
-          "label": "Fight",
-          "success": [
-            "Blimpie is dead!"
-          ],
-          "fail": [
-            "You've hurt Blimpie but he's still after you."
-          ]
-        },
-        "run": {
-          "label": "Run",
-          "success": [
-            "You've lost Blimpie!"
-          ],
-          "fail": [
-            "Oh no! Blimpie's got you. He'll take everything and let you go in the morning."
-          ]
-        },
-        "surrender": {
-          "label": "Surrender",
-          "copy": [
-            "You've lost everything, but at least you're still alive."
-          ]
-        }
-      }
-    },
-    {
-      "name": "Hooligans",
-      "odds": 0.15,
-      "health": 12,
-      "damage": 15,
-      "success": 0.75,
-      "copy": [
-        "Armed hooligans want your stash!",
-        "Hooligans have ambushed you!"
-      ],
-      "options": {
-        "fight": {
-          "label": "Fight",
-          "success": [
-            "Wow! You've those hooligans a lesson. They're gone."
-          ],
-          "fail": [
-            "You gave them a scare but they won't give up that easily."
-          ]
-        },
-        "run": {
-          "label": "Run",
-          "success": [
-            "You've lost the hooligans!"
-          ],
-          "fail": [
-            "Oh no! The hooligans have taken everything you have and given you quite a beating."
-          ]
-        },
-        "surrender": {
-          "label": "Surrender",
-          "copy": [
-            "You've lost everything, but at least you're still alive."
-          ]
-        }
-      }
-    }
-  ],
   "random": {
+    "police": {
+      "odds": 0.1,
+      "enabled": true,
+      "health": 45,
+      "damage": 5
+    },
+    "mugging": {
+      "odds": 0.1,
+      "enabled": true,
+      "health": 20,
+      "damage": 20
+    },
+    "rival": {
+      "odds": 0.1,
+      "enabled": true,
+      "health": 25,
+      "damage": 50
+    },
     "storage": {
       "enabled": true,
       "odds": 0.25,

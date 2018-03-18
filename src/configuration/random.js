@@ -1,6 +1,8 @@
 import find from 'lodash.find'
 import Storage from './random-storage'
 import Find from './random-find'
+import Surplus from './random-surplus'
+import Shortage from './random-shortage'
 
 export default class Random {
   constructor(config = {}) {
@@ -8,6 +10,8 @@ export default class Random {
     this.data = [
       new Storage(this.item('storage')).data,
       new Find(this.item('find')).data,
+      new Surplus(this.item('surplus')).data,
+      new Shortage(this.item('shortage')).data,
     ]
   }
 

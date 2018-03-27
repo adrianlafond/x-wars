@@ -70,11 +70,714 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeIsFinite = root.isFinite;
+
+/**
+ * Checks if `value` is a finite primitive number.
+ *
+ * **Note:** This method is based on
+ * [`Number.isFinite`](https://mdn.io/Number/isFinite).
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a finite number,
+ *  else `false`.
+ * @example
+ *
+ * _.isFinite(3);
+ * // => true
+ *
+ * _.isFinite(Number.MIN_VALUE);
+ * // => true
+ *
+ * _.isFinite(Infinity);
+ * // => false
+ *
+ * _.isFinite('3');
+ * // => false
+ */
+function isFinite(value) {
+  return typeof value == 'number' && nativeIsFinite(value);
+}
+
+module.exports = isFinite;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]';
+
+/** Used to detect unsigned integer values. */
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+/**
+ * A faster alternative to `Function#apply`, this function invokes `func`
+ * with the `this` binding of `thisArg` and the arguments of `args`.
+ *
+ * @private
+ * @param {Function} func The function to invoke.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {Array} args The arguments to invoke `func` with.
+ * @returns {*} Returns the result of `func`.
+ */
+function apply(func, thisArg, args) {
+  switch (args.length) {
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+  }
+  return func.apply(thisArg, args);
+}
+
+/**
+ * The base implementation of `_.times` without support for iteratee shorthands
+ * or max array length checks.
+ *
+ * @private
+ * @param {number} n The number of times to invoke `iteratee`.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the array of results.
+ */
+function baseTimes(n, iteratee) {
+  var index = -1,
+      result = Array(n);
+
+  while (++index < n) {
+    result[index] = iteratee(index);
+  }
+  return result;
+}
+
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeKeys = overArg(Object.keys, Object),
+    nativeMax = Math.max;
+
+/** Detect if properties shadowing those on `Object.prototype` are non-enumerable. */
+var nonEnumShadows = !propertyIsEnumerable.call({ 'valueOf': 1 }, 'valueOf');
+
+/**
+ * Creates an array of the enumerable property names of the array-like `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @param {boolean} inherited Specify returning inherited property names.
+ * @returns {Array} Returns the array of property names.
+ */
+function arrayLikeKeys(value, inherited) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  // Safari 9 makes `arguments.length` enumerable in strict mode.
+  var result = (isArray(value) || isArguments(value))
+    ? baseTimes(value.length, String)
+    : [];
+
+  var length = result.length,
+      skipIndexes = !!length;
+
+  for (var key in value) {
+    if ((inherited || hasOwnProperty.call(value, key)) &&
+        !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * Assigns `value` to `key` of `object` if the existing value is not equivalent
+ * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * for equality comparisons.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function assignValue(object, key, value) {
+  var objValue = object[key];
+  if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||
+      (value === undefined && !(key in object))) {
+    object[key] = value;
+  }
+}
+
+/**
+ * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function baseKeys(object) {
+  if (!isPrototype(object)) {
+    return nativeKeys(object);
+  }
+  var result = [];
+  for (var key in Object(object)) {
+    if (hasOwnProperty.call(object, key) && key != 'constructor') {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+ *
+ * @private
+ * @param {Function} func The function to apply a rest parameter to.
+ * @param {number} [start=func.length-1] The start position of the rest parameter.
+ * @returns {Function} Returns the new function.
+ */
+function baseRest(func, start) {
+  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+  return function() {
+    var args = arguments,
+        index = -1,
+        length = nativeMax(args.length - start, 0),
+        array = Array(length);
+
+    while (++index < length) {
+      array[index] = args[start + index];
+    }
+    index = -1;
+    var otherArgs = Array(start + 1);
+    while (++index < start) {
+      otherArgs[index] = args[index];
+    }
+    otherArgs[start] = array;
+    return apply(func, this, otherArgs);
+  };
+}
+
+/**
+ * Copies properties of `source` to `object`.
+ *
+ * @private
+ * @param {Object} source The object to copy properties from.
+ * @param {Array} props The property identifiers to copy.
+ * @param {Object} [object={}] The object to copy properties to.
+ * @param {Function} [customizer] The function to customize copied values.
+ * @returns {Object} Returns `object`.
+ */
+function copyObject(source, props, object, customizer) {
+  object || (object = {});
+
+  var index = -1,
+      length = props.length;
+
+  while (++index < length) {
+    var key = props[index];
+
+    var newValue = customizer
+      ? customizer(object[key], source[key], key, object, source)
+      : undefined;
+
+    assignValue(object, key, newValue === undefined ? source[key] : newValue);
+  }
+  return object;
+}
+
+/**
+ * Creates a function like `_.assign`.
+ *
+ * @private
+ * @param {Function} assigner The function to assign values.
+ * @returns {Function} Returns the new assigner function.
+ */
+function createAssigner(assigner) {
+  return baseRest(function(object, sources) {
+    var index = -1,
+        length = sources.length,
+        customizer = length > 1 ? sources[length - 1] : undefined,
+        guard = length > 2 ? sources[2] : undefined;
+
+    customizer = (assigner.length > 3 && typeof customizer == 'function')
+      ? (length--, customizer)
+      : undefined;
+
+    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+      customizer = length < 3 ? undefined : customizer;
+      length = 1;
+    }
+    object = Object(object);
+    while (++index < length) {
+      var source = sources[index];
+      if (source) {
+        assigner(object, source, index, customizer);
+      }
+    }
+    return object;
+  });
+}
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return !!length &&
+    (typeof value == 'number' || reIsUint.test(value)) &&
+    (value > -1 && value % 1 == 0 && value < length);
+}
+
+/**
+ * Checks if the given arguments are from an iteratee call.
+ *
+ * @private
+ * @param {*} value The potential iteratee value argument.
+ * @param {*} index The potential iteratee index or key argument.
+ * @param {*} object The potential iteratee object argument.
+ * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+ *  else `false`.
+ */
+function isIterateeCall(value, index, object) {
+  if (!isObject(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number'
+        ? (isArrayLike(object) && isIndex(index, object.length))
+        : (type == 'string' && index in object)
+      ) {
+    return eq(object[index], value);
+  }
+  return false;
+}
+
+/**
+ * Checks if `value` is likely a prototype object.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+ */
+function isPrototype(value) {
+  var Ctor = value && value.constructor,
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
+
+  return value === proto;
+}
+
+/**
+ * Performs a
+ * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ * var other = { 'a': 1 };
+ *
+ * _.eq(object, object);
+ * // => true
+ *
+ * _.eq(object, other);
+ * // => false
+ *
+ * _.eq('a', 'a');
+ * // => true
+ *
+ * _.eq('a', Object('a'));
+ * // => false
+ *
+ * _.eq(NaN, NaN);
+ * // => true
+ */
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+function isArguments(value) {
+  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+}
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(document.body.children);
+ * // => false
+ *
+ * _.isArray('abc');
+ * // => false
+ *
+ * _.isArray(_.noop);
+ * // => false
+ */
+var isArray = Array.isArray;
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null && isLength(value.length) && !isFunction(value);
+}
+
+/**
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object,
+ *  else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
+ */
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
+}
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Assigns own enumerable string keyed properties of source objects to the
+ * destination object. Source objects are applied from left to right.
+ * Subsequent sources overwrite property assignments of previous sources.
+ *
+ * **Note:** This method mutates `object` and is loosely based on
+ * [`Object.assign`](https://mdn.io/Object/assign).
+ *
+ * @static
+ * @memberOf _
+ * @since 0.10.0
+ * @category Object
+ * @param {Object} object The destination object.
+ * @param {...Object} [sources] The source objects.
+ * @returns {Object} Returns `object`.
+ * @see _.assignIn
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ * }
+ *
+ * function Bar() {
+ *   this.c = 3;
+ * }
+ *
+ * Foo.prototype.b = 2;
+ * Bar.prototype.d = 4;
+ *
+ * _.assign({ 'a': 0 }, new Foo, new Bar);
+ * // => { 'a': 1, 'c': 3 }
+ */
+var assign = createAssigner(function(object, source) {
+  if (nonEnumShadows || isPrototype(source) || isArrayLike(source)) {
+    copyObject(source, keys(source), object);
+    return;
+  }
+  for (var key in source) {
+    if (hasOwnProperty.call(source, key)) {
+      assignValue(object, key, source[key]);
+    }
+  }
+});
+
+/**
+ * Creates an array of the own enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects. See the
+ * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * for more details.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keys(new Foo);
+ * // => ['a', 'b'] (iteration order is not guaranteed)
+ *
+ * _.keys('hi');
+ * // => ['0', '1']
+ */
+function keys(object) {
+  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+}
+
+module.exports = assign;
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;(function() {
@@ -838,34 +1541,7 @@ function immutableInit(config) {
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 /**
@@ -877,52 +1553,24 @@ module.exports = g;
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
 
-/** Used as references for various `Number` constants. */
-var MAX_SAFE_INTEGER = 9007199254740991;
-
 /** `Object#toString` result references. */
-var argsTag = '[object Arguments]',
-    funcTag = '[object Function]',
-    genTag = '[object GeneratorFunction]';
-
-/** Used to detect unsigned integer values. */
-var reIsUint = /^(?:0|[1-9]\d*)$/;
+var objectTag = '[object Object]';
 
 /**
- * A faster alternative to `Function#apply`, this function invokes `func`
- * with the `this` binding of `thisArg` and the arguments of `args`.
+ * Checks if `value` is a host object in IE < 9.
  *
  * @private
- * @param {Function} func The function to invoke.
- * @param {*} thisArg The `this` binding of `func`.
- * @param {Array} args The arguments to invoke `func` with.
- * @returns {*} Returns the result of `func`.
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
  */
-function apply(func, thisArg, args) {
-  switch (args.length) {
-    case 0: return func.call(thisArg);
-    case 1: return func.call(thisArg, args[0]);
-    case 2: return func.call(thisArg, args[0], args[1]);
-    case 3: return func.call(thisArg, args[0], args[1], args[2]);
-  }
-  return func.apply(thisArg, args);
-}
-
-/**
- * The base implementation of `_.times` without support for iteratee shorthands
- * or max array length checks.
- *
- * @private
- * @param {number} n The number of times to invoke `iteratee`.
- * @param {Function} iteratee The function invoked per iteration.
- * @returns {Array} Returns the array of results.
- */
-function baseTimes(n, iteratee) {
-  var index = -1,
-      result = Array(n);
-
-  while (++index < n) {
-    result[index] = iteratee(index);
+function isHostObject(value) {
+  // Many host objects are `Object` objects that can coerce to strings
+  // despite having improperly defined `toString` methods.
+  var result = false;
+  if (value != null && typeof value.toString != 'function') {
+    try {
+      result = !!(value + '');
+    } catch (e) {}
   }
   return result;
 }
@@ -942,10 +1590,17 @@ function overArg(func, transform) {
 }
 
 /** Used for built-in method references. */
-var objectProto = Object.prototype;
+var funcProto = Function.prototype,
+    objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString = funcProto.toString;
 
 /** Used to check objects for own properties. */
 var hasOwnProperty = objectProto.hasOwnProperty;
+
+/** Used to infer the `Object` constructor. */
+var objectCtorString = funcToString.call(Object);
 
 /**
  * Used to resolve the
@@ -955,450 +1610,7 @@ var hasOwnProperty = objectProto.hasOwnProperty;
 var objectToString = objectProto.toString;
 
 /** Built-in value references. */
-var propertyIsEnumerable = objectProto.propertyIsEnumerable;
-
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeKeys = overArg(Object.keys, Object),
-    nativeMax = Math.max;
-
-/** Detect if properties shadowing those on `Object.prototype` are non-enumerable. */
-var nonEnumShadows = !propertyIsEnumerable.call({ 'valueOf': 1 }, 'valueOf');
-
-/**
- * Creates an array of the enumerable property names of the array-like `value`.
- *
- * @private
- * @param {*} value The value to query.
- * @param {boolean} inherited Specify returning inherited property names.
- * @returns {Array} Returns the array of property names.
- */
-function arrayLikeKeys(value, inherited) {
-  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
-  // Safari 9 makes `arguments.length` enumerable in strict mode.
-  var result = (isArray(value) || isArguments(value))
-    ? baseTimes(value.length, String)
-    : [];
-
-  var length = result.length,
-      skipIndexes = !!length;
-
-  for (var key in value) {
-    if ((inherited || hasOwnProperty.call(value, key)) &&
-        !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
-      result.push(key);
-    }
-  }
-  return result;
-}
-
-/**
- * Assigns `value` to `key` of `object` if the existing value is not equivalent
- * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
- * for equality comparisons.
- *
- * @private
- * @param {Object} object The object to modify.
- * @param {string} key The key of the property to assign.
- * @param {*} value The value to assign.
- */
-function assignValue(object, key, value) {
-  var objValue = object[key];
-  if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||
-      (value === undefined && !(key in object))) {
-    object[key] = value;
-  }
-}
-
-/**
- * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
- *
- * @private
- * @param {Object} object The object to query.
- * @returns {Array} Returns the array of property names.
- */
-function baseKeys(object) {
-  if (!isPrototype(object)) {
-    return nativeKeys(object);
-  }
-  var result = [];
-  for (var key in Object(object)) {
-    if (hasOwnProperty.call(object, key) && key != 'constructor') {
-      result.push(key);
-    }
-  }
-  return result;
-}
-
-/**
- * The base implementation of `_.rest` which doesn't validate or coerce arguments.
- *
- * @private
- * @param {Function} func The function to apply a rest parameter to.
- * @param {number} [start=func.length-1] The start position of the rest parameter.
- * @returns {Function} Returns the new function.
- */
-function baseRest(func, start) {
-  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
-  return function() {
-    var args = arguments,
-        index = -1,
-        length = nativeMax(args.length - start, 0),
-        array = Array(length);
-
-    while (++index < length) {
-      array[index] = args[start + index];
-    }
-    index = -1;
-    var otherArgs = Array(start + 1);
-    while (++index < start) {
-      otherArgs[index] = args[index];
-    }
-    otherArgs[start] = array;
-    return apply(func, this, otherArgs);
-  };
-}
-
-/**
- * Copies properties of `source` to `object`.
- *
- * @private
- * @param {Object} source The object to copy properties from.
- * @param {Array} props The property identifiers to copy.
- * @param {Object} [object={}] The object to copy properties to.
- * @param {Function} [customizer] The function to customize copied values.
- * @returns {Object} Returns `object`.
- */
-function copyObject(source, props, object, customizer) {
-  object || (object = {});
-
-  var index = -1,
-      length = props.length;
-
-  while (++index < length) {
-    var key = props[index];
-
-    var newValue = customizer
-      ? customizer(object[key], source[key], key, object, source)
-      : undefined;
-
-    assignValue(object, key, newValue === undefined ? source[key] : newValue);
-  }
-  return object;
-}
-
-/**
- * Creates a function like `_.assign`.
- *
- * @private
- * @param {Function} assigner The function to assign values.
- * @returns {Function} Returns the new assigner function.
- */
-function createAssigner(assigner) {
-  return baseRest(function(object, sources) {
-    var index = -1,
-        length = sources.length,
-        customizer = length > 1 ? sources[length - 1] : undefined,
-        guard = length > 2 ? sources[2] : undefined;
-
-    customizer = (assigner.length > 3 && typeof customizer == 'function')
-      ? (length--, customizer)
-      : undefined;
-
-    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
-      customizer = length < 3 ? undefined : customizer;
-      length = 1;
-    }
-    object = Object(object);
-    while (++index < length) {
-      var source = sources[index];
-      if (source) {
-        assigner(object, source, index, customizer);
-      }
-    }
-    return object;
-  });
-}
-
-/**
- * Checks if `value` is a valid array-like index.
- *
- * @private
- * @param {*} value The value to check.
- * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
- * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
- */
-function isIndex(value, length) {
-  length = length == null ? MAX_SAFE_INTEGER : length;
-  return !!length &&
-    (typeof value == 'number' || reIsUint.test(value)) &&
-    (value > -1 && value % 1 == 0 && value < length);
-}
-
-/**
- * Checks if the given arguments are from an iteratee call.
- *
- * @private
- * @param {*} value The potential iteratee value argument.
- * @param {*} index The potential iteratee index or key argument.
- * @param {*} object The potential iteratee object argument.
- * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
- *  else `false`.
- */
-function isIterateeCall(value, index, object) {
-  if (!isObject(object)) {
-    return false;
-  }
-  var type = typeof index;
-  if (type == 'number'
-        ? (isArrayLike(object) && isIndex(index, object.length))
-        : (type == 'string' && index in object)
-      ) {
-    return eq(object[index], value);
-  }
-  return false;
-}
-
-/**
- * Checks if `value` is likely a prototype object.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
- */
-function isPrototype(value) {
-  var Ctor = value && value.constructor,
-      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
-
-  return value === proto;
-}
-
-/**
- * Performs a
- * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
- * comparison between two values to determine if they are equivalent.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to compare.
- * @param {*} other The other value to compare.
- * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
- * @example
- *
- * var object = { 'a': 1 };
- * var other = { 'a': 1 };
- *
- * _.eq(object, object);
- * // => true
- *
- * _.eq(object, other);
- * // => false
- *
- * _.eq('a', 'a');
- * // => true
- *
- * _.eq('a', Object('a'));
- * // => false
- *
- * _.eq(NaN, NaN);
- * // => true
- */
-function eq(value, other) {
-  return value === other || (value !== value && other !== other);
-}
-
-/**
- * Checks if `value` is likely an `arguments` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an `arguments` object,
- *  else `false`.
- * @example
- *
- * _.isArguments(function() { return arguments; }());
- * // => true
- *
- * _.isArguments([1, 2, 3]);
- * // => false
- */
-function isArguments(value) {
-  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
-  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
-    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
-}
-
-/**
- * Checks if `value` is classified as an `Array` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an array, else `false`.
- * @example
- *
- * _.isArray([1, 2, 3]);
- * // => true
- *
- * _.isArray(document.body.children);
- * // => false
- *
- * _.isArray('abc');
- * // => false
- *
- * _.isArray(_.noop);
- * // => false
- */
-var isArray = Array.isArray;
-
-/**
- * Checks if `value` is array-like. A value is considered array-like if it's
- * not a function and has a `value.length` that's an integer greater than or
- * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
- * @example
- *
- * _.isArrayLike([1, 2, 3]);
- * // => true
- *
- * _.isArrayLike(document.body.children);
- * // => true
- *
- * _.isArrayLike('abc');
- * // => true
- *
- * _.isArrayLike(_.noop);
- * // => false
- */
-function isArrayLike(value) {
-  return value != null && isLength(value.length) && !isFunction(value);
-}
-
-/**
- * This method is like `_.isArrayLike` except that it also checks if `value`
- * is an object.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an array-like object,
- *  else `false`.
- * @example
- *
- * _.isArrayLikeObject([1, 2, 3]);
- * // => true
- *
- * _.isArrayLikeObject(document.body.children);
- * // => true
- *
- * _.isArrayLikeObject('abc');
- * // => false
- *
- * _.isArrayLikeObject(_.noop);
- * // => false
- */
-function isArrayLikeObject(value) {
-  return isObjectLike(value) && isArrayLike(value);
-}
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a function, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction(value) {
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 8-9 which returns 'object' for typed array and other constructors.
-  var tag = isObject(value) ? objectToString.call(value) : '';
-  return tag == funcTag || tag == genTag;
-}
-
-/**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This method is loosely based on
- * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- * @example
- *
- * _.isLength(3);
- * // => true
- *
- * _.isLength(Number.MIN_VALUE);
- * // => false
- *
- * _.isLength(Infinity);
- * // => false
- *
- * _.isLength('3');
- * // => false
- */
-function isLength(value) {
-  return typeof value == 'number' &&
-    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
+var getPrototype = overArg(Object.getPrototypeOf, Object);
 
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
@@ -1429,114 +1641,58 @@ function isObjectLike(value) {
 }
 
 /**
- * Assigns own enumerable string keyed properties of source objects to the
- * destination object. Source objects are applied from left to right.
- * Subsequent sources overwrite property assignments of previous sources.
- *
- * **Note:** This method mutates `object` and is loosely based on
- * [`Object.assign`](https://mdn.io/Object/assign).
+ * Checks if `value` is a plain object, that is, an object created by the
+ * `Object` constructor or one with a `[[Prototype]]` of `null`.
  *
  * @static
  * @memberOf _
- * @since 0.10.0
- * @category Object
- * @param {Object} object The destination object.
- * @param {...Object} [sources] The source objects.
- * @returns {Object} Returns `object`.
- * @see _.assignIn
+ * @since 0.8.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
  * @example
  *
  * function Foo() {
  *   this.a = 1;
  * }
  *
- * function Bar() {
- *   this.c = 3;
- * }
+ * _.isPlainObject(new Foo);
+ * // => false
  *
- * Foo.prototype.b = 2;
- * Bar.prototype.d = 4;
+ * _.isPlainObject([1, 2, 3]);
+ * // => false
  *
- * _.assign({ 'a': 0 }, new Foo, new Bar);
- * // => { 'a': 1, 'c': 3 }
+ * _.isPlainObject({ 'x': 0, 'y': 0 });
+ * // => true
+ *
+ * _.isPlainObject(Object.create(null));
+ * // => true
  */
-var assign = createAssigner(function(object, source) {
-  if (nonEnumShadows || isPrototype(source) || isArrayLike(source)) {
-    copyObject(source, keys(source), object);
-    return;
+function isPlainObject(value) {
+  if (!isObjectLike(value) ||
+      objectToString.call(value) != objectTag || isHostObject(value)) {
+    return false;
   }
-  for (var key in source) {
-    if (hasOwnProperty.call(source, key)) {
-      assignValue(object, key, source[key]);
-    }
+  var proto = getPrototype(value);
+  if (proto === null) {
+    return true;
   }
-});
-
-/**
- * Creates an array of the own enumerable property names of `object`.
- *
- * **Note:** Non-object values are coerced to objects. See the
- * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
- * for more details.
- *
- * @static
- * @since 0.1.0
- * @memberOf _
- * @category Object
- * @param {Object} object The object to query.
- * @returns {Array} Returns the array of property names.
- * @example
- *
- * function Foo() {
- *   this.a = 1;
- *   this.b = 2;
- * }
- *
- * Foo.prototype.c = 3;
- *
- * _.keys(new Foo);
- * // => ['a', 'b'] (iteration order is not guaranteed)
- *
- * _.keys('hi');
- * // => ['0', '1']
- */
-function keys(object) {
-  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+  return (typeof Ctor == 'function' &&
+    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
 }
 
-module.exports = assign;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
+module.exports = isPlainObject;
 
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+module.exports = {"player":{"location":null,"time":30,"health":100,"money":2000,"storage":{"value":100,"filled":{"Booms":0,"Whams":0,"Bangs":0,"Splats":0,"Pows":0,"Kabooms":0}},"loan":{"principal":2000,"interest":0.1},"weapons":[]},"locations":["Mercury","Venus","Mars","Jupiter","Saturn","Uranus"],"items":[{"name":"Booms","min":15,"max":150},{"name":"Whams","min":100,"max":750},{"name":"Bangs","min":300,"max":1500},{"name":"Splats","min":800,"max":3000},{"name":"Pows","min":2000,"max":10000},{"name":"Kabooms","min":7500,"max":30000}],"random":{"police":{"odds":0.1,"enabled":true,"health":45,"damage":5},"mugging":{"odds":0.1,"enabled":true,"health":20,"damage":20},"rival":{"odds":0.1,"enabled":true,"health":25,"damage":50},"storage":{"enabled":true,"odds":0.25,"offers":[{"pockets":150,"cost":500},{"pockets":250,"cost":2000},{"pockets":400,"cost":10000}]},"find":{"enabled":true,"odds":0.1,"minLowPriced":10,"maxLowPriced":100,"minHighPriced":5,"maxHighPriced":20},"surplus":{"enabled":true,"odds":0.2,"min":0.5,"max":0.1},"shortage":{"enabled":true,"odds":0.2,"min":2,"max":5}}}
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1545,283 +1701,107 @@ module.exports = function(module) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = configure;
-exports.configureItems = configureItems;
-exports.calculateItemPrices = calculateItemPrices;
-exports.configureTime = configureTime;
-exports.configureLocations = configureLocations;
-exports.configurePlayerLoan = configurePlayerLoan;
-exports.configurePlayerLocation = configurePlayerLocation;
-exports.configurePlayerValueObject = configurePlayerValueObject;
-exports.configurePlayerStorage = configurePlayerStorage;
-exports.configurePlayer = configurePlayer;
-exports.configureRandomEvent = configureRandomEvent;
-exports.configureRandomStorage = configureRandomStorage;
-exports.configureRandomEvents = configureRandomEvents;
 
-var _lodash = __webpack_require__(11);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _lodash = __webpack_require__(1);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _lodash3 = __webpack_require__(5);
+var _lodash3 = __webpack_require__(3);
 
 var _lodash4 = _interopRequireDefault(_lodash3);
 
-var _lodash5 = __webpack_require__(2);
-
-var _lodash6 = _interopRequireDefault(_lodash5);
-
-var _lodash7 = __webpack_require__(12);
-
-var _lodash8 = _interopRequireDefault(_lodash7);
-
-var _defaults = __webpack_require__(13);
+var _defaults = __webpack_require__(4);
 
 var _defaults2 = _interopRequireDefault(_defaults);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/*******************************************************************************
- * Ensure initial configuration is valid.
- ******************************************************************************/
-function configure() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  // Ensure state is a plain object.
-  state = state && state.asMutable ? state.asMutable() : state || _defaults2.default;
-  state.time = configureTime(state.time);
-  state.locations = configureLocations(state.locations);
-  state.items = configureItems(state);
-  state.player = configurePlayer(state);
-  state.events = configureRandomEvents(state);
-  return state || _defaults2.default;
-}
+var RandomBase = function () {
+  function RandomBase(config) {
+    _classCallCheck(this, RandomBase);
 
-function configureItems(state) {
-  return calculateItemPrices(state.items || _defaults2.default.items);
-}
-
-function calculateItemPrices(items) {
-  return items.map(function (item) {
-    return (0, _lodash6.default)({}, item, {
-      price: item.min + Math.floor(Math.random() * (item.max - item.min))
-    });
-  });
-}
-
-function configureTime(time) {
-  time = +time;
-  if (isNaN(time) || time < 1) {
-    time = _defaults2.default.player.time;
+    this.config = config;
+    this.defaults = null;
   }
-  return Math.floor(time);
-}
 
-function configureLocations(locations) {
-  if (!Array.isArray(locations)) {
-    locations = _defaults2.default.locations;
-  }
-  for (var i = locations.length - 1; i >= 0; i--) {
-    if (typeof locations[i] !== 'string' || !locations[i]) {
-      locations.splice(i, 1);
-    }
-  }
-  // Ensure location names are unique:
-  locations = locations.filter(function (loc, index, array) {
-    for (var _i = 0; _i < index; _i++) {
-      if (array[_i] === loc) {
-        return false;
+  _createClass(RandomBase, [{
+    key: 'getData',
+    value: function getData() {
+      if (!(0, _lodash4.default)(this.config)) {
+        return this.getDefault();
       }
+      if (this.config.enabled === false) {
+        return this.getBase(false);
+      }
+      var base = (0, _lodash2.default)(this.getBase(), { odds: this.getOdds() });
+      return this.getSpecificData(base);
     }
-    return true;
-  });
-  // Ensure locations.length >= 2 by filling with default locations:
-  while (locations.length < 2) {
-    locations.push(_defaults2.default.locations[locations.length]);
-  }
-  return locations;
-}
-
-function configurePlayerLoan() {
-  var loan = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var defaultLoan = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _defaults2.default.player.loan;
-
-  loan.principal = (0, _lodash4.default)(loan.principal) ? Math.max(0, loan.principal) : defaultLoan.principal;
-  loan.interest = (0, _lodash4.default)(loan.interest) ? Math.max(0, loan.interest) : defaultLoan.interest;
-  loan.amount = loan.principal;
-  return loan;
-}
-
-function configurePlayerLocation(playerLoc, locations) {
-  if (playerLoc && typeof playerLoc === 'string' && locations.indexOf(playerLoc) !== -1) {
-    return playerLoc;
-  }
-  var random = Math.floor(Math.random() * locations.length);
-  return locations[random];
-}
-
-function configurePlayerValueObject(money, defaults) {
-  if (money !== null && (0, _lodash4.default)(+money)) {
-    money = (0, _lodash6.default)({}, defaults, { value: +money });
-  } else if (!(0, _lodash2.default)(money)) {
-    money = (0, _lodash6.default)({}, defaults);
-  }
-  money.max = money.max === '*' || !(0, _lodash4.default)(+money.max) ? Number.MAX_VALUE : +money.max;
-  money.min = money.min === '*' || !(0, _lodash4.default)(+money.min) ? 0 : +money.min;
-  money.min = Math.min(money.max, money.min);
-  money.value = (0, _lodash4.default)(+money.value) ? Math.max(money.min, Math.min(money.max, +money.value)) : Math.max(0, money.min);
-  return money;
-}
-
-function configurePlayerStorage(storage, defaults) {
-  if ((0, _lodash2.default)(storage)) {
-    if (storage.min === '*' || +storage.min < 0) {
-      storage.min = defaults.player.storage.min;
+  }, {
+    key: 'getSpecificData',
+    value: function getSpecificData(base) {
+      return base;
     }
-  } else if ((0, _lodash4.default)(storage)) {
-    storage = (0, _lodash6.default)({}, defaults.player.storage, { value: storage });
-  } else {
-    storage = defaults.player.storage;
-  }
-  storage = configurePlayerValueObject(storage, defaults.player.storage);
-  storage.filled = (0, _lodash2.default)(storage.filled) ? storage.filled : defaults.player.storage.filled || {};
-  defaults.items.forEach(function (item) {
-    storage.filled[item.name] = storage.filled[item.name] || 0;
-  });
-  // Remove keys belonging to items that do not exist.
-  var items = defaults.items.map(function (item) {
-    return item.name;
-  });
-  var keys = Object.keys(storage.filled);
-  for (var i = keys.length - 1; i >= 0; i--) {
-    if (items.indexOf(keys[i]) === -1) {
-      delete storage.filled[keys[i]];
+  }, {
+    key: 'getBase',
+    value: function getBase() {
+      var enabled = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+      return { enabled: enabled };
     }
-  }
-  return storage;
-}
-
-function configurePlayer(state) {
-  var p = state.player = (0, _lodash2.default)(state.player) ? state.player : {};
-  p.loan = configurePlayerLoan(p.loan);
-  p.location = configurePlayerLocation(p.location, state.locations);
-  p.money = configurePlayerValueObject(p.money, _defaults2.default.player.money);
-  p.health = configurePlayerValueObject(p.health, _defaults2.default.player.health);
-  p.storage = configurePlayerStorage(p.storage, _defaults2.default);
-  return p;
-}
-
-function configureRandomEvent(event, defaults) {
-  var time = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 30;
-  var times = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
-
-  if (!(0, _lodash2.default)(event)) {
-    event = defaults;
-  }
-  if (event.enabled === false) {
-    return { enabled: false };
-  }
-  event.odds = (0, _lodash4.default)(+event.odds) ? event.odds : defaults.odds;
-  event.odds = Math.max(0, Math.min(1, event.odds));
-  event.times = [];
-  var empty = [];
-  for (var i = 0; i < time; i++) {
-    if (!times[i]) {
-      empty.push(i);
+  }, {
+    key: 'getDefault',
+    value: function getDefault() {
+      return this.defaults = this.defaults || _defaults2.default.random[this.name];
     }
-  }
-  var n = Math.min(empty.length, Math.floor(time * event.odds));
-  while (empty.length && n > 0) {
-    var r = Math.floor(Math.random() * empty.length);
-    empty.splice(r, 1);
-    event.times.push(r);
-    --n;
-  }
-  return event;
-}
+  }, {
+    key: 'getOdds',
+    value: function getOdds() {
+      var odds = +this.config.odds;
+      if (isNaN(odds) || odds <= 0) {
+        return this.getDefault().odds;
+      }
+      return Math.min(1, odds);
+    }
+  }]);
 
-function configureRandomStorage(storage, defaults, time, events) {
-  storage = configureRandomEvent(storage, defaults, time, events);
-  storage.data = (0, _lodash6.default)({}, defaults.data, storage.data);
-  return storage;
-}
+  return RandomBase;
+}();
 
-function configureRandomEvents(state) {
-  state.random = (0, _lodash2.default)(state.random) || _defaults2.default.random;
-  var events = (0, _lodash8.default)(_defaults2.default.player.time).map(function (x) {
-    return null;
-  });
-  if ((0, _lodash2.default)(state.random.storage)) {
-    state.random.storage = configureRandomStorage(state.random.storage, _defaults2.default.random.storage, _defaults2.default.player.time, events);
-    state.random.storage.times.forEach(function (n) {
-      return events[n] = 'storage';
-    });
-  }
-  return events;
-}
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {/**
- * lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright jQuery Foundation and other contributors <https://jquery.org/>
- * Released under MIT license <https://lodash.com/license>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-
-/** Detect free variable `self`. */
-var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = freeGlobal || freeSelf || Function('return this')();
-
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeIsFinite = root.isFinite;
-
-/**
- * Checks if `value` is a finite primitive number.
- *
- * **Note:** This method is based on
- * [`Number.isFinite`](https://mdn.io/Number/isFinite).
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a finite number,
- *  else `false`.
- * @example
- *
- * _.isFinite(3);
- * // => true
- *
- * _.isFinite(Number.MIN_VALUE);
- * // => true
- *
- * _.isFinite(Infinity);
- * // => false
- *
- * _.isFinite('3');
- * // => false
- */
-function isFinite(value) {
-  return typeof value == 'number' && nativeIsFinite(value);
-}
-
-module.exports = isFinite;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+exports.default = RandomBase;
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -4278,26 +4258,7 @@ function property(path) {
 
 module.exports = find;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(3)(module)))
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _xWars = __webpack_require__(8);
-
-var _xWars2 = _interopRequireDefault(_xWars);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _xWars2.default;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(10)(module)))
 
 /***/ }),
 /* 8 */
@@ -4312,133 +4273,51 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(9);
+var _lodash = __webpack_require__(1);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _state = __webpack_require__(10);
+var _randomBase = __webpack_require__(5);
 
-var _state2 = _interopRequireDefault(_state);
-
-var _deal = __webpack_require__(14);
-
-var _deal2 = _interopRequireDefault(_deal);
-
-var _loan = __webpack_require__(15);
-
-var _advance = __webpack_require__(16);
-
-var _advance2 = _interopRequireDefault(_advance);
-
-var _options = __webpack_require__(17);
-
-var _options2 = _interopRequireDefault(_options);
+var _randomBase2 = _interopRequireDefault(_randomBase);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// Internal private data.
-// @see http://2ality.com/2016/01/private-data-classes.html
-var STATE = new WeakMap();
-var OPTIONS = new WeakMap();
-var ADVANCE = new WeakMap();
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function actionExists(possible, action) {
-  return possible.some(function (cmd) {
-    return cmd.name === action;
-  });
-}
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/**
- * TODO: Add docs for @param config.
-**/
+var RandomEnemy = function (_RandomBase) {
+  _inherits(RandomEnemy, _RandomBase);
 
-var XWars = function () {
-  function XWars(config) {
-    _classCallCheck(this, XWars);
+  function RandomEnemy() {
+    _classCallCheck(this, RandomEnemy);
 
-    STATE.set(this, new _state2.default(config));
-    ADVANCE.set(this, new _advance2.default(STATE.get(this)));
-    this.updateOptions();
+    return _possibleConstructorReturn(this, (RandomEnemy.__proto__ || Object.getPrototypeOf(RandomEnemy)).apply(this, arguments));
   }
 
-  _createClass(XWars, [{
-    key: 'action',
-    value: function action() {
-      var state = STATE.get(this);
-
-      var _OPTIONS$get = OPTIONS.get(this),
-          commands = _OPTIONS$get.commands;
-
-      for (var _len = arguments.length, _action = Array(_len), _key = 0; _key < _len; _key++) {
-        _action[_key] = arguments[_key];
-      }
-
-      if (actionExists(commands, _action[0])) {
-        var current = state.current;
-
-        var params = { current: current, commands: commands };
-        switch (_action[0]) {
-          case 'go':
-            state.update(ADVANCE.get(this).go(_action[1]));
-            break;
-          case 'finish':
-            state.update(ADVANCE.get(this).finish());
-            break;
-          case 'buy':
-          case 'sell':
-            params.item = _action[1];
-            params.quantity = _action[2];
-            state.update(_deal2.default[_action[0]](params));
-            break;
-          case 'pay':
-            params.value = _action[1];
-            state.update((0, _loan.pay)(params));
-            break;
-          case 'borrow':
-            params.value = +_action[1];
-            params.interest = +_action[2];
-            state.update((0, _loan.borrow)(params));
-            break;
-          case 'undo':
-            state.undo();
-            break;
-          case 'redo':
-            state.redo();
-            break;
-          case 'reset':
-            STATE.get(this).reset(_action[1]);
-            break;
-          default:
-            break;
-        }
-      }
-      this.updateOptions();
-      return this.options;
-    }
-
-    // Returns current options available to user (same as this.action()).
-
-  }, {
-    key: 'updateOptions',
-    value: function updateOptions() {
-      var options = new _options2.default(STATE.get(this)).options;
-      OPTIONS.set(this, options);
-      ADVANCE.get(this).commands = options.commands;
-      return options;
+  _createClass(RandomEnemy, [{
+    key: 'getSpecificData',
+    value: function getSpecificData(base) {
+      return (0, _lodash2.default)(base, {
+        health: this.validate('health'),
+        damage: this.validate('damage')
+      });
     }
   }, {
-    key: 'options',
-    get: function get() {
-      return (0, _lodash2.default)(OPTIONS.get(this));
+    key: 'validate',
+    value: function validate(prop) {
+      var value = +this.config[prop];
+      return isFinite(value) && value >= 0 ? value : this.getDefault()[prop];
     }
   }]);
 
-  return XWars;
-}();
+  return RandomEnemy;
+}(_randomBase2.default);
 
-exports.default = XWars;
+exports.default = RandomEnemy;
 
 /***/ }),
 /* 9 */
@@ -6193,10 +6072,38 @@ function stubFalse() {
 
 module.exports = cloneDeep;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(3)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(10)(module)))
 
 /***/ }),
 /* 10 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6208,13 +6115,336 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _seamlessImmutable = __webpack_require__(0);
+exports.getItemPrice = getItemPrice;
+
+var _lodash = __webpack_require__(3);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _lodash3 = __webpack_require__(0);
+
+var _lodash4 = _interopRequireDefault(_lodash3);
+
+var _defaults = __webpack_require__(4);
+
+var _defaults2 = _interopRequireDefault(_defaults);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Items = function () {
+  function Items() {
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, Items);
+
+    this.config = config;
+  }
+
+  _createClass(Items, [{
+    key: 'data',
+    get: function get() {
+      var array = Array.isArray(this.config.items) && this.config.items.length ? this.config.items : _defaults2.default.items;
+
+      var valid = updateValid(getValid(array));
+      var unique = ensureUnqiue(valid);
+
+      return calculatePrices(unique.length ? unique : _defaults2.default.items);
+    }
+  }]);
+
+  return Items;
+}();
+
+exports.default = Items;
+function getItemPrice(item) {
+  return item.min + Math.floor(Math.random() * (item.max - item.min));
+}
+
+function calculatePrices(items) {
+  items.forEach(function (item) {
+    item.price = getItemPrice(item);
+  });
+  return items;
+}
+
+function getValid(array) {
+  return array.filter(function (item) {
+    return !!((0, _lodash2.default)(item) && item.name && typeof item.name === 'string' && (0, _lodash4.default)(+item.max));
+  });
+}
+
+function updateValid(array) {
+  return array.map(function (item) {
+    item.max = Math.max(0, +item.max);
+    item.min = Math.max(0, +item.min);
+    if (isNaN(item.min)) {
+      item.min = 0;
+    }
+    item.max = Math.max(item.max, item.min);
+    return item;
+  });
+}
+
+function ensureUnqiue(array) {
+  return array.reduce(function (unique, item) {
+    if (!unique.some(function (i) {
+      return i.name === item.name;
+    })) {
+      unique.push(item);
+    }
+    return unique;
+  }, []);
+}
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _lodash = __webpack_require__(1);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _lodash3 = __webpack_require__(0);
+
+var _lodash4 = _interopRequireDefault(_lodash3);
+
+var _randomBase = __webpack_require__(5);
+
+var _randomBase2 = _interopRequireDefault(_randomBase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RandomSupply = function (_RandomBase) {
+  _inherits(RandomSupply, _RandomBase);
+
+  function RandomSupply() {
+    _classCallCheck(this, RandomSupply);
+
+    return _possibleConstructorReturn(this, (RandomSupply.__proto__ || Object.getPrototypeOf(RandomSupply)).apply(this, arguments));
+  }
+
+  _createClass(RandomSupply, [{
+    key: 'getSpecificData',
+    value: function getSpecificData(base) {
+      return (0, _lodash2.default)(base, {
+        min: this.validate('min'),
+        max: this.validate('max')
+      });
+    }
+  }, {
+    key: 'validate',
+    value: function validate(prop) {
+      var value = +this.config[prop];
+      return (0, _lodash4.default)(value) && value >= 0 ? value : this.getDefault()[prop];
+    }
+  }]);
+
+  return RandomSupply;
+}(_randomBase2.default);
+
+exports.default = RandomSupply;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _xWars = __webpack_require__(14);
+
+var _xWars2 = _interopRequireDefault(_xWars);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _xWars2.default;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _lodash = __webpack_require__(9);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _state = __webpack_require__(15);
+
+var _state2 = _interopRequireDefault(_state);
+
+var _deal = __webpack_require__(28);
+
+var _deal2 = _interopRequireDefault(_deal);
+
+var _loan = __webpack_require__(29);
+
+var _advance = __webpack_require__(30);
+
+var _advance2 = _interopRequireDefault(_advance);
+
+var _options = __webpack_require__(31);
+
+var _options2 = _interopRequireDefault(_options);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// Internal private data.
+// @see http://2ality.com/2016/01/private-data-classes.html
+var STATE = new WeakMap();
+var OPTIONS = new WeakMap();
+var ADVANCE = new WeakMap();
+
+function actionExists(possible, action) {
+  return possible.some(function (cmd) {
+    return cmd.name === action;
+  });
+}
+
+/**
+ * TODO: Add docs for @param config.
+**/
+
+var XWars = function () {
+  function XWars(config) {
+    _classCallCheck(this, XWars);
+
+    STATE.set(this, new _state2.default(config));
+    ADVANCE.set(this, new _advance2.default(STATE.get(this)));
+    console.log('STATE:');
+    console.log(STATE.get(this).current);
+    console.log('----------');
+    // STATE.get(this).replace(ADVANCE.get(this).start())
+    this.updateOptions();
+  }
+
+  _createClass(XWars, [{
+    key: 'action',
+    value: function action() {
+      var state = STATE.get(this);
+
+      var _OPTIONS$get = OPTIONS.get(this),
+          commands = _OPTIONS$get.commands;
+
+      for (var _len = arguments.length, _action = Array(_len), _key = 0; _key < _len; _key++) {
+        _action[_key] = arguments[_key];
+      }
+
+      if (actionExists(commands, _action[0])) {
+        var current = state.current;
+
+        var params = { current: current, commands: commands };
+        switch (_action[0]) {
+          case 'go':
+            state.update(ADVANCE.get(this).go(_action[1]));
+            break;
+          case 'finish':
+            state.update(ADVANCE.get(this).finish());
+            break;
+          case 'buy':
+          case 'sell':
+            params.item = _action[1];
+            params.quantity = _action[2];
+            state.update(_deal2.default[_action[0]](params));
+            break;
+          case 'pay':
+            params.value = _action[1];
+            state.update((0, _loan.pay)(params));
+            break;
+          case 'borrow':
+            params.value = +_action[1];
+            params.interest = +_action[2];
+            state.update((0, _loan.borrow)(params));
+            break;
+          case 'undo':
+            state.undo();
+            break;
+          case 'redo':
+            state.redo();
+            break;
+          case 'reset':
+            STATE.get(this).reset(_action[1]);
+            break;
+          default:
+            break;
+        }
+      }
+      this.updateOptions();
+      return this.options;
+    }
+
+    // Returns current options available to user (same as this.action()).
+
+  }, {
+    key: 'updateOptions',
+    value: function updateOptions() {
+      var options = new _options2.default(STATE.get(this)).options;
+      OPTIONS.set(this, options);
+      ADVANCE.get(this).commands = options.commands;
+      return options;
+    }
+  }, {
+    key: 'options',
+    get: function get() {
+      return (0, _lodash2.default)(OPTIONS.get(this));
+    }
+  }]);
+
+  return XWars;
+}();
+
+exports.default = XWars;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _seamlessImmutable = __webpack_require__(2);
 
 var _seamlessImmutable2 = _interopRequireDefault(_seamlessImmutable);
 
-var _configure = __webpack_require__(4);
+var _configuration = __webpack_require__(16);
 
-var _configure2 = _interopRequireDefault(_configure);
+var _configuration2 = _interopRequireDefault(_configuration);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6232,6 +6462,13 @@ var State = function () {
   }
 
   _createClass(State, [{
+    key: 'replace',
+    value: function replace(state) {
+      this.states[0] = (0, _seamlessImmutable2.default)(state);
+      this.index = 0;
+      return this;
+    }
+  }, {
     key: 'update',
     value: function update(state) {
       this.states.push((0, _seamlessImmutable2.default)(state));
@@ -6264,7 +6501,7 @@ var State = function () {
       var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
       if (state || !this.states) {
-        this.states = [(0, _seamlessImmutable2.default)((0, _configure2.default)(state))];
+        this.states = [(0, _seamlessImmutable2.default)(new _configuration2.default(state).data)];
       } else {
         this.states = this.states.slice(0, 1);
       }
@@ -6284,626 +6521,869 @@ var State = function () {
 exports.default = State;
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports) {
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/**
- * lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright jQuery Foundation and other contributors <https://jquery.org/>
- * Released under MIT license <https://lodash.com/license>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
+"use strict";
 
-/** `Object#toString` result references. */
-var objectTag = '[object Object]';
 
-/**
- * Checks if `value` is a host object in IE < 9.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
- */
-function isHostObject(value) {
-  // Many host objects are `Object` objects that can coerce to strings
-  // despite having improperly defined `toString` methods.
-  var result = false;
-  if (value != null && typeof value.toString != 'function') {
-    try {
-      result = !!(value + '');
-    } catch (e) {}
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _seamlessImmutable = __webpack_require__(2);
+
+var _seamlessImmutable2 = _interopRequireDefault(_seamlessImmutable);
+
+var _lodash = __webpack_require__(9);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _lodash3 = __webpack_require__(3);
+
+var _lodash4 = _interopRequireDefault(_lodash3);
+
+var _defaults = __webpack_require__(4);
+
+var _defaults2 = _interopRequireDefault(_defaults);
+
+var _player = __webpack_require__(17);
+
+var _player2 = _interopRequireDefault(_player);
+
+var _locations = __webpack_require__(18);
+
+var _locations2 = _interopRequireDefault(_locations);
+
+var _items = __webpack_require__(11);
+
+var _items2 = _interopRequireDefault(_items);
+
+var _weapons = __webpack_require__(19);
+
+var _weapons2 = _interopRequireDefault(_weapons);
+
+var _random = __webpack_require__(20);
+
+var _random2 = _interopRequireDefault(_random);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Configuration = function Configuration(config) {
+  _classCallCheck(this, Configuration);
+
+  this.original = config;
+  this.data = initializeState(config);
+  this.data.locations = new _locations2.default(this.data).data;
+  this.data.items = new _items2.default(this.data).data;
+  this.data.weapons = new _weapons2.default(this.data).data;
+  this.data.random = new _random2.default(this.data).data;
+  this.data.player = new _player2.default(this.data).data;
+};
+
+exports.default = Configuration;
+
+
+function initializeState(config) {
+  if (config && _seamlessImmutable2.default.isImmutable(config)) {
+    return config.asMutable({ deep: true });
+  } else if ((0, _lodash4.default)(config)) {
+    return (0, _lodash2.default)(config);
   }
-  return result;
+  return (0, _lodash2.default)(_defaults2.default);
 }
-
-/**
- * Creates a unary function that invokes `func` with its argument transformed.
- *
- * @private
- * @param {Function} func The function to wrap.
- * @param {Function} transform The argument transform.
- * @returns {Function} Returns the new function.
- */
-function overArg(func, transform) {
-  return function(arg) {
-    return func(transform(arg));
-  };
-}
-
-/** Used for built-in method references. */
-var funcProto = Function.prototype,
-    objectProto = Object.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var funcToString = funcProto.toString;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/** Used to infer the `Object` constructor. */
-var objectCtorString = funcToString.call(Object);
-
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString = objectProto.toString;
-
-/** Built-in value references. */
-var getPrototype = overArg(Object.getPrototypeOf, Object);
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-/**
- * Checks if `value` is a plain object, that is, an object created by the
- * `Object` constructor or one with a `[[Prototype]]` of `null`.
- *
- * @static
- * @memberOf _
- * @since 0.8.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
- * @example
- *
- * function Foo() {
- *   this.a = 1;
- * }
- *
- * _.isPlainObject(new Foo);
- * // => false
- *
- * _.isPlainObject([1, 2, 3]);
- * // => false
- *
- * _.isPlainObject({ 'x': 0, 'y': 0 });
- * // => true
- *
- * _.isPlainObject(Object.create(null));
- * // => true
- */
-function isPlainObject(value) {
-  if (!isObjectLike(value) ||
-      objectToString.call(value) != objectTag || isHostObject(value)) {
-    return false;
-  }
-  var proto = getPrototype(value);
-  if (proto === null) {
-    return true;
-  }
-  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
-  return (typeof Ctor == 'function' &&
-    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
-}
-
-module.exports = isPlainObject;
-
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports) {
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/**
- * lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright jQuery Foundation and other contributors <https://jquery.org/>
- * Released under MIT license <https://lodash.com/license>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
+"use strict";
 
-/** Used as references for various `Number` constants. */
-var INFINITY = 1 / 0,
-    MAX_SAFE_INTEGER = 9007199254740991,
-    MAX_INTEGER = 1.7976931348623157e+308,
-    NAN = 0 / 0;
 
-/** `Object#toString` result references. */
-var funcTag = '[object Function]',
-    genTag = '[object GeneratorFunction]',
-    symbolTag = '[object Symbol]';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-/** Used to match leading and trailing whitespace. */
-var reTrim = /^\s+|\s+$/g;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-/** Used to detect bad signed hexadecimal string values. */
-var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+var _lodash = __webpack_require__(3);
 
-/** Used to detect binary string values. */
-var reIsBinary = /^0b[01]+$/i;
+var _lodash2 = _interopRequireDefault(_lodash);
 
-/** Used to detect octal string values. */
-var reIsOctal = /^0o[0-7]+$/i;
+var _lodash3 = __webpack_require__(0);
 
-/** Used to detect unsigned integer values. */
-var reIsUint = /^(?:0|[1-9]\d*)$/;
+var _lodash4 = _interopRequireDefault(_lodash3);
 
-/** Built-in method references without a dependency on `root`. */
-var freeParseInt = parseInt;
+var _defaults = __webpack_require__(4);
 
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
+var _defaults2 = _interopRequireDefault(_defaults);
 
-/**
- * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objectToString = objectProto.toString;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeCeil = Math.ceil,
-    nativeMax = Math.max;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * The base implementation of `_.range` and `_.rangeRight` which doesn't
- * coerce arguments.
- *
- * @private
- * @param {number} start The start of the range.
- * @param {number} end The end of the range.
- * @param {number} step The value to increment or decrement by.
- * @param {boolean} [fromRight] Specify iterating from right to left.
- * @returns {Array} Returns the range of numbers.
- */
-function baseRange(start, end, step, fromRight) {
-  var index = -1,
-      length = nativeMax(nativeCeil((end - start) / (step || 1)), 0),
-      result = Array(length);
+var Player = function () {
+  function Player() {
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-  while (length--) {
-    result[fromRight ? length : ++index] = start;
-    start += step;
+    _classCallCheck(this, Player);
+
+    this.config = config;
+    this.data = {
+      time: this.time(),
+      location: this.location(),
+      health: this.health(),
+      money: this.money(),
+      storage: this.storage(),
+      loan: this.loan(),
+      weapons: this.weapons()
+    };
   }
-  return result;
-}
 
-/**
- * Creates a `_.range` or `_.rangeRight` function.
- *
- * @private
- * @param {boolean} [fromRight] Specify iterating from right to left.
- * @returns {Function} Returns the new range function.
- */
-function createRange(fromRight) {
-  return function(start, end, step) {
-    if (step && typeof step != 'number' && isIterateeCall(start, end, step)) {
-      end = step = undefined;
+  _createClass(Player, [{
+    key: 'time',
+    value: function time() {
+      return this.configureIntegerValue('time', _defaults2.default.player.time, 1);
     }
-    // Ensure the sign of `-0` is preserved.
-    start = toFinite(start);
-    if (end === undefined) {
-      end = start;
-      start = 0;
-    } else {
-      end = toFinite(end);
+  }, {
+    key: 'location',
+    value: function location() {
+      var value = this.getString('location');
+      if (this.config.locations.some(function (loc) {
+        return loc === value;
+      })) {
+        return value;
+      }
+      var random = Math.floor(Math.random() * this.config.locations.length);
+      return this.config.locations[random];
     }
-    step = step === undefined ? (start < end ? 1 : -1) : toFinite(step);
-    return baseRange(start, end, step, fromRight);
-  };
+  }, {
+    key: 'health',
+    value: function health() {
+      return this.configureIntegerValue('health', _defaults2.default.player.health);
+    }
+  }, {
+    key: 'money',
+    value: function money() {
+      return this.configureIntegerValue('money', _defaults2.default.player.money);
+    }
+  }, {
+    key: 'storage',
+    value: function storage() {
+      var defObj = {
+        value: _defaults2.default.player.value,
+        filled: {}
+      };
+      var storage = this.getObject('storage', defObj);
+      storage.value = storageValue(storage.value);
+      storage.filled = this.storageFilled(storage);
+      return storage;
+    }
+  }, {
+    key: 'storageFilled',
+    value: function storageFilled(storage) {
+      var filledObj = {};
+      this.config.items.forEach(function (item) {
+        filledObj[item.name] = 0;
+      });
+      var configObj = (0, _lodash2.default)(storage.filled) ? storage.filled : {};
+      configureStorageFilled(filledObj, configObj, storage.value);
+      return filledObj;
+    }
+  }, {
+    key: 'loan',
+    value: function loan() {
+      var loan = this.getObject('loan', _defaults2.default.player.loan);
+      loan.principal = (0, _lodash4.default)(loan.principal) ? Math.max(0, loan.principal) : _defaults2.default.player.loan.principal;
+      loan.interest = (0, _lodash4.default)(loan.interest) ? Math.max(0, loan.interest) : _defaults2.default.player.loan.interest;
+      loan.amount = loan.principal;
+      return loan;
+    }
+  }, {
+    key: 'weapons',
+    value: function weapons() {
+      var _this = this;
+
+      var weaponsArray = this.getArray('weapons').filter(function (w) {
+        return _this.config.weapons.some(function (obj) {
+          return obj.name === w;
+        });
+      });
+      return weaponsArray;
+    }
+  }, {
+    key: 'configureIntegerValue',
+    value: function configureIntegerValue(prop) {
+      var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var minValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+
+      var value = this.getNumber(prop, _defaults2.default.player[prop]);
+      if (value < minValue) {
+        value = _defaults2.default.player[prop];
+      }
+      return Math.floor(value);
+    }
+  }, {
+    key: 'getPlayer',
+    value: function getPlayer() {
+      return (0, _lodash2.default)(this.config.player) ? this.config.player : {};
+    }
+  }, {
+    key: 'getNumber',
+    value: function getNumber(prop) {
+      var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+      var value = this.getPlayer()[prop];
+      return value === null || isNaN(value) ? defaultValue : value;
+    }
+  }, {
+    key: 'getString',
+    value: function getString(prop) {
+      var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      var value = this.getPlayer()[prop];
+      return value && typeof value === 'string' ? value : defaultValue;
+    }
+  }, {
+    key: 'getObject',
+    value: function getObject(prop) {
+      var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      var value = this.getPlayer()[prop];
+      return (0, _lodash2.default)(value) ? value : defaultValue;
+    }
+  }, {
+    key: 'getArray',
+    value: function getArray(prop) {
+      var defaultValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+      var value = this.getPlayer()[prop];
+      return Array.isArray(value) ? value : defaultValue;
+    }
+  }]);
+
+  return Player;
+}();
+
+exports.default = Player;
+
+
+function storageValue(value) {
+  return Math.floor(Math.max(0, (0, _lodash4.default)(+value) ? +value : _defaults2.default.player.storage.value));
 }
 
-/**
- * Checks if `value` is a valid array-like index.
- *
- * @private
- * @param {*} value The value to check.
- * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
- * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
- */
-function isIndex(value, length) {
-  length = length == null ? MAX_SAFE_INTEGER : length;
-  return !!length &&
-    (typeof value == 'number' || reIsUint.test(value)) &&
-    (value > -1 && value % 1 == 0 && value < length);
+function configureStorageFilled(filledObj, configObj, totalValue) {
+  var sum = 0;
+  Object.keys(configObj).forEach(function (key) {
+    if (filledObj.hasOwnProperty(key)) {
+      var value = +configObj[key];
+      if ((0, _lodash4.default)(value) && value >= 0 && sum < totalValue) {
+        sum += Math.floor(value);
+        if (sum > totalValue) {
+          value = sum - totalValue;
+        }
+        filledObj[key] = Math.floor(value);
+      }
+    }
+  });
 }
 
-/**
- * Checks if the given arguments are from an iteratee call.
- *
- * @private
- * @param {*} value The potential iteratee value argument.
- * @param {*} index The potential iteratee index or key argument.
- * @param {*} object The potential iteratee object argument.
- * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
- *  else `false`.
- */
-function isIterateeCall(value, index, object) {
-  if (!isObject(object)) {
-    return false;
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _defaults = __webpack_require__(4);
+
+var _defaults2 = _interopRequireDefault(_defaults);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Locations = function () {
+  function Locations(config) {
+    _classCallCheck(this, Locations);
+
+    this.config = config || {};
   }
-  var type = typeof index;
-  if (type == 'number'
-        ? (isArrayLike(object) && isIndex(index, object.length))
-        : (type == 'string' && index in object)
-      ) {
-    return eq(object[index], value);
+
+  _createClass(Locations, [{
+    key: 'data',
+    get: function get() {
+      var array = Array.isArray(this.config.locations) && this.config.locations.length ? this.config.locations : _defaults2.default.locations;
+      var set = new Set(array);
+      while (set.size < 2) {
+        set.add(_defaults2.default.locations[set.size]);
+      }
+      return [].concat(_toConsumableArray(set));
+    }
+  }]);
+
+  return Locations;
+}();
+
+exports.default = Locations;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _lodash = __webpack_require__(3);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _lodash3 = __webpack_require__(0);
+
+var _lodash4 = _interopRequireDefault(_lodash3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Weapons = function () {
+  function Weapons() {
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, Weapons);
+
+    this.config = config;
+  }
+
+  _createClass(Weapons, [{
+    key: 'data',
+    get: function get() {
+      if (Array.isArray(this.config.weapons)) {
+        return validWeapons(this.config.weapons);
+      }
+      return [];
+    }
+
+    /*
+        {
+        "name": "knife",
+        "power": { "min": 2, "max": 6 },
+        "cost": { "min": 100, "max": 300 },
+        "odds": 0.2
+      },
+      */
+
+  }]);
+
+  return Weapons;
+}();
+
+exports.default = Weapons;
+
+
+function validWeapons(weapons) {
+  return filterWeapons(weapons).reduce(function (array, weapon) {
+    if (!array.some(function (w) {
+      return w.name === weapon.name;
+    })) {
+      weapon.power = makeValidProp(weapon.power);
+      weapon.cost = makeValidProp(weapon.cost);
+      weapon.odds = makeValidOdds(weapon.odds);
+      array.push(weapon);
+    }
+    return array;
+  }, []);
+}
+
+function filterWeapons(weapons) {
+  return weapons.filter(function (weapon) {
+    return hasName(weapon) && hasNumberValue(weapon.power) && hasNumberValue(weapon.cost) && hasNonZeroOdds(weapon.odds);
+  });
+}
+
+function hasName(weapon) {
+  return weapon.name && typeof weapon.name === 'string';
+}
+
+function hasNumberValue(value) {
+  if ((0, _lodash4.default)(+value) && +value > 0) {
+    return true;
+  }
+  if ((0, _lodash2.default)(value)) {
+    return (0, _lodash4.default)(+value.max) && +value.max > 0;
   }
   return false;
 }
 
-/**
- * Performs a
- * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
- * comparison between two values to determine if they are equivalent.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to compare.
- * @param {*} other The other value to compare.
- * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
- * @example
- *
- * var object = { 'a': 1 };
- * var other = { 'a': 1 };
- *
- * _.eq(object, object);
- * // => true
- *
- * _.eq(object, other);
- * // => false
- *
- * _.eq('a', 'a');
- * // => true
- *
- * _.eq('a', Object('a'));
- * // => false
- *
- * _.eq(NaN, NaN);
- * // => true
- */
-function eq(value, other) {
-  return value === other || (value !== value && other !== other);
+function hasNonZeroOdds(value) {
+  return (0, _lodash4.default)(+value) && +value > 0 || !(0, _lodash4.default)(value);
 }
 
-/**
- * Checks if `value` is array-like. A value is considered array-like if it's
- * not a function and has a `value.length` that's an integer greater than or
- * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
- * @example
- *
- * _.isArrayLike([1, 2, 3]);
- * // => true
- *
- * _.isArrayLike(document.body.children);
- * // => true
- *
- * _.isArrayLike('abc');
- * // => true
- *
- * _.isArrayLike(_.noop);
- * // => false
- */
-function isArrayLike(value) {
-  return value != null && isLength(value.length) && !isFunction(value);
-}
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a function, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction(value) {
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 8-9 which returns 'object' for typed array and other constructors.
-  var tag = isObject(value) ? objectToString.call(value) : '';
-  return tag == funcTag || tag == genTag;
-}
-
-/**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This method is loosely based on
- * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- * @example
- *
- * _.isLength(3);
- * // => true
- *
- * _.isLength(Number.MIN_VALUE);
- * // => false
- *
- * _.isLength(Infinity);
- * // => false
- *
- * _.isLength('3');
- * // => false
- */
-function isLength(value) {
-  return typeof value == 'number' &&
-    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-/**
- * Checks if `value` is classified as a `Symbol` primitive or object.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
- * @example
- *
- * _.isSymbol(Symbol.iterator);
- * // => true
- *
- * _.isSymbol('abc');
- * // => false
- */
-function isSymbol(value) {
-  return typeof value == 'symbol' ||
-    (isObjectLike(value) && objectToString.call(value) == symbolTag);
-}
-
-/**
- * Converts `value` to a finite number.
- *
- * @static
- * @memberOf _
- * @since 4.12.0
- * @category Lang
- * @param {*} value The value to convert.
- * @returns {number} Returns the converted number.
- * @example
- *
- * _.toFinite(3.2);
- * // => 3.2
- *
- * _.toFinite(Number.MIN_VALUE);
- * // => 5e-324
- *
- * _.toFinite(Infinity);
- * // => 1.7976931348623157e+308
- *
- * _.toFinite('3.2');
- * // => 3.2
- */
-function toFinite(value) {
-  if (!value) {
-    return value === 0 ? value : 0;
+function makeValidProp(value) {
+  if ((0, _lodash4.default)(+value)) {
+    return +value;
   }
-  value = toNumber(value);
-  if (value === INFINITY || value === -INFINITY) {
-    var sign = (value < 0 ? -1 : 1);
-    return sign * MAX_INTEGER;
+  value.max = +value.max;
+  value.min = Math.max(0, Math.min(value.max, +value.min || 0));
+  if (value.min === value.max) {
+    return value.max;
   }
-  return value === value ? value : 0;
+  return value;
 }
 
-/**
- * Converts `value` to a number.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to process.
- * @returns {number} Returns the number.
- * @example
- *
- * _.toNumber(3.2);
- * // => 3.2
- *
- * _.toNumber(Number.MIN_VALUE);
- * // => 5e-324
- *
- * _.toNumber(Infinity);
- * // => Infinity
- *
- * _.toNumber('3.2');
- * // => 3.2
- */
-function toNumber(value) {
-  if (typeof value == 'number') {
-    return value;
+function makeValidOdds(odds) {
+  if ((0, _lodash4.default)(+odds)) {
+    return Math.min(1, Math.max(0, +odds));
   }
-  if (isSymbol(value)) {
-    return NAN;
-  }
-  if (isObject(value)) {
-    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
-    value = isObject(other) ? (other + '') : other;
-  }
-  if (typeof value != 'string') {
-    return value === 0 ? value : +value;
-  }
-  value = value.replace(reTrim, '');
-  var isBinary = reIsBinary.test(value);
-  return (isBinary || reIsOctal.test(value))
-    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
-    : (reIsBadHex.test(value) ? NAN : +value);
+  return 0.1;
 }
-
-/**
- * Creates an array of numbers (positive and/or negative) progressing from
- * `start` up to, but not including, `end`. A step of `-1` is used if a negative
- * `start` is specified without an `end` or `step`. If `end` is not specified,
- * it's set to `start` with `start` then set to `0`.
- *
- * **Note:** JavaScript follows the IEEE-754 standard for resolving
- * floating-point values which can produce unexpected results.
- *
- * @static
- * @since 0.1.0
- * @memberOf _
- * @category Util
- * @param {number} [start=0] The start of the range.
- * @param {number} end The end of the range.
- * @param {number} [step=1] The value to increment or decrement by.
- * @returns {Array} Returns the range of numbers.
- * @see _.inRange, _.rangeRight
- * @example
- *
- * _.range(4);
- * // => [0, 1, 2, 3]
- *
- * _.range(-4);
- * // => [0, -1, -2, -3]
- *
- * _.range(1, 5);
- * // => [1, 2, 3, 4]
- *
- * _.range(0, 20, 5);
- * // => [0, 5, 10, 15]
- *
- * _.range(0, -4, -1);
- * // => [0, -1, -2, -3]
- *
- * _.range(1, 4, 0);
- * // => [1, 1, 1]
- *
- * _.range(0);
- * // => []
- */
-var range = createRange();
-
-module.exports = range;
-
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports) {
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"player":{"location":null,"time":30,"health":{"value":100,"max":100,"min":0},"money":{"value":2000,"max":"*","min":0},"storage":{"value":100,"max":"*","min":0},"weapons":[],"loan":{"principal":2000,"interest":0.1}},"locations":["Mercury","Venus","Mars","Jupiter","Saturn","Uranus"],"items":[{"name":"Booms","min":15,"max":150},{"name":"Whams","min":100,"max":750},{"name":"Bangs","min":300,"max":1500},{"name":"Splats","min":800,"max":3000},{"name":"Pows","min":2000,"max":10000},{"name":"Kabooms","min":7500,"max":30000}],"weapons":[{"name":"Knife","power":{"min":2,"max":6},"cost":{"min":100,"max":300},"copy":["A hoodlum in an alley offers to sell you a knife. Time to beef up security?"],"odds":0.2},{"name":"Gun","power":{"min":8,"max":20},"cost":{"min":2000,"max":5000},"copy":["Show 'em you mean business. Blimpie and the hooligans will think twice before messing with you."],"odds":0.2}],"adversaries":[{"name":"Blimpie","odds":0.2,"health":45,"damage":5,"success":0.4,"copy":["Blimpie is on your tail!","Blimpie is after you!"],"options":{"fight":{"label":"Fight","success":["Blimpie is dead!"],"fail":["You've hurt Blimpie but he's still after you."]},"run":{"label":"Run","success":["You've lost Blimpie!"],"fail":["Oh no! Blimpie's got you. He'll take everything and let you go in the morning."]},"surrender":{"label":"Surrender","copy":["You've lost everything, but at least you're still alive."]}}},{"name":"Hooligans","odds":0.15,"health":12,"damage":15,"success":0.75,"copy":["Armed hooligans want your stash!","Hooligans have ambushed you!"],"options":{"fight":{"label":"Fight","success":["Wow! You've those hooligans a lesson. They're gone."],"fail":["You gave them a scare but they won't give up that easily."]},"run":{"label":"Run","success":["You've lost the hooligans!"],"fail":["Oh no! The hooligans have taken everything you have and given you quite a beating."]},"surrender":{"label":"Surrender","copy":["You've lost everything, but at least you're still alive."]}}}],"random":{"storage":{"enabled":true,"odds":0.1,"data":{"multiply":2,"cost":5}},"find":{"enabled":true,"odds":0.1,"max":25000,"copy":["You've found {{number}} {{item}} under a rock!","{{number}} {{item}} just fell out of a tree!"]},"crash":{"enabled":true,"odds":0.2,"min":0.3,"max":0.6,"copy":["A tsunami of {{item}} just crashed ashore. Prices have crashed!"]},"scarcity":{"enabled":true,"odds":0.2,"min":1.75,"max":2.75,"copy":["All vowels needed to spell {{item}} have fled. Prices have skyrocketed!"]}}}
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _lodash = __webpack_require__(7);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _randomStorage = __webpack_require__(21);
+
+var _randomStorage2 = _interopRequireDefault(_randomStorage);
+
+var _randomFind = __webpack_require__(22);
+
+var _randomFind2 = _interopRequireDefault(_randomFind);
+
+var _randomSurplus = __webpack_require__(23);
+
+var _randomSurplus2 = _interopRequireDefault(_randomSurplus);
+
+var _randomShortage = __webpack_require__(24);
+
+var _randomShortage2 = _interopRequireDefault(_randomShortage);
+
+var _randomPolice = __webpack_require__(25);
+
+var _randomPolice2 = _interopRequireDefault(_randomPolice);
+
+var _randomRival = __webpack_require__(26);
+
+var _randomRival2 = _interopRequireDefault(_randomRival);
+
+var _randomMugging = __webpack_require__(27);
+
+var _randomMugging2 = _interopRequireDefault(_randomMugging);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Random = function () {
+  function Random() {
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, Random);
+
+    this.config = config;
+    this.data = [new _randomStorage2.default(this.item('storage')).getData(), new _randomFind2.default(this.item('find')).getData(), new _randomSurplus2.default(this.item('surplus')).getData(), new _randomShortage2.default(this.item('shortage')).getData(), new _randomPolice2.default(this.item('police')).getData(), new _randomRival2.default(this.item('rival')).getData(), new _randomMugging2.default(this.item('mugging')).getData()];
+  }
+
+  _createClass(Random, [{
+    key: 'item',
+    value: function item(name) {
+      return (0, _lodash2.default)(this.config.random || [], function (item) {
+        return item.name === name;
+      }) || {};
+    }
+  }]);
+
+  return Random;
+}();
+
+exports.default = Random;
 
 /***/ }),
-/* 14 */
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _lodash = __webpack_require__(1);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _lodash3 = __webpack_require__(0);
+
+var _lodash4 = _interopRequireDefault(_lodash3);
+
+var _randomBase = __webpack_require__(5);
+
+var _randomBase2 = _interopRequireDefault(_randomBase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RandomStorage = function (_RandomBase) {
+  _inherits(RandomStorage, _RandomBase);
+
+  function RandomStorage(config) {
+    _classCallCheck(this, RandomStorage);
+
+    var _this = _possibleConstructorReturn(this, (RandomStorage.__proto__ || Object.getPrototypeOf(RandomStorage)).call(this, config));
+
+    _this.name = 'storage';
+    return _this;
+  }
+
+  _createClass(RandomStorage, [{
+    key: 'getSpecificData',
+    value: function getSpecificData(base) {
+      var offers = this.getOffers();
+      return offers.length ? (0, _lodash2.default)(base, { offers: offers }) : this.getBase(false);
+    }
+  }, {
+    key: 'getOffers',
+    value: function getOffers() {
+      if (Array.isArray(this.config.offers)) {
+        return this.config.offers.map(function (item) {
+          var pockets = Math.floor(+item.pockets);
+          var pocketsOk = (0, _lodash4.default)(pockets) && pockets > 0;
+          var cost = +item.cost;
+          var costOk = pocketsOk && (0, _lodash4.default)(cost) && cost > 0;
+          return costOk ? { pockets: pockets, cost: cost } : null;
+        }).filter(function (item) {
+          return item !== null;
+        }).sort(function (a, b) {
+          var diff = a.pockets - b.pockets;
+          return diff === 0 ? a.cost - b.cost : diff;
+        });
+      }
+      return this.getDefault().offers;
+    }
+  }]);
+
+  return RandomStorage;
+}(_randomBase2.default);
+
+exports.default = RandomStorage;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _lodash = __webpack_require__(1);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _lodash3 = __webpack_require__(0);
+
+var _lodash4 = _interopRequireDefault(_lodash3);
+
+var _randomBase = __webpack_require__(5);
+
+var _randomBase2 = _interopRequireDefault(_randomBase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RandomFind = function (_RandomBase) {
+  _inherits(RandomFind, _RandomBase);
+
+  function RandomFind(config) {
+    _classCallCheck(this, RandomFind);
+
+    var _this = _possibleConstructorReturn(this, (RandomFind.__proto__ || Object.getPrototypeOf(RandomFind)).call(this, config));
+
+    _this.name = 'find';
+    return _this;
+  }
+
+  _createClass(RandomFind, [{
+    key: 'getSpecificData',
+    value: function getSpecificData(base) {
+      var minLowPriced = this.getMinPriced('minLowPriced');
+      var maxLowPriced = this.getMaxLowPriced('maxLowPriced', minLowPriced);
+      var minHighPriced = this.getMinPriced('minHighPriced');
+      var maxHighPriced = this.getMaxLowPriced('maxHighPriced', minHighPriced);
+      return (0, _lodash2.default)(base, {
+        minLowPriced: minLowPriced,
+        maxLowPriced: maxLowPriced,
+        minHighPriced: minHighPriced,
+        maxHighPriced: maxHighPriced
+      });
+    }
+  }, {
+    key: 'getMinPriced',
+    value: function getMinPriced(prop) {
+      var value = +this.config[prop];
+      return (0, _lodash4.default)(value) && value > 0 ? Math.floor(value) : this.getDefault()[prop];
+    }
+  }, {
+    key: 'getMaxLowPriced',
+    value: function getMaxLowPriced(prop, minPriced) {
+      var value = +this.config[prop];
+      return (0, _lodash4.default)(value) && value > 0 ? Math.max(Math.floor(value), minPriced) : this.getDefault()[prop];
+    }
+  }]);
+
+  return RandomFind;
+}(_randomBase2.default);
+
+exports.default = RandomFind;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _randomSupply = __webpack_require__(12);
+
+var _randomSupply2 = _interopRequireDefault(_randomSupply);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Surplus = function (_Supply) {
+  _inherits(Surplus, _Supply);
+
+  function Surplus(config) {
+    _classCallCheck(this, Surplus);
+
+    var _this = _possibleConstructorReturn(this, (Surplus.__proto__ || Object.getPrototypeOf(Surplus)).call(this, config));
+
+    _this.name = 'surplus';
+    return _this;
+  }
+
+  return Surplus;
+}(_randomSupply2.default);
+
+exports.default = Surplus;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _randomSupply = __webpack_require__(12);
+
+var _randomSupply2 = _interopRequireDefault(_randomSupply);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Shortage = function (_Supply) {
+  _inherits(Shortage, _Supply);
+
+  function Shortage(config) {
+    _classCallCheck(this, Shortage);
+
+    var _this = _possibleConstructorReturn(this, (Shortage.__proto__ || Object.getPrototypeOf(Shortage)).call(this, config));
+
+    _this.name = 'shortage';
+    return _this;
+  }
+
+  return Shortage;
+}(_randomSupply2.default);
+
+exports.default = Shortage;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _randomEnemy = __webpack_require__(8);
+
+var _randomEnemy2 = _interopRequireDefault(_randomEnemy);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RandomPolice = function (_RandomEnemy) {
+  _inherits(RandomPolice, _RandomEnemy);
+
+  function RandomPolice(config) {
+    _classCallCheck(this, RandomPolice);
+
+    var _this = _possibleConstructorReturn(this, (RandomPolice.__proto__ || Object.getPrototypeOf(RandomPolice)).call(this, config));
+
+    _this.name = 'police';
+    return _this;
+  }
+
+  return RandomPolice;
+}(_randomEnemy2.default);
+
+exports.default = RandomPolice;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _randomEnemy = __webpack_require__(8);
+
+var _randomEnemy2 = _interopRequireDefault(_randomEnemy);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RandomRival = function (_RandomEnemy) {
+  _inherits(RandomRival, _RandomEnemy);
+
+  function RandomRival(config) {
+    _classCallCheck(this, RandomRival);
+
+    var _this = _possibleConstructorReturn(this, (RandomRival.__proto__ || Object.getPrototypeOf(RandomRival)).call(this, config));
+
+    _this.name = 'rival';
+    return _this;
+  }
+
+  return RandomRival;
+}(_randomEnemy2.default);
+
+exports.default = RandomRival;
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _randomEnemy = __webpack_require__(8);
+
+var _randomEnemy2 = _interopRequireDefault(_randomEnemy);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RandomMugging = function (_RandomEnemy) {
+  _inherits(RandomMugging, _RandomEnemy);
+
+  function RandomMugging(config) {
+    _classCallCheck(this, RandomMugging);
+
+    var _this = _possibleConstructorReturn(this, (RandomMugging.__proto__ || Object.getPrototypeOf(RandomMugging)).call(this, config));
+
+    _this.name = 'mugging';
+    return _this;
+  }
+
+  return RandomMugging;
+}(_randomEnemy2.default);
+
+exports.default = RandomMugging;
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6918,11 +7398,11 @@ exports.deal = deal;
 exports.buy = buy;
 exports.sell = sell;
 
-var _seamlessImmutable = __webpack_require__(0);
+var _seamlessImmutable = __webpack_require__(2);
 
 var _seamlessImmutable2 = _interopRequireDefault(_seamlessImmutable);
 
-var _lodash = __webpack_require__(2);
+var _lodash = __webpack_require__(1);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -6984,7 +7464,7 @@ function sell(params) {
 exports.default = { buy: buy, sell: sell };
 
 /***/ }),
-/* 15 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6996,15 +7476,15 @@ Object.defineProperty(exports, "__esModule", {
 exports.pay = pay;
 exports.borrow = borrow;
 
-var _seamlessImmutable = __webpack_require__(0);
+var _seamlessImmutable = __webpack_require__(2);
 
 var _seamlessImmutable2 = _interopRequireDefault(_seamlessImmutable);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _lodash3 = __webpack_require__(5);
+var _lodash3 = __webpack_require__(0);
 
 var _lodash4 = _interopRequireDefault(_lodash3);
 
@@ -7065,7 +7545,7 @@ function borrow(_ref2) {
 }
 
 /***/ }),
-/* 16 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7077,15 +7557,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _seamlessImmutable = __webpack_require__(0);
+var _seamlessImmutable = __webpack_require__(2);
 
 var _seamlessImmutable2 = _interopRequireDefault(_seamlessImmutable);
 
-var _lodash = __webpack_require__(6);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _configure = __webpack_require__(4);
+var _items = __webpack_require__(11);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7103,10 +7583,17 @@ var Advance = function () {
   }
 
   _createClass(Advance, [{
+    key: 'start',
+    value: function start() {
+      //
+    }
+  }, {
     key: 'go',
     value: function go(location) {
       var player = this.isLocationOk(location) ? this.updatePlayer(location) : {};
-      var items = (0, _configure.calculateItemPrices)(this.state.current.items);
+      var items = this.state.current.items.map(function (item) {
+        return _seamlessImmutable2.default.merge(item, { price: (0, _items.getItemPrice)(item) });
+      });
       return _seamlessImmutable2.default.merge(this.state.current, { player: player, items: items }, { deep: true });
     }
   }, {
@@ -7144,7 +7631,7 @@ var Advance = function () {
 exports.default = Advance;
 
 /***/ }),
-/* 17 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7156,11 +7643,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _optionsInfo = __webpack_require__(18);
+var _optionsInfo = __webpack_require__(32);
 
 var _optionsInfo2 = _interopRequireDefault(_optionsInfo);
 
-var _optionsCommands = __webpack_require__(19);
+var _optionsCommands = __webpack_require__(33);
 
 var _optionsCommands2 = _interopRequireDefault(_optionsCommands);
 
@@ -7191,31 +7678,10 @@ var Options = function () {
   return Options;
 }();
 
-// function getRandomStorageCommand(player, event) {
-//   const units = Math.min(player.storage.max,
-//     player.storage.value * event.multiply)
-//   return {
-//     name: 'buy',
-//     value: 'storage',
-//     price: units * event.cost,
-//     units,
-//   }
-// }
-
-// function getRandomEventCommand(time, events, random, player) {
-//   const value = events[time]
-//   const event = value && random[value]
-//   if (event) {
-//     return getRandomStorageCommand(player, event.data)
-//   }
-//   return null
-// }
-
-
 exports.default = Options;
 
 /***/ }),
-/* 18 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7245,8 +7711,8 @@ var OptionsInfo = function () {
         time: player.time,
         location: player.location,
         loan: player.loan.asMutable({ deep: true }),
-        money: player.money.value,
-        health: player.health.value,
+        money: player.money,
+        health: player.health,
         storage: this.getInfoStorage(player),
         score: this.getScore(player)
       };
@@ -7266,7 +7732,7 @@ var OptionsInfo = function () {
   }, {
     key: "getScore",
     value: function getScore(player) {
-      var millions = player.money.value * 2 / 1000000;
+      var millions = player.money * 2 / 1000000;
       return Math.min(100, Math.floor(millions));
     }
   }]);
@@ -7277,7 +7743,7 @@ var OptionsInfo = function () {
 exports.default = OptionsInfo;
 
 /***/ }),
-/* 19 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7289,7 +7755,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(2);
+var _lodash = __webpack_require__(1);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -7344,9 +7810,10 @@ var OptionsCommands = function () {
     value: function getItemCommands() {
       var _this = this;
 
+      var filled = this.getStorageFilled();
       return this.state.current.items.reduce(function (commands, item) {
         var cmd = _this.getSingleItemCommand(item);
-        var buy = { name: 'buy', max: _this.getItemMaxBuy(item) };
+        var buy = { name: 'buy', max: _this.getItemMaxBuy(item, filled) };
         var sell = { name: 'sell', max: _this.getItemMaxSell(item) };
         commands.push((0, _lodash2.default)({}, cmd, buy));
         commands.push((0, _lodash2.default)({}, cmd, sell));
@@ -7360,10 +7827,18 @@ var OptionsCommands = function () {
     }
   }, {
     key: 'getItemMaxBuy',
-    value: function getItemMaxBuy(item) {
+    value: function getItemMaxBuy(item, filled) {
       var player = this.state.current.player;
-      var avail = player.storage.max - player.storage.value;
-      return Math.min(avail, Math.floor(this.state.current.player.money.value / item.price));
+      var avail = player.storage.value - filled;
+      return Math.min(avail, Math.floor(player.money / item.price));
+    }
+  }, {
+    key: 'getStorageFilled',
+    value: function getStorageFilled() {
+      var storage = this.state.current.player.storage;
+      return Object.keys(storage.filled).reduce(function (sum, item) {
+        return sum + storage.filled[item];
+      }, 0);
     }
   }, {
     key: 'getItemMaxSell',
@@ -7379,7 +7854,7 @@ var OptionsCommands = function () {
 
       var commands = [{
         name: 'pay',
-        max: Math.min(loan.amount, money.value)
+        max: Math.min(loan.amount, money)
       }, { name: 'borrow' }];
       return commands;
     }

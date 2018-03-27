@@ -93,6 +93,28 @@
       "odds": 0.2,
       "min": 2.0,
       "max": 5.0
+    },
+    "weapon": {
+      "enabled": true,
+      "odds": 0.2,
+      "items": [
+        {
+          "name": "knife",
+          "power": {
+            "min": 2,
+            "max": 6
+          },
+          "cost": 2000
+        },
+        {
+          "name": "gun",
+          "power": {
+            "min": 20,
+            "max": 50
+          },
+          "cost": 10000
+        }
+      ]
     }
   }
 }

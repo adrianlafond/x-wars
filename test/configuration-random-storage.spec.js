@@ -24,7 +24,7 @@ describe('Configuration/Random/Storage', () => {
       { cost: 300 },
       {},
     ]
-    expect(instance(offers(array))).toEqual({ enabled: false })
+    expect(instance(offers(array))).toEqual({ name: 'storage', enabled: false })
   })
 
   test('offers:valid', () => {
@@ -38,6 +38,7 @@ describe('Configuration/Random/Storage', () => {
     ]
     expect(instance(offers(array))).toEqual({
       enabled: true,
+      name: 'storage',
       odds: defaults().odds,
       offers: [
         { pockets: 150, cost: 150 },

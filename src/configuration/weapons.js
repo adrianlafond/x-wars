@@ -12,15 +12,6 @@ export default class Weapons {
     }
     return []
   }
-
-  /*
-      {
-      "name": "knife",
-      "power": { "min": 2, "max": 6 },
-      "cost": { "min": 100, "max": 300 },
-      "odds": 0.2
-    },
-    */
 }
 
 function validWeapons(weapons) {

@@ -12,12 +12,17 @@ export default class Configuration {
   constructor(config) {
     this.original = config
     this.data = initializeState(config)
+    this.data.history = initializeHistory()
     this.data.locations = new Locations(this.data).data
     this.data.items = new Items(this.data).data
     this.data.weapons = new Weapons(this.data).data
     this.data.random = new Random(this.data).data
     this.data.player = new Player(this.data).data
   }
+}
+
+export function initializeHistory() {
+  return { undo: false, redo: false }
 }
 
 function initializeState(config) {

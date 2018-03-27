@@ -7,8 +7,9 @@ export default class OptionsCommands {
   }
 
   getCommands() {
-    const isLive = this.state.current.player.time > 0
-    const canRelocate = this.state.current.player.time > 1
+    const { player } = this.state
+    const isLive = player.time > 0
+    const canRelocate = player.time > 1
     const base = this.getBaseCommands()
     const locations = canRelocate ? this.getLocationCommands() : []
     const items = isLive ? this.getItemCommands() : []
@@ -18,18 +19,19 @@ export default class OptionsCommands {
   }
 
   getBaseCommands() {
+    const { history } = this.state
     const commands = [{ name: 'reset' }]
-    if (this.state.index > 0) {
+    if (history.undo) {
       commands.push({ name: 'undo' })
     }
-    if (this.state.index < this.state.states.length - 1) {
+    if (history.redo) {
       commands.push({ name: 'redo' })
     }
     return commands
   }
 
   getLocationCommands() {
-    return this.state.current.locations.map((location) => ({
+    return this.state.locations.map((location) => ({
       name: 'go',
       value: location,
     }))
@@ -37,7 +39,7 @@ export default class OptionsCommands {
 
   getItemCommands() {
     const filled = this.getStorageFilled()
-    return this.state.current.items.reduce((commands, item) => {
+    return this.state.items.reduce((commands, item) => {
       const cmd = this.getSingleItemCommand(item)
       const buy = { name: 'buy', max: this.getItemMaxBuy(item, filled) }
       const sell = { name: 'sell', max: this.getItemMaxSell(item) }
@@ -52,24 +54,24 @@ export default class OptionsCommands {
   }
 
   getItemMaxBuy(item, filled) {
-    const player = this.state.current.player
+    const { player } = this.state
     const avail = player.storage.value - filled
     return Math.min(avail, Math.floor(player.money / item.price))
   }
 
   getStorageFilled() {
-    const storage = this.state.current.player.storage
+    const storage = this.state.player.storage
     return Object.keys(storage.filled).reduce((sum, item) => {
       return sum + storage.filled[item]
     }, 0)
   }
 
   getItemMaxSell(item) {
-    return this.state.current.player.storage.filled[item.name]
+    return this.state.player.storage.filled[item.name]
   }
 
   getLoanCommands() {
-    const { loan, money } = this.state.current.player
+    const { loan, money } = this.state.player
     const commands = [
       {
         name: 'pay',

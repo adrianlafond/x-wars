@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash.clonedeep'
+import assign from 'lodash.assign'
 import Storage from '../src/configuration/random-storage'
 import Find from '../src/configuration/random-find'
 import Surplus from '../src/configuration/random-surplus'
@@ -6,6 +7,7 @@ import Shortage from '../src/configuration/random-shortage'
 import Police from '../src/configuration/random-police'
 import Mugging from '../src/configuration/random-mugging'
 import Rival from '../src/configuration/random-rival'
+import Weapon from '../src/configuration/random-weapon'
 import DEFAULTS from '../src/defaults'
 
 describe('Configuration/Random/Base', () => {
@@ -18,10 +20,11 @@ describe('Configuration/Random/Base', () => {
     { name: 'police', class: Police },
     { name: 'mugging', class: Mugging },
     { name: 'rival', class: Rival },
+    { name: 'weapon', class: Weapon },
   ]
 
   function defaults(prop) {
-    return cloneDeep(DEFAULTS.random[prop])
+    return assign(cloneDeep(DEFAULTS.random[prop]), { name: prop })
   }
 
   function instance(Class, config) {
@@ -53,7 +56,8 @@ describe('Configuration/Random/Base', () => {
 
   test('enabled:false', () => {
     Events.forEach(e => {
-      expect(instance(e.class, { enabled: false })).toEqual({ enabled: false })
+      expect(instance(e.class, { enabled: false })).toEqual(
+        { name: e.name, enabled: false })
     })
   })
 })

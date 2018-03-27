@@ -24,11 +24,15 @@ export default class RandomBase {
   }
 
   getBase(enabled = true) {
-    return { enabled }
+    const name = this.name
+    return { name, enabled }
   }
 
   getDefault() {
-    return (this.defaults = this.defaults || DEFAULTS.random[this.name])
+    const name = this.name
+    this.defaults = assign({}, this.defaults || DEFAULTS.random[this.name],
+      { name })
+    return this.defaults
   }
 
   getOdds() {
@@ -36,6 +40,6 @@ export default class RandomBase {
     if (isNaN(odds) || odds <= 0) {
       return this.getDefault().odds
     }
-    return Math.min(1, odds)
+    return Math.max(0, Math.min(1, odds))
   }
 }
